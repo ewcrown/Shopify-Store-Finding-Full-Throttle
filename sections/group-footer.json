@@ -1,0 +1,101 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "type": "footer",
+  "name": "Footer",
+  "sections": {
+    "footer": {
+      "type": "footer",
+      "blocks": {
+        "linklist_izj74T": {
+          "type": "linklist",
+          "settings": {
+            "linklist": "footer",
+            "title": "Shop",
+            "heading_font_size": "heading-mini",
+            "column_width": 33,
+            "enable_accordion": true
+          }
+        },
+        "footer-1": {
+          "type": "linklist",
+          "settings": {
+            "linklist": "shop-footer-menu",
+            "title": "Help",
+            "heading_font_size": "heading-mini",
+            "column_width": 33,
+            "enable_accordion": true
+          }
+        },
+        "text_U6aU3y": {
+          "type": "text",
+          "disabled": true,
+          "settings": {
+            "image_width": 150,
+            "title": "Contact",
+            "heading_font_size": "heading-mini",
+            "text": "<p>Do you have questions or concerns? Don't hesitate to contact us by emailing <a href=\"mailto:customersupport@piloti.com\" target=\"_blank\" title=\"mailto:customersupport@piloti.com\">info@findingfullthrottle.com</a></p>",
+            "column_width": 33,
+            "enable_accordion": false
+          }
+        },
+        "footer-0": {
+          "type": "newsletter",
+          "settings": {
+            "title": "",
+            "heading_font_size": "heading-mini",
+            "text": "<p>Join our newsletter to stay updated product launches, and promotions.</p>",
+            "show_name": false,
+            "button_text": "Join",
+            "show_arrow": true,
+            "terms": true,
+            "button_type": "btn--secondary",
+            "button_size": "",
+            "button_style": "btn--solid",
+            "show_social_links": false,
+            "column_width": 33
+          }
+        }
+      },
+      "block_order": [
+        "linklist_izj74T",
+        "footer-1",
+        "text_U6aU3y",
+        "footer-0"
+      ],
+      "settings": {
+        "logo_image_width": 80,
+        "color_scheme": "scheme-15f58a46-da68-4d19-9b0b-0da64da919b8",
+        "border_color": "#212121",
+        "padding_top": 15,
+        "padding_bottom": 30
+      }
+    },
+    "supporting-menu": {
+      "type": "section-supporting-menu",
+      "settings": {
+        "linklist": "",
+        "text_font_size": "body-x-small",
+        "footer_payment_enable": true,
+        "show_locale_selector": true,
+        "show_country_selector": true,
+        "show_country_name": false,
+        "show_country_flag": true,
+        "color_scheme": "scheme-15f58a46-da68-4d19-9b0b-0da64da919b8",
+        "padding_top": 30,
+        "padding_bottom": 30
+      }
+    }
+  },
+  "order": [
+    "footer",
+    "supporting-menu"
+  ]
+}

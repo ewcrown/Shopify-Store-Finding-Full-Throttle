@@ -1,0 +1,192 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "product",
+      "blocks": {
+        "title": {
+          "type": "title",
+          "settings": {
+            "subheading_option": "none",
+            "heading_font_size": "heading-x-small",
+            "padding_bottom": 8
+          }
+        },
+        "klaviyo_reviews_average_rating_YMe6LT": {
+          "type": "shopify://apps/klaviyo-reviews/blocks/average-rating/db20e365-d984-4ac4-9655-e1588d951ca9",
+          "settings": {
+            "product": "{{product}}"
+          }
+        },
+        "price": {
+          "type": "price",
+          "settings": {
+            "text_font_size": "body-large",
+            "padding_bottom": 16
+          }
+        },
+        "variants": {
+          "type": "variants",
+          "settings": {
+            "info_page": "",
+            "size_chart_style": "text",
+            "subscriptions_enable_selectors": false,
+            "padding_bottom": 10
+          }
+        },
+        "buttons": {
+          "type": "buttons",
+          "settings": {
+            "show_quantity": true,
+            "button_type": "btn--secondary",
+            "button_style": "btn--solid",
+            "show_payment_button": false,
+            "button_type_dynamic": "btn--secondary",
+            "button_style_dynamic": "btn--solid",
+            "show_gift_card_recipient": false,
+            "padding_bottom": 10
+          }
+        },
+        "icon_2": {
+          "type": "icon",
+          "settings": {
+            "icon_name": "icon-truck",
+            "icon_size": 20,
+            "icon_color": "#f4c012",
+            "text": "<p>Free shipping on orders over $75</p>",
+            "text_font_size": "body-small",
+            "width": "full",
+            "padding_bottom": 16
+          }
+        },
+        "description_FhNYBc": {
+          "type": "description",
+          "settings": {
+            "show_read_more": true,
+            "padding_bottom": 16
+          }
+        },
+        "tabs": {
+          "type": "tab_richtext",
+          "settings": {
+            "show_description": false,
+            "show_read_more": true,
+            "title_1": "Material & Care",
+            "raw_content_1": "<p>{{ product.metafields.descriptors.care_guide | metafield_tag }}</p>",
+            "title_2": "Size & Fit",
+            "raw_content_2": "<p>{{ product.metafields.custom.size_fit | metafield_tag }}</p>",
+            "title_3": "Style Features",
+            "raw_content_3": "<p>{{ product.metafields.custom.style_features | metafield_tag }}</p>",
+            "title_4": "",
+            "raw_content_4": "",
+            "title_5": "",
+            "raw_content_5": "",
+            "padding_bottom": 0
+          }
+        },
+        "divider_1": {
+          "type": "divider",
+          "settings": {
+            "show_line": true,
+            "padding_bottom": 16
+          }
+        },
+        "upsell": {
+          "type": "upsell",
+          "settings": {
+            "upsell_product": "",
+            "upsell_product_list": "{{ block.settings.upsell_product.metafields.theme.upsell_list.value }}",
+            "show_avaialable_upsell_only": true,
+            "bg_color": "#ffffff",
+            "padding_bottom": 16
+          }
+        }
+      },
+      "block_order": [
+        "title",
+        "klaviyo_reviews_average_rating_YMe6LT",
+        "price",
+        "variants",
+        "buttons",
+        "icon_2",
+        "description_FhNYBc",
+        "tabs",
+        "divider_1",
+        "upsell"
+      ],
+      "settings": {
+        "product_sticky_enable": true,
+        "variant_image_scroll": true,
+        "show_cart_bar": true,
+        "enable_zoom": false,
+        "enable_video_looping": false,
+        "image_layout": "grid-1",
+        "image_size": "normal",
+        "mobile_image_style": "thumbs",
+        "color_scheme": "scheme-4",
+        "padding_top": 30,
+        "padding_bottom": 30
+      }
+    },
+    "related": {
+      "type": "related",
+      "blocks": {
+        "related": {
+          "type": "related",
+          "settings": {
+            "product_recommendations_heading": "Related products",
+            "limit": 4
+          }
+        },
+        "recent": {
+          "type": "recent",
+          "settings": {
+            "product_recently_heading": "Recently viewed",
+            "product_recently_limit": 4
+          }
+        }
+      },
+      "block_order": [
+        "related",
+        "recent"
+      ],
+      "settings": {
+        "enable_tabs": true,
+        "heading_alignment": "text-center",
+        "heading_font_size": "heading-small",
+        "layout_mobile": "slider",
+        "color_scheme": "scheme-4",
+        "padding_top": 30,
+        "padding_bottom": 0
+      }
+    },
+    "1735747323262ee48e": {
+      "type": "apps",
+      "blocks": {
+        "klaviyo_reviews_product_reviews_BGcdRW": {
+          "type": "shopify://apps/klaviyo-reviews/blocks/product-reviews/db20e365-d984-4ac4-9655-e1588d951ca9",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "klaviyo_reviews_product_reviews_BGcdRW"
+      ],
+      "settings": {
+        "include_margins": false
+      }
+    }
+  },
+  "order": [
+    "main",
+    "related",
+    "1735747323262ee48e"
+  ]
+}

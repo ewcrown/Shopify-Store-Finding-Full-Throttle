@@ -1,0 +1,236 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "product",
+      "blocks": {
+        "title": {
+          "type": "title",
+          "settings": {
+            "subheading_option": "none",
+            "heading_font_size": "heading-x-small",
+            "padding_bottom": 8
+          }
+        },
+        "klaviyo_reviews_average_rating_YMe6LT": {
+          "type": "shopify://apps/klaviyo-reviews/blocks/average-rating/db20e365-d984-4ac4-9655-e1588d951ca9",
+          "settings": {
+            "product": "{{product}}"
+          }
+        },
+        "price": {
+          "type": "price",
+          "settings": {
+            "text_font_size": "body-large",
+            "padding_bottom": 16
+          }
+        },
+        "text_pfA6h7": {
+          "type": "text",
+          "settings": {
+            "title": "",
+            "text": "<p><strong>3 PRODUCTS INCLUDED</strong></p>",
+            "layout": "left",
+            "padding_bottom": 4
+          }
+        },
+        "icon_znLAhY": {
+          "type": "icon",
+          "settings": {
+            "icon_name": "icon-award",
+            "image": "shopify://shop_images/file_bebfabcd-e8d6-42bc-b280-30fe84a075bb.jpg",
+            "icon_size": 60,
+            "icon_color": "",
+            "text": "<p>Solid Black<br/><a href=\"/products/3-pedal-society-shirt\" title=\"3 Pedal Society Shirt\"><strong>3 Pedal Society Shirt</strong></a></p>",
+            "text_font_size": "body-medium",
+            "width": "full",
+            "padding_bottom": 16
+          }
+        },
+        "icon_G98U7F": {
+          "type": "icon",
+          "settings": {
+            "icon_name": "icon-award",
+            "image": "shopify://shop_images/file_c57aa22f-68ce-4883-8e2d-5a4c383bed6e.jpg",
+            "icon_size": 60,
+            "icon_color": "",
+            "text": "<p>Solid Black<br/><a href=\"/products/3-pedal-society-hoodie\" title=\"3 Pedal Society Hoodie\"><strong>3 Pedal Society Hoodie</strong></a></p>",
+            "text_font_size": "body-medium",
+            "width": "full",
+            "padding_bottom": 16
+          }
+        },
+        "icon_fTdaLc": {
+          "type": "icon",
+          "settings": {
+            "icon_name": "icon-award",
+            "image": "shopify://shop_images/file_33369413-41c3-4cf1-b294-53d4c28494a8.jpg",
+            "icon_size": 60,
+            "icon_color": "",
+            "text": "<p><a href=\"/products/3-pedal-society-key-tag\" title=\"3 Pedal Society Key Tag\"><strong>3 Pedal Society Key Tag</strong></a></p>",
+            "text_font_size": "body-medium",
+            "width": "full",
+            "padding_bottom": 16
+          }
+        },
+        "countdown_tMnP3r": {
+          "type": "countdown",
+          "settings": {
+            "end_date": "2025-04-30",
+            "end_time": "11:59",
+            "period": "pm",
+            "end_message": "<p>Kit has expired</p>",
+            "hide_on_complete": true,
+            "digits_font_size": "heading-mini",
+            "text_font_size": "body-x-small",
+            "text": "<p>Kit Expires In</p>",
+            "heading_font_size": "heading-mini",
+            "bg_color": "",
+            "color": "",
+            "text_align": "text-left",
+            "padding_bottom": 16
+          }
+        },
+        "variants": {
+          "type": "variants",
+          "settings": {
+            "info_page": "size-guide",
+            "size_chart_style": "text",
+            "subscriptions_enable_selectors": false,
+            "padding_bottom": 10
+          }
+        },
+        "buttons": {
+          "type": "buttons",
+          "settings": {
+            "show_quantity": true,
+            "button_type": "btn--secondary",
+            "button_style": "btn--solid",
+            "show_payment_button": false,
+            "button_type_dynamic": "btn--secondary",
+            "button_style_dynamic": "btn--solid",
+            "show_gift_card_recipient": false,
+            "padding_bottom": 10
+          }
+        },
+        "icon_2": {
+          "type": "icon",
+          "settings": {
+            "icon_name": "icon-truck",
+            "icon_size": 20,
+            "icon_color": "#f4c012",
+            "text": "<p>Free shipping on orders over $75</p>",
+            "text_font_size": "body-small",
+            "width": "full",
+            "padding_bottom": 16
+          }
+        },
+        "description_FhNYBc": {
+          "type": "description",
+          "settings": {
+            "show_read_more": true,
+            "padding_bottom": 0
+          }
+        }
+      },
+      "block_order": [
+        "title",
+        "klaviyo_reviews_average_rating_YMe6LT",
+        "price",
+        "text_pfA6h7",
+        "icon_znLAhY",
+        "icon_G98U7F",
+        "icon_fTdaLc",
+        "countdown_tMnP3r",
+        "variants",
+        "buttons",
+        "icon_2",
+        "description_FhNYBc"
+      ],
+      "settings": {
+        "product_sticky_enable": true,
+        "variant_image_scroll": true,
+        "show_cart_bar": true,
+        "enable_zoom": false,
+        "enable_video_looping": false,
+        "image_layout": "grid-1",
+        "image_size": "normal",
+        "mobile_image_style": "thumbs",
+        "color_scheme": "scheme-4",
+        "padding_top": 30,
+        "padding_bottom": 30
+      }
+    },
+    "section_divider_xyqEem": {
+      "type": "section-divider",
+      "settings": {
+        "show_line": true,
+        "width": "wrapper--full-padded",
+        "color_scheme": "scheme-4",
+        "padding_top": 50,
+        "padding_bottom": 50
+      }
+    },
+    "related": {
+      "type": "related",
+      "blocks": {
+        "related": {
+          "type": "related",
+          "settings": {
+            "product_recommendations_heading": "Related products",
+            "limit": 4
+          }
+        },
+        "recent": {
+          "type": "recent",
+          "settings": {
+            "product_recently_heading": "Recently viewed",
+            "product_recently_limit": 4
+          }
+        }
+      },
+      "block_order": [
+        "related",
+        "recent"
+      ],
+      "settings": {
+        "enable_tabs": true,
+        "heading_alignment": "text-center",
+        "heading_font_size": "heading-small",
+        "layout_mobile": "slider",
+        "color_scheme": "scheme-4",
+        "padding_top": 30,
+        "padding_bottom": 0
+      }
+    },
+    "1735747323262ee48e": {
+      "type": "apps",
+      "blocks": {
+        "klaviyo_reviews_product_reviews_BGcdRW": {
+          "type": "shopify://apps/klaviyo-reviews/blocks/product-reviews/db20e365-d984-4ac4-9655-e1588d951ca9",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "klaviyo_reviews_product_reviews_BGcdRW"
+      ],
+      "settings": {
+        "include_margins": false
+      }
+    }
+  },
+  "order": [
+    "main",
+    "section_divider_xyqEem",
+    "related",
+    "1735747323262ee48e"
+  ]
+}

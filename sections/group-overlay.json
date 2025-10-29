@@ -1,0 +1,78 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "type": "aside",
+  "name": "Overlay",
+  "sections": {
+    "cart-drawer": {
+      "type": "cart-drawer",
+      "blocks": {
+        "cart-message": {
+          "type": "cart-message",
+          "disabled": true,
+          "settings": {
+            "cart_custom_message_text": "<p>Use coupon code <strong>WELCOME10</strong> for 10% off your first order.</p>",
+            "cart_custom_message_color": "",
+            "pin_to_bottom": false
+          }
+        },
+        "title": {
+          "type": "title",
+          "settings": {
+            "title": "Cart"
+          }
+        },
+        "free-shipping": {
+          "type": "free-shipping",
+          "settings": {
+            "message": "You are ||amount|| away from free shipping.",
+            "free_shipping_gradient": "linear-gradient(180deg, rgba(255, 228, 49, 1), rgba(249, 32, 32, 1) 100%)",
+            "pin_to_bottom": false
+          }
+        },
+        "products": {
+          "type": "products",
+          "settings": {
+            "pin_to_bottom": false
+          }
+        },
+        "upsell-products": {
+          "type": "upsell-products",
+          "settings": {
+            "upsell_auto_open": true,
+            "pin_to_bottom": true
+          }
+        },
+        "checkout-buttons": {
+          "type": "checkout-buttons",
+          "settings": {
+            "enable_additional_buttons": false,
+            "show_view_cart_button": true,
+            "pin_to_bottom": true
+          }
+        }
+      },
+      "block_order": [
+        "cart-message",
+        "title",
+        "free-shipping",
+        "products",
+        "upsell-products",
+        "checkout-buttons"
+      ],
+      "settings": {
+        "color_scheme": "scheme-4"
+      }
+    }
+  },
+  "order": [
+    "cart-drawer"
+  ]
+}

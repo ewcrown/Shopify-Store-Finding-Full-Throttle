@@ -1,0 +1,59 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "cart",
+      "blocks": {
+        "free-shipping": {
+          "type": "free-shipping",
+          "settings": {
+            "message": "You are ||amount|| away from free shipping.",
+            "free_shipping_gradient": "radial-gradient(rgba(254, 51, 51, 1), rgba(244, 192, 18, 1) 100%)"
+          }
+        },
+        "cart-message": {
+          "type": "cart-message",
+          "disabled": true,
+          "settings": {
+            "cart_custom_message_text": "<p>Use coupon code <strong>DRIVEFOR5</strong> for 5% off your first order. <br/>*Exclusions apply</p>",
+            "cart_custom_message_color": ""
+          }
+        },
+        "checkout-buttons": {
+          "type": "checkout-buttons",
+          "settings": {
+            "enable_additional_buttons": false
+          }
+        },
+        "upsell-products": {
+          "type": "upsell-products",
+          "settings": {
+            "upsell_auto_open": true
+          }
+        }
+      },
+      "block_order": [
+        "free-shipping",
+        "cart-message",
+        "checkout-buttons",
+        "upsell-products"
+      ],
+      "settings": {
+        "color_scheme": "scheme-4",
+        "padding_top": 50,
+        "padding_bottom": 50
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

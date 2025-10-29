@@ -1,0 +1,337 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "settings": {
+        "subheading": "Our Inspiration. Our Mission. Our Ethos.",
+        "show_title": true,
+        "heading_font_size": "heading-medium",
+        "show_content": true,
+        "text_font_size": "body-small",
+        "align_text": "text-center",
+        "width": "wrapper",
+        "color_scheme": "scheme-2",
+        "padding_top": 50,
+        "padding_bottom": 50,
+        "heading_tag": "automatic"
+      }
+    },
+    "section_rich_text_pmCPnE": {
+      "type": "section-rich-text",
+      "blocks": {
+        "heading_TqPkUb": {
+          "type": "heading",
+          "settings": {
+            "title": "Our inspiration",
+            "heading_font_size": "heading-mini",
+            "padding_bottom": 16,
+            "heading_tag": "automatic"
+          }
+        },
+        "text_EhEf7E": {
+          "type": "text",
+          "settings": {
+            "text": "<p><strong>We’re inspired by the cars we drive and the community that brings them to life</strong></p>",
+            "text_font_size": "body-x-large",
+            "padding_bottom": 16
+          }
+        }
+      },
+      "block_order": [
+        "heading_TqPkUb",
+        "text_EhEf7E"
+      ],
+      "settings": {
+        "align_text": "text-center",
+        "width": "wrapper",
+        "color_scheme": "scheme-4",
+        "overlay_opacity": 0,
+        "show_overlay_text": false,
+        "padding_top": 50,
+        "padding_bottom": 50
+      }
+    },
+    "section_video_p4nMy7": {
+      "type": "section-video",
+      "settings": {
+        "show_video_popup": true,
+        "video_popup": "shopify://files/videos/GT3 Parkway Reel 1.mp4",
+        "video_popup_social": "",
+        "title": "What Inspires Us",
+        "heading_font_size": "heading-small",
+        "text": "",
+        "text_font_size": "body-medium",
+        "flex_align": "align--top-center",
+        "link_text": "",
+        "link": "",
+        "button_type": "btn--secondary",
+        "button_size": "",
+        "button_style": "btn--solid",
+        "show_arrow": false,
+        "image": "shopify://shop_images/WH_GT3RS_1_of_1_-6.jpg",
+        "desktop_height": "screen-height-full",
+        "mobile_image": "shopify://shop_images/WH_GT3RS_1_of_1_-8.jpg",
+        "mobile_height": "screen-height-three-quarters--mobile",
+        "width": "wrapper--full",
+        "color_scheme": "scheme-4",
+        "show_text_background": false,
+        "color": "#ffffff",
+        "overlay_opacity": 50,
+        "show_overlay_text": true,
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "heading_tag": "automatic"
+      }
+    },
+    "section_rich_text_pVD7mY": {
+      "type": "section-rich-text",
+      "blocks": {
+        "heading_kyNzVw": {
+          "type": "heading",
+          "settings": {
+            "title": "OUR Mission",
+            "heading_font_size": "heading-mini",
+            "padding_bottom": 16,
+            "heading_tag": "automatic"
+          }
+        },
+        "text_LA7P6h": {
+          "type": "text",
+          "settings": {
+            "text": "<p><strong>To connect and inspire drivers who keep the art of driving alive, on the road and beyond.</strong></p>",
+            "text_font_size": "body-x-large",
+            "padding_bottom": 16
+          }
+        }
+      },
+      "block_order": [
+        "heading_kyNzVw",
+        "text_LA7P6h"
+      ],
+      "settings": {
+        "align_text": "text-center",
+        "width": "wrapper",
+        "color_scheme": "scheme-4",
+        "overlay_opacity": 0,
+        "show_overlay_text": false,
+        "padding_top": 50,
+        "padding_bottom": 30
+      }
+    },
+    "double-2": {
+      "type": "section-double",
+      "blocks": {
+        "subheading_LMMy4a": {
+          "type": "subheading",
+          "settings": {
+            "subheading": "Our Ethos",
+            "padding_bottom": 16
+          }
+        },
+        "text-2-1": {
+          "type": "text",
+          "settings": {
+            "text": "<h6><strong>For The Love of Driving</strong></h6><p>[ luhv ] [ uhv ] [ drahy-ving ]</p><p><em><strong>mindset<br/></strong></em></p><ol><li>Every drive is a pursuit of precision, passion, and purpose. It’s not just about getting there; it’s about the connection between driver and machine.<br/></li><li>At Finding Full Throttle, our craft is creating apparel and content for those who live to drive.</li></ol>",
+            "text_font_size": "body-large",
+            "padding_bottom": 16
+          }
+        }
+      },
+      "block_order": [
+        "subheading_LMMy4a",
+        "text-2-1"
+      ],
+      "settings": {
+        "image_1": "shopify://shop_images/Anti_Racing_1_of_1_-8.jpg",
+        "image_width": "one-half",
+        "text_alignment": "text-left",
+        "layout": "",
+        "width": "wrapper--full",
+        "height": "sixty-fifty-height-hero",
+        "mobile_height": "four-fifty-height-hero--mobile",
+        "reverse_blocks": true,
+        "color_scheme": "scheme-4",
+        "padding_top": 30,
+        "padding_bottom": 30,
+        "show_placeholder": true
+      }
+    },
+    "section_rich_text_tHUNUG": {
+      "type": "section-rich-text",
+      "blocks": {
+        "text_wTdkBk": {
+          "type": "text",
+          "settings": {
+            "text": "<p>WELCOME TO FINDING FULL THROTTLE</p>",
+            "text_font_size": "body-medium",
+            "padding_bottom": 16
+          }
+        },
+        "text_TWXYfD": {
+          "type": "text",
+          "settings": {
+            "text": "<p><strong>What you wear is more than just apparel.<br/>It’s a statement of your passion and pursuits.<br/>Finding Full Throttle is here to outfit those who love to drive.</strong></p>",
+            "text_font_size": "body-large",
+            "padding_bottom": 16
+          }
+        }
+      },
+      "block_order": [
+        "text_wTdkBk",
+        "text_TWXYfD"
+      ],
+      "settings": {
+        "align_text": "text-center",
+        "width": "wrapper--full-padded",
+        "color_scheme": "scheme-4",
+        "overlay_opacity": 0,
+        "show_overlay_text": false,
+        "padding_top": 30,
+        "padding_bottom": 30
+      }
+    },
+    "section_custom_content_Q3RKgy": {
+      "type": "section-custom-content",
+      "blocks": {
+        "image_UbcpcR": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/a6e6b0d9b012deead0381085d00b5c7c.jpg",
+            "title": "All Apparel",
+            "heading_font_size": "heading-x-small",
+            "text": "",
+            "text_font_size": "body-x-small",
+            "flex_align": "align--bottom-left",
+            "show_text_background": false,
+            "bg_color": "",
+            "color": "#ffffff",
+            "overlay_opacity": 50,
+            "overlay_color": "",
+            "show_overlay_text": true,
+            "link_text": "Shop Now",
+            "link": "shopify://collections/apparel",
+            "button_type": "btn--secondary",
+            "button_size": "btn--large",
+            "button_style": "btn--solid",
+            "show_arrow": false,
+            "heading_tag": "automatic"
+          }
+        },
+        "image_YGGtFT": {
+          "type": "image",
+          "settings": {
+            "image": "shopify://shop_images/Air_Cooled_Wes_and_Jordan_1_of_1_-5.jpg",
+            "title": "All Accessories",
+            "heading_font_size": "heading-x-small",
+            "text": "",
+            "text_font_size": "body-medium",
+            "flex_align": "align--bottom-left",
+            "show_text_background": false,
+            "bg_color": "",
+            "color": "#ffffff",
+            "overlay_opacity": 50,
+            "overlay_color": "",
+            "show_overlay_text": true,
+            "link_text": "Shop Now",
+            "link": "shopify://collections/accessories",
+            "button_type": "btn--secondary",
+            "button_size": "",
+            "button_style": "btn--solid",
+            "show_arrow": false,
+            "heading_tag": "automatic"
+          }
+        }
+      },
+      "block_order": [
+        "image_UbcpcR",
+        "image_YGGtFT"
+      ],
+      "settings": {
+        "borders": false,
+        "gutters": true,
+        "width": "wrapper--full-padded",
+        "height": "image-height",
+        "mobile_height": "screen-height-three-quarters--mobile",
+        "reverse_blocks": false,
+        "color_scheme": "scheme-4",
+        "padding_top": 30,
+        "padding_bottom": 30
+      }
+    },
+    "press-logos": {
+      "type": "section-press-logos",
+      "blocks": {
+        "logo-item-1": {
+          "type": "logo-item-header",
+          "settings": {
+            "logo_width": 150,
+            "link": "",
+            "text": "Include a brief quote from a brand that loves your products",
+            "heading_font_size": "heading-small"
+          }
+        },
+        "logo-item-2": {
+          "type": "logo-item-header",
+          "settings": {
+            "logo_width": 150,
+            "link": "",
+            "text": "Include a brief quote from a brand that loves your products",
+            "heading_font_size": "heading-small"
+          }
+        },
+        "logo-item-3": {
+          "type": "logo-item-header",
+          "settings": {
+            "logo_width": 150,
+            "link": "",
+            "text": "Include a brief quote from a brand that loves your products",
+            "heading_font_size": "heading-small"
+          }
+        },
+        "logo-item-4": {
+          "type": "logo-item-header",
+          "settings": {
+            "logo_width": 150,
+            "link": "",
+            "text": "Include a brief quote from a brand that loves your products",
+            "heading_font_size": "heading-small"
+          }
+        }
+      },
+      "block_order": [
+        "logo-item-1",
+        "logo-item-2",
+        "logo-item-3",
+        "logo-item-4"
+      ],
+      "disabled": true,
+      "settings": {
+        "enable_heading_slider": false,
+        "logo_opacity": 60,
+        "title": "As seen in",
+        "color_scheme": "",
+        "padding_top": 50,
+        "padding_bottom": 50
+      }
+    }
+  },
+  "order": [
+    "main",
+    "section_rich_text_pmCPnE",
+    "section_video_p4nMy7",
+    "section_rich_text_pVD7mY",
+    "double-2",
+    "section_rich_text_tHUNUG",
+    "section_custom_content_Q3RKgy",
+    "press-logos"
+  ]
+}

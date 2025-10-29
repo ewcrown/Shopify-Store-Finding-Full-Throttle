@@ -1,0 +1,9 @@
+{%- if settings.swatches_type != 'disabled' -%}
+  <template data-swatch-template>
+    <div class="swatches swatch__button swatch__button--{{ settings.swatch_style }}" data-swatch-button data-tooltip>
+      <a class="swatch__link" data-swatch-link>
+        <span class="visually-hidden" data-swatch-text></span>
+      </a>
+    </div>
+  </template>
+{%- endif -%}

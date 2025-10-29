@@ -1,0 +1,93 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "list-collections",
+      "blocks": {
+        "collection_E9YmKC": {
+          "type": "collection",
+          "settings": {
+            "collection": "new-arrivals",
+            "collection_name": "",
+            "image": "shopify://shop_images/FFT_Garage_Shoot_1_of_1_-18.jpg"
+          }
+        },
+        "collection_qCVUWz": {
+          "type": "collection",
+          "settings": {
+            "collection": "fft-essentials",
+            "collection_name": "",
+            "image": "shopify://shop_images/FFT_Hats_51_of_60.jpg"
+          }
+        },
+        "collection_6FJTE8": {
+          "type": "collection",
+          "settings": {
+            "collection": "accessories",
+            "collection_name": ""
+          }
+        },
+        "collection_YgQhMh": {
+          "type": "collection",
+          "settings": {
+            "collection": "air-cooled-collection",
+            "collection_name": ""
+          }
+        },
+        "collection_qkWHNT": {
+          "type": "collection",
+          "settings": {
+            "collection": "3-pedal-collection",
+            "collection_name": ""
+          }
+        },
+        "collection_BawVqW": {
+          "type": "collection",
+          "settings": {
+            "collection": "sweatshirts",
+            "collection_name": ""
+          }
+        },
+        "collection_qzJ3PG": {
+          "type": "collection",
+          "settings": {
+            "collection": "tees",
+            "collection_name": ""
+          }
+        }
+      },
+      "block_order": [
+        "collection_E9YmKC",
+        "collection_qCVUWz",
+        "collection_6FJTE8",
+        "collection_YgQhMh",
+        "collection_qkWHNT",
+        "collection_BawVqW",
+        "collection_qzJ3PG"
+      ],
+      "settings": {
+        "display_type": "selected",
+        "title": "",
+        "heading_font_size": "heading-medium",
+        "grid": 4,
+        "rows": 1,
+        "layout_mobile": "slider",
+        "color_scheme": "scheme-1",
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "heading_tag": "automatic"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

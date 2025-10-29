@@ -1,0 +1,535 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "product",
+      "blocks": {
+        "title": {
+          "type": "title",
+          "settings": {
+            "subheading_option": "none",
+            "heading_font_size": "heading-x-small",
+            "padding_bottom": 8
+          }
+        },
+        "klaviyo_reviews_average_rating_YMe6LT": {
+          "type": "shopify://apps/klaviyo-reviews/blocks/average-rating/db20e365-d984-4ac4-9655-e1588d951ca9",
+          "settings": {
+            "product": "{{product}}"
+          }
+        },
+        "price": {
+          "type": "price",
+          "settings": {
+            "text_font_size": "body-large",
+            "padding_bottom": 16
+          }
+        },
+        "variants": {
+          "type": "variants",
+          "settings": {
+            "info_page": "size-guide",
+            "size_chart_style": "text",
+            "subscriptions_enable_selectors": false,
+            "padding_bottom": 10
+          }
+        },
+        "buttons": {
+          "type": "buttons",
+          "settings": {
+            "show_quantity": true,
+            "button_type": "btn--secondary",
+            "button_style": "btn--solid",
+            "show_payment_button": false,
+            "button_type_dynamic": "btn--secondary",
+            "button_style_dynamic": "btn--solid",
+            "show_gift_card_recipient": false,
+            "padding_bottom": 10
+          }
+        },
+        "icon_2": {
+          "type": "icon",
+          "settings": {
+            "icon_name": "icon-truck",
+            "icon_size": 20,
+            "icon_color": "#f4c012",
+            "text": "<p>Free shipping on orders over $75</p>",
+            "text_font_size": "body-small",
+            "width": "full",
+            "padding_bottom": 16
+          }
+        },
+        "description_FhNYBc": {
+          "type": "description",
+          "settings": {
+            "show_read_more": true,
+            "padding_bottom": 0
+          }
+        },
+        "accordion_DbD8nB": {
+          "type": "accordion",
+          "settings": {
+            "show_description": false,
+            "show_read_more": true,
+            "default_open": false,
+            "heading": "Size & Fit",
+            "text": "<p>{{ product.metafields.custom.size_fit | metafield_tag }}</p>",
+            "padding_bottom": 0
+          }
+        },
+        "accordion_gnmT3A": {
+          "type": "accordion",
+          "settings": {
+            "show_description": false,
+            "show_read_more": true,
+            "default_open": false,
+            "heading": "Style Features",
+            "text": "<p>{{ product.metafields.custom.style_features | metafield_tag }}</p>",
+            "padding_bottom": 0
+          }
+        },
+        "accordion_VGHAVf": {
+          "type": "accordion",
+          "settings": {
+            "show_description": false,
+            "show_read_more": true,
+            "default_open": false,
+            "heading": "Materials & Care",
+            "text": "<p>{{ product.metafields.descriptors.care_guide | metafield_tag }}</p>",
+            "padding_bottom": 0
+          }
+        },
+        "divider_1": {
+          "type": "divider",
+          "settings": {
+            "show_line": true,
+            "padding_bottom": 16
+          }
+        },
+        "upsell": {
+          "type": "upsell",
+          "settings": {
+            "upsell_product": "",
+            "upsell_product_list": "{{ block.settings.upsell_product.metafields.theme.upsell_list.value }}",
+            "show_avaialable_upsell_only": true,
+            "bg_color": "#f0f0f0",
+            "padding_bottom": 16
+          }
+        }
+      },
+      "block_order": [
+        "title",
+        "klaviyo_reviews_average_rating_YMe6LT",
+        "price",
+        "variants",
+        "buttons",
+        "icon_2",
+        "description_FhNYBc",
+        "accordion_DbD8nB",
+        "accordion_gnmT3A",
+        "accordion_VGHAVf",
+        "divider_1",
+        "upsell"
+      ],
+      "settings": {
+        "product_sticky_enable": true,
+        "variant_image_scroll": false,
+        "show_cart_bar": true,
+        "enable_zoom": false,
+        "enable_video_looping": false,
+        "image_layout": "grid-1",
+        "image_size": "normal",
+        "mobile_image_style": "thumbs",
+        "color_scheme": "scheme-4",
+        "padding_top": 30,
+        "padding_bottom": 30
+      }
+    },
+    "section_divider_XUcbyt": {
+      "type": "section-divider",
+      "name": "Divider",
+      "settings": {
+        "show_line": true,
+        "width": "wrapper--full-padded",
+        "color_scheme": "scheme-4",
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "section_collections_list_FtCyDz": {
+      "type": "section-collections-list",
+      "blocks": {
+        "collection_pMFy4b": {
+          "type": "collection",
+          "settings": {
+            "collection": "3-pedal-collection",
+            "collection_image": "shopify://shop_images/3_Pedal_16_of_20.jpg",
+            "title": "The 3 Pedal Society Collection"
+          }
+        },
+        "collection_7E4KBA": {
+          "type": "collection",
+          "settings": {
+            "collection": "fft-essentials",
+            "collection_image": "shopify://shop_images/FFT_Hats_57_of_60.jpg",
+            "title": "The FFT Essentials Collection"
+          }
+        },
+        "collection_XVDffC": {
+          "type": "collection",
+          "settings": {
+            "collection": "anti-racing-club-collection",
+            "collection_image": "shopify://shop_images/Car_Guy_Black_1_of_1_-32.jpg",
+            "title": "The Anti-Racing Club Collection"
+          }
+        },
+        "collection_Hi8Npd": {
+          "type": "collection",
+          "settings": {
+            "collection": "hats",
+            "collection_image": "shopify://shop_images/FFT_Hats_4_of_60.jpg",
+            "title": "Best Selling Hats Collection"
+          }
+        },
+        "collection_aNiFbR": {
+          "type": "collection",
+          "settings": {
+            "collection": "car-guy-collection",
+            "collection_image": "shopify://shop_images/Car_Girl_12_of_22.jpg",
+            "title": "The Car Guy & Girl Collection"
+          }
+        }
+      },
+      "block_order": [
+        "collection_pMFy4b",
+        "collection_7E4KBA",
+        "collection_XVDffC",
+        "collection_Hi8Npd",
+        "collection_aNiFbR"
+      ],
+      "name": "Collection list",
+      "settings": {
+        "title": "YOU MAY ALSO LIKE",
+        "heading_font_size": "heading-large",
+        "description": "",
+        "text_font_size": "body-medium",
+        "button_text": "",
+        "button_url": "shopify://collections",
+        "button_type": "btn--primary",
+        "button_size": "",
+        "button_style": "btn--solid",
+        "show_arrow": false,
+        "aspect_ratio": 1,
+        "layout": "grid",
+        "grid": 5,
+        "layout_mobile": "slider",
+        "color_scheme": "scheme-2",
+        "padding_top": 32,
+        "padding_bottom": 32,
+        "heading_tag": "automatic"
+      }
+    },
+    "section_divider_aq8q4a": {
+      "type": "section-divider",
+      "name": "Divider",
+      "settings": {
+        "show_line": true,
+        "width": "wrapper--full-padded",
+        "color_scheme": "scheme-2",
+        "padding_top": 30,
+        "padding_bottom": 30
+      }
+    },
+    "section_video_gQdbiE": {
+      "type": "section-video",
+      "settings": {
+        "video": "shopify://files/videos/Reel 1 (1).mp4",
+        "show_video_popup": false,
+        "video_popup_social": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+        "title": "",
+        "heading_font_size": "heading-medium",
+        "text": "<h3><strong>Designs By Drivers, For Drivers</strong></h3>",
+        "text_font_size": "body-x-small",
+        "flex_align": "align--top-center",
+        "link_text": "",
+        "link": "",
+        "button_type": "btn--primary",
+        "button_size": "",
+        "button_style": "btn--solid",
+        "show_arrow": false,
+        "desktop_height": "screen-height-three-quarters",
+        "mobile_height": "screen-height-three-quarters--mobile",
+        "width": "wrapper--full",
+        "color_scheme": "scheme-2",
+        "show_text_background": false,
+        "color": "",
+        "overlay_opacity": 80,
+        "show_overlay_text": true,
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "heading_tag": "automatic"
+      }
+    },
+    "related": {
+      "type": "related",
+      "blocks": {
+        "related": {
+          "type": "related",
+          "settings": {
+            "product_recommendations_heading": "Recommended For You",
+            "limit": 4
+          }
+        }
+      },
+      "block_order": [
+        "related"
+      ],
+      "settings": {
+        "enable_tabs": false,
+        "heading_alignment": "text-center",
+        "heading_font_size": "heading-large",
+        "layout_mobile": "slider",
+        "color_scheme": "scheme-2",
+        "padding_top": 30,
+        "padding_bottom": 0
+      }
+    },
+    "section_double_Cy7wAN": {
+      "type": "section-double",
+      "blocks": {
+        "subheading_QRtEFp": {
+          "type": "subheading",
+          "settings": {
+            "subheading": "Finally",
+            "padding_bottom": 16
+          }
+        },
+        "heading_3GPTwW": {
+          "type": "heading",
+          "settings": {
+            "title": "Apparel you want to wear...",
+            "heading_font_size": "heading-large",
+            "padding_bottom": 16,
+            "heading_tag": "automatic"
+          }
+        },
+        "buttons_WdGtr8": {
+          "type": "buttons",
+          "settings": {
+            "button_text": "",
+            "button_url": "",
+            "button_type": "btn--primary",
+            "button_size": "",
+            "button_style": "btn--solid",
+            "show_arrow": false,
+            "padding_bottom": 16
+          }
+        }
+      },
+      "block_order": [
+        "subheading_QRtEFp",
+        "heading_3GPTwW",
+        "buttons_WdGtr8"
+      ],
+      "settings": {
+        "image_1": "shopify://shop_images/3_Pedal_8_of_20.jpg",
+        "image_width": "one-half",
+        "text_alignment": "text-left",
+        "layout": "",
+        "width": "wrapper--full",
+        "height": "screen-height-three-quarters",
+        "mobile_height": "screen-height-one-half--mobile",
+        "reverse_blocks": true,
+        "color_scheme": "scheme-2",
+        "padding_top": 20,
+        "padding_bottom": 20,
+        "show_placeholder": true
+      }
+    },
+    "section_double_nfmghK": {
+      "type": "section-double",
+      "blocks": {
+        "subheading_tVmPpE": {
+          "type": "subheading",
+          "settings": {
+            "subheading": "With The",
+            "padding_bottom": 16
+          }
+        },
+        "heading_wLdGz9": {
+          "type": "heading",
+          "settings": {
+            "title": "quality you've been looking for",
+            "heading_font_size": "heading-large",
+            "padding_bottom": 16,
+            "heading_tag": "automatic"
+          }
+        },
+        "buttons_G3a6r8": {
+          "type": "buttons",
+          "settings": {
+            "button_text": "",
+            "button_url": "",
+            "button_type": "btn--primary",
+            "button_size": "",
+            "button_style": "btn--solid",
+            "show_arrow": false,
+            "padding_bottom": 16
+          }
+        }
+      },
+      "block_order": [
+        "subheading_tVmPpE",
+        "heading_wLdGz9",
+        "buttons_G3a6r8"
+      ],
+      "settings": {
+        "image_1": "shopify://shop_images/Car_Girl_15_of_22.jpg",
+        "image_width": "one-half",
+        "text_alignment": "text-left",
+        "layout": "is-reversed",
+        "width": "wrapper--full",
+        "height": "screen-height-three-quarters",
+        "mobile_height": "screen-height-one-half--mobile",
+        "reverse_blocks": true,
+        "color_scheme": "scheme-2",
+        "padding_top": 20,
+        "padding_bottom": 20,
+        "show_placeholder": true
+      }
+    },
+    "section_recent_products_qPJGGH": {
+      "type": "section-recent-products",
+      "settings": {
+        "product_recently_limit": 3,
+        "product_recently_minimum": 2,
+        "product_recently_heading": "Your recently viewed",
+        "heading_font_size": "heading-medium",
+        "layout_mobile": "slider",
+        "color_scheme": "scheme-2",
+        "padding_top": 30,
+        "padding_bottom": 0,
+        "heading_tag": "automatic"
+      }
+    },
+    "section_divider_YVqyqy": {
+      "type": "section-divider",
+      "name": "Divider",
+      "settings": {
+        "show_line": true,
+        "width": "wrapper--full-padded",
+        "color_scheme": "scheme-2",
+        "padding_top": 30,
+        "padding_bottom": 30
+      }
+    },
+    "section_video_bwN9WM": {
+      "type": "section-video",
+      "settings": {
+        "video": "shopify://files/videos/Print reel.mp4",
+        "show_video_popup": false,
+        "video_popup_social": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+        "title": "Printed In The USA",
+        "heading_font_size": "heading-medium",
+        "text": "",
+        "text_font_size": "body-x-small",
+        "flex_align": "align--middle-center",
+        "link_text": "",
+        "link": "",
+        "button_type": "btn--secondary",
+        "button_size": "",
+        "button_style": "btn--solid",
+        "show_arrow": true,
+        "desktop_height": "screen-height-three-quarters",
+        "mobile_height": "screen-height-three-quarters--mobile",
+        "width": "wrapper--full",
+        "color_scheme": "scheme-2",
+        "show_text_background": false,
+        "color": "",
+        "overlay_opacity": 60,
+        "show_overlay_text": true,
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "heading_tag": "automatic"
+      }
+    },
+    "1735747323262ee48e": {
+      "type": "apps",
+      "blocks": {
+        "klaviyo_reviews_product_reviews_BGcdRW": {
+          "type": "shopify://apps/klaviyo-reviews/blocks/product-reviews/db20e365-d984-4ac4-9655-e1588d951ca9",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "klaviyo_reviews_product_reviews_BGcdRW"
+      ],
+      "settings": {
+        "include_margins": false
+      }
+    },
+    "17390591754ef46cd8": {
+      "type": "apps",
+      "blocks": {
+        "instafeed_app_block_4dGdbg": {
+          "type": "shopify://apps/instafeed/blocks/app-block/c447db20-095d-4a10-9725-b5977662c9d5",
+          "settings": {
+            "title": "",
+            "title_color": "",
+            "title_size_v2": 0,
+            "alignment": "center",
+            "instafeed_margin_top": 0,
+            "instafeed_margin_bottom": 0,
+            "instafeed_margin_sides": 0,
+            "show_instagram_link": false,
+            "link_alignment": "left",
+            "link_color": "#000000",
+            "background_color": "#f0f0f0",
+            "feed_id": "",
+            "html_area": ""
+          }
+        }
+      },
+      "block_order": [
+        "instafeed_app_block_4dGdbg"
+      ],
+      "settings": {
+        "include_margins": false
+      }
+    },
+    "section_divider_XK7Rqg": {
+      "type": "section-divider",
+      "settings": {
+        "show_line": false,
+        "width": "wrapper--full-padded",
+        "color_scheme": "scheme-4",
+        "padding_top": 20,
+        "padding_bottom": 20
+      }
+    }
+  },
+  "order": [
+    "main",
+    "section_divider_XUcbyt",
+    "section_collections_list_FtCyDz",
+    "section_divider_aq8q4a",
+    "section_video_gQdbiE",
+    "related",
+    "section_double_Cy7wAN",
+    "section_double_nfmghK",
+    "section_recent_products_qPJGGH",
+    "section_divider_YVqyqy",
+    "section_video_bwN9WM",
+    "1735747323262ee48e",
+    "17390591754ef46cd8",
+    "section_divider_XK7Rqg"
+  ]
+}
