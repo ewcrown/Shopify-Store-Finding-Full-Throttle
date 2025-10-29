@@ -26,12 +26,40 @@
 
 {%- if show_message -%}
   {%- liquid
-    assign limit = free_shipping_limit | plus: 0
-    assign limit_currency = limit | times: 100
+    assign free_shipping_limit = settings.free_shipping_limit | plus: 0
+    assign free_gift_threshold_raw = settings.free_gift_threshold | default: '99'
+    assign free_gift_threshold = free_gift_threshold_raw | plus: 0
+    assign free_gift_product_handle = settings.free_gift_product | default: ''
+    
+    assign max_limit = free_gift_threshold
+    if free_gift_threshold < free_shipping_limit
+      assign max_limit = free_shipping_limit
+    endif
+    
+    if settings.enable_free_gift and free_gift_product_handle != blank
+      assign progress_max = free_gift_threshold
+    else
+      assign progress_max = free_shipping_limit
+    endif
+    
+    assign limit_currency = free_shipping_limit | times: 100
     assign subtotal_without_currency = cart.total_price | plus: 0 | divided_by: 100
-    assign percent = limit | minus: subtotal_without_currency | times: 100 | divided_by: limit
-    assign percent = 100 | minus: percent
-
+    
+    assign percent_to_free_shipping = free_shipping_limit | minus: subtotal_without_currency | times: 100 | divided_by: free_shipping_limit
+    assign percent_to_free_shipping = 100 | minus: percent_to_free_shipping
+    
+    assign percent_to_free_gift = progress_max | minus: subtotal_without_currency | times: 100 | divided_by: progress_max
+    assign percent_to_free_gift = 100 | minus: percent_to_free_gift
+    
+    if subtotal_without_currency > progress_max
+      assign percent = 100
+    else
+      assign percent = percent_to_free_gift
+    endif
+    
+    assign milestone_75_percent = free_shipping_limit | times: 100 | divided_by: progress_max
+    assign milestone_99_percent = 100
+    
     if settings.currency_code_enable
       assign limit_currency = limit_currency | minus: cart.total_price | money_with_currency
     else
@@ -44,6 +72,29 @@
 
     assign message = message | replace: '||amount||', left_to_spend
     assign qualified_shipping_message = 'cart.general.qualified_shipping_message' | t
+    
+    assign free_gift_product = all_products[free_gift_product_handle]
+    assign free_gift_product_title = free_gift_product.title | default: 'Free Gift'
+    
+    if subtotal_without_currency >= free_shipping_limit and settings.enable_free_gift and free_gift_product_handle != blank and subtotal_without_currency >= free_gift_threshold
+      assign qualified_shipping_message = 'Congratulations! Your order qualifies for free shipping with a free gift'
+    elsif subtotal_without_currency >= free_shipping_limit and settings.enable_free_gift and free_gift_product_handle != blank and subtotal_without_currency < free_gift_threshold
+      assign amount_needed = free_gift_threshold | minus: subtotal_without_currency
+      assign amount_needed_cents = amount_needed | times: 100
+      if settings.currency_code_enable
+        assign amount_needed_formatted = amount_needed_cents | money_with_currency
+      else
+        assign amount_needed_formatted = amount_needed_cents | money_without_trailing_zeros
+      endif
+      capture gift_message
+        echo 'You'
+        echo "'"
+        echo 're '
+        echo amount_needed_formatted
+        echo ' behind the free gift'
+      endcapture
+      assign qualified_shipping_message = gift_message
+    endif
 
     capture free_shipping_classes
       if is_cart_drawer
@@ -56,15 +107,161 @@
 
       echo 'free-shipping'
 
-      if subtotal_without_currency >= limit and qualified_shipping_message != blank
+      if subtotal_without_currency >= free_shipping_limit and qualified_shipping_message != blank
         echo ' is-success'
+      endif
+      
+      if subtotal_without_currency >= free_shipping_limit
+        echo ' has-free-shipping'
+      endif
+      
+      if subtotal_without_currency >= free_gift_threshold
+        echo ' has-free-gift'
       endif
     endcapture
   -%}
 
+  {%- style -%}
+    .free-shipping__progress-wrapper {
+      position: relative;
+      width: 100%;
+      margin-top: 5px;
+    }
+    
+    .free-shipping__progress-bar-holder {
+      position: relative;
+      width: 100%;
+    }
+    
+    .free-shipping__milestones {
+      position: relative;
+      width: 100%;
+      margin-top: 0;
+    }
+    
+    .free-shipping__milestone {
+      position: absolute;
+      top: -6px;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      z-index: 1;
+    }
+    
+    .free-shipping__milestone-point {
+      width: 12px;
+      height: 12px;
+      display:none !important;
+      border-radius: 50%;
+      background: var(--border);
+      border: 2px solid var(--bg);
+      position: relative;
+      z-index: 2;
+      transition: all 0.3s ease;
+      flex-shrink: 0;
+    }
+    
+    .free-shipping__milestone-point.is-reached {
+      background: var(--accent, var(--COLOR-ACCENT));
+      border-color: var(--accent, var(--COLOR-ACCENT));
+      box-shadow: 0 0 0 3px rgba(var(--COLOR-ACCENT-RGB, 29, 34, 38), 0.2);
+    }
+    
+    .free-shipping__milestone-labels {
+      position: relative;
+      width: 100%;
+      margin-top: 12px;
+      min-height: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 4px;
+    }
+    
+    .free-shipping__milestone-label {
+      position: relative;
+      left: 0;
+      transform: none;
+      white-space: nowrap;
+      opacity: 0;
+      display: none;
+      transition: opacity 0.3s ease, transform 0.3s ease, color 0.3s ease;
+      font-size: 11px;
+      line-height: 1.3;
+      text-align: left;
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      pointer-events: none;
+    }
+    
+    /* CRITICAL: Show labels when milestones are reached - MUST OVERRIDE EVERYTHING */
+    .free-shipping__milestone-label.is-reached,
+    .free-shipping__milestone-labels .free-shipping__milestone-label.is-reached,
+    [data-free-shipping-limit] .free-shipping__milestone-label.is-reached,
+    .free-shipping .free-shipping__milestone-label.is-reached,
+    .free-shipping__milestone-label.is-reached.free-shipping__milestone--shipping,
+    .free-shipping__milestone-label.is-reached.free-shipping__milestone--gift {
+      opacity: 1 !important;
+      display: block !important;
+      visibility: visible !important;
+      height: auto !important;
+      width: auto !important;
+      max-height: none !important;
+      overflow: visible !important;
+    }
+    
+    /* Hide labels by default - only when NOT reached */
+    .free-shipping__milestone-label:not(.is-reached),
+    .free-shipping__milestone-labels .free-shipping__milestone-label:not(.is-reached) {
+      opacity: 0 !important;
+      display: none !important;
+      visibility: hidden !important;
+    }
+    
+    .free-shipping__milestone-label-text {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text);
+      font-weight: 500;
+    }
+    
+    .free-shipping__milestone-label.is-reached .free-shipping__milestone-label-text {
+      color: var(--accent, var(--COLOR-ACCENT));
+      font-weight: 600;
+    }
+    
+    .free-shipping__milestone-icon {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .free-shipping__milestone-icon .icon {
+      stroke: var(--accent, var(--COLOR-ACCENT));
+      width: 16px;
+      height: 16px;
+      stroke-width: 2.5;
+    }
+    
+    @media (max-width: 480px) {
+      .free-shipping__milestone-label {
+        font-size: 10px;
+        max-width: 70px;
+      }
+    }
+  {%- endstyle -%}
+  
   <div class="{{ free_shipping_classes }}"
     data-free-shipping="{% if qualified_shipping_message != blank %}true{% else %}false{% endif %}"
-    data-free-shipping-limit="{{ limit }}"
+    data-free-shipping-limit="{{ free_shipping_limit }}"
+    data-free-gift-threshold="{{ free_gift_threshold }}"
+    data-milestone-75-percent="{{ milestone_75_percent }}"
     {% if style != blank %}
       style="{{ style }}"
     {% endif %}
@@ -87,7 +284,71 @@
     </span>
 
     {%- if show_progress_bar -%}
-      <progress class="free-shipping__progress-bar" data-progress-bar value="{{ percent }}" max="100"></progress>
+      <div class="free-shipping__progress-wrapper">
+        <div class="free-shipping__progress-bar-holder">
+          <progress class="free-shipping__progress-bar" data-progress-bar value="{{ percent }}" max="100"></progress>
+          
+          {%- comment -%} Milestone points on the progress bar {%- endcomment -%}
+          <div class="free-shipping__milestones">
+            {%- comment -%} Free Shipping Milestone at $75 {%- endcomment -%}
+            <div class="free-shipping__milestone free-shipping__milestone--shipping" 
+                 style="left: {{ milestone_75_percent }}%"
+                 data-milestone-type="shipping"
+                 data-milestone-percent="{{ milestone_75_percent }}">
+              <div class="free-shipping__milestone-point{% if subtotal_without_currency >= free_shipping_limit %} is-reached{% endif %}"></div>
+            </div>
+            
+            {%- comment -%} Free Gift Milestone at $99 {%- endcomment -%}
+            {%- if settings.enable_free_gift and free_gift_product_handle != blank -%}
+              <div class="free-shipping__milestone free-shipping__milestone--gift" 
+                   style="left: {{ milestone_99_percent }}%"
+                   data-milestone-type="gift"
+                   data-milestone-percent="{{ milestone_99_percent }}">
+                <div class="free-shipping__milestone-point{% if subtotal_without_currency >= free_gift_threshold %} is-reached{% endif %}"></div>
+              </div>
+            {%- endif -%}
+          </div>
+        </div>
+        
+        {%- comment -%} Milestone labels at bottom left of progress bar {%- endcomment -%}
+        <div class="free-shipping__milestone-labels">
+          {%- comment -%} Free Shipping Label at $75 with check icon {%- endcomment -%}
+          <div class="free-shipping__milestone-label free-shipping__milestone--shipping{% if subtotal_without_currency >= free_shipping_limit %} is-reached{% endif %}">
+            <span class="free-shipping__milestone-label-text">
+              <span class="free-shipping__milestone-icon">
+                {%- render 'icon-check' -%}
+              </span>
+              Free Shipping
+            </span>
+          </div>
+          
+          {%- comment -%} Free Gift Label at $99 with check icon {%- endcomment -%}
+       {%- if settings.enable_free_gift and free_gift_product_handle != blank -%}
+  {%- assign free_gift_product = all_products[free_gift_product_handle] -%}
+
+  <div class="free-shipping__milestone-label free-shipping__milestone--gift{% if subtotal_without_currency >= free_gift_threshold %} is-reached{% endif %}">
+    <span class="free-shipping__milestone-label-text">
+      <span class="free-shipping__milestone-icon">
+        {%- render 'icon-check' -%}
+      </span>
+      <div class="free-gift-info">
+        <div class="free-gift-info-left">
+          <img 
+            src="{{ free_gift_product.featured_image | img_url: '100x100' }}" 
+            alt="{{ free_gift_product.title }}" 
+            class="free-gift-image"
+          >
+        </div>
+        <div class="free-gift-info-right">
+          <p class="free-gift-title">{{ free_gift_product.title }}</p>
+          <p class="free-gift-price">{{ free_gift_product.price | money }}</p>
+        </div>
+      </div>
+    </span>
+  </div>
+{%- endif -%}
+        </div>
+      </div>
     {%- endif -%}
 
     <div class="confetti">
