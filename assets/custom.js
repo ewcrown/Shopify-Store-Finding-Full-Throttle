@@ -46,48 +46,153 @@ console.log('🔧 [Custom JS] Script loaded!');
           const shippingLimit = parseFloat(container.getAttribute('data-free-shipping-limit')) || 75;
           const giftThreshold = parseFloat(container.getAttribute('data-free-gift-threshold')) || 99;
           
-          // Get cart total - try multiple methods
+          // Get cart total - try multiple methods (ALWAYS recalculate, don't cache)
           let cartTotal = 0;
+          let cartTotalCents = 0;
+          const cartDrawer = container.closest('#cart-drawer, .cart-holder') || document.querySelector('#cart-drawer, .cart-holder');
           
-          // Method 1: From data-cart-total attribute (in cents)
-          const cartTotalEl = container.closest('#cart-drawer, .cart-holder')?.querySelector('[data-cart-total]') || 
+          // Method 1: From data-cart-total attribute (in cents) - most reliable
+          // Look specifically for .cart__total__price element with data-cart-total
+          const cartTotalEl = cartDrawer?.querySelector('.cart__total__price[data-cart-total]') || 
+                              cartDrawer?.querySelector('[data-cart-total]') ||
+                              document.querySelector('.cart__total__price[data-cart-total]') ||
                               document.querySelector('[data-cart-total]');
           
           if (cartTotalEl) {
             const totalAttr = cartTotalEl.getAttribute('data-cart-total');
             if (totalAttr) {
-              cartTotal = parseFloat(totalAttr) / 100; // Convert cents to dollars
-              console.log('💰 [Milestones] Method 1 - From data-cart-total:', totalAttr, 'cents = $' + cartTotal);
+              cartTotalCents = parseFloat(totalAttr);
+              if (!isNaN(cartTotalCents) && cartTotalCents >= 0) {
+                cartTotal = cartTotalCents / 100;
+                console.log('💰 [Milestones] Method 1 - From data-cart-total:', totalAttr, 'cents = $' + cartTotal);
+              }
             }
           }
           
-          // Method 2: Fallback - calculate from cart items
-          if (cartTotal === 0) {
-            console.log('⚠️ [Milestones] Method 1 failed, trying method 2...');
-            const cartItems = document.querySelectorAll('[data-cart-item], [data-item-id]');
-            let calculatedTotal = 0;
+          // Method 2: ALWAYS calculate from cart items as verification/fallback
+          // This is more reliable for dynamic updates
+          const cartItems = cartDrawer ? cartDrawer.querySelectorAll('[data-cart-item], [data-item-id], [data-line-item], cart-item') : 
+                           document.querySelectorAll('[data-cart-item], [data-item-id], [data-line-item], cart-item');
+          
+          let calculatedTotal = 0;
+          let itemCount = 0;
+          
+          cartItems.forEach(item => {
+            // Try multiple ways to get line item price (total for that item)
+            const linePriceEl = item.querySelector('[data-line-price]');
+            const priceEl = item.querySelector('[data-item-price], [data-price], .cart__price, .line__price');
+            const qtyEl = item.querySelector('input[data-qty], input[name*="quantity"], input.cart__quantity-field, .qty-input input');
             
-            cartItems.forEach(item => {
-              const priceEl = item.querySelector('[data-item-price], [data-price]');
-              const qtyEl = item.querySelector('input[data-qty], input[name*="quantity"], .qty-input');
-              
-              if (priceEl && qtyEl) {
-                const price = parseFloat(priceEl.getAttribute('data-item-price') || priceEl.getAttribute('data-price') || priceEl.textContent.replace(/[^0-9.]/g, '')) || 0;
-                const qty = parseFloat(qtyEl.value || qtyEl.textContent) || 1;
-                calculatedTotal += (price * qty);
+            let linePrice = 0;
+            let unitPrice = 0;
+            let qty = 1;
+            
+            // First try to get line price (total for this line item)
+            if (linePriceEl) {
+              if (linePriceEl.hasAttribute('data-line-price')) {
+                linePrice = parseFloat(linePriceEl.getAttribute('data-line-price')) || 0;
+              } else {
+                const text = linePriceEl.textContent || '';
+                const match = text.match(/[\d,]+\.?\d*/);
+                if (match) {
+                  linePrice = parseFloat(match[0].replace(/[$,]/g, '')) || 0;
+                }
               }
-            });
+            }
             
-            if (calculatedTotal > 0) {
+            // If no line price, calculate from unit price * quantity
+            if (linePrice === 0 && priceEl) {
+              if (priceEl.hasAttribute('data-item-price')) {
+                unitPrice = parseFloat(priceEl.getAttribute('data-item-price')) || 0;
+              } else if (priceEl.hasAttribute('data-price')) {
+                unitPrice = parseFloat(priceEl.getAttribute('data-price')) || 0;
+              } else {
+                const priceText = priceEl.textContent || '';
+                const priceMatch = priceText.match(/[\d,]+\.?\d*/);
+                if (priceMatch) {
+                  unitPrice = parseFloat(priceMatch[0].replace(/[$,]/g, '')) || 0;
+                }
+              }
+            }
+            
+            // Get quantity - try multiple selectors
+            if (!qtyEl) {
+              // Try alternative selectors
+              qtyEl = item.querySelector('input.cart__quantity-field, input.quantity__input, input[type="number"]');
+            }
+            
+            if (qtyEl) {
+              if (qtyEl.tagName === 'INPUT') {
+                qty = parseFloat(qtyEl.value) || 0;
+                // If quantity is 0, it might be a removed item, skip it
+                if (qty === 0) {
+                  console.log('⚠️ [Milestones] Item has quantity 0, skipping');
+                  return; // Skip this item
+                }
+              } else {
+                qty = parseFloat(qtyEl.textContent) || 0;
+              }
+            }
+            
+            // If still no quantity found, default to 1 but log warning
+            if (qty === 0) {
+              qty = 1;
+              console.log('⚠️ [Milestones] Could not find quantity for item, defaulting to 1');
+            }
+            
+            // If prices are in cents, convert to dollars
+            if (linePrice > 1000) linePrice = linePrice / 100;
+            if (unitPrice > 1000) unitPrice = unitPrice / 100;
+            
+            // Use line price if available, otherwise calculate
+            const itemTotal = linePrice > 0 ? linePrice : (unitPrice * qty);
+            
+            if (itemTotal > 0) {
+              calculatedTotal += itemTotal;
+              itemCount++;
+            }
+          });
+          
+          // Use calculated total if it's valid and different from data attribute
+          // Prefer calculated total if data attribute seems stale (0 or much different)
+          if (calculatedTotal > 0) {
+            const diff = Math.abs(calculatedTotal - cartTotal);
+            // If calculated total is significantly different or data attribute is 0, use calculated
+            if (cartTotal === 0 || diff > 0.01) {
               cartTotal = calculatedTotal;
-              console.log('💰 [Milestones] Method 2 - Calculated from items: $' + cartTotal);
+              cartTotalCents = calculatedTotal * 100;
+              console.log('💰 [Milestones] Method 2 - Calculated from', itemCount, 'items: $' + cartTotal.toFixed(2));
+              if (cartTotal === 0) {
+                console.log('⚠️ [Milestones] Calculated total is 0, but found', itemCount, 'items - checking quantities...');
+              }
+            } else {
+              console.log('💰 [Milestones] Method 1 confirmed by calculation (diff: $' + diff.toFixed(2) + ')');
             }
           }
           
           // Method 3: From theme object if available
-          if (cartTotal === 0 && window.theme?.cartItems?.subtotal) {
-            cartTotal = window.theme.cartItems.subtotal / 100;
-            console.log('💰 [Milestones] Method 3 - From theme object: $' + cartTotal);
+          if (cartTotal === 0) {
+            if (window.theme?.cartItems?.subtotal) {
+              cartTotalCents = window.theme.cartItems.subtotal;
+              cartTotal = cartTotalCents / 100;
+              console.log('💰 [Milestones] Method 3 - From theme object: $' + cartTotal);
+            } else if (window.theme?.subtotal) {
+              cartTotalCents = window.theme.subtotal;
+              cartTotal = cartTotalCents / 100;
+              console.log('💰 [Milestones] Method 3b - From theme.subtotal: $' + cartTotal);
+            }
+          }
+          
+          // Method 4: Try to get from cart API response if available
+          if (cartTotal === 0 && window.cart && window.cart.total_price) {
+            cartTotalCents = window.cart.total_price;
+            cartTotal = cartTotalCents / 100;
+            console.log('💰 [Milestones] Method 4 - From window.cart: $' + cartTotal);
+          }
+          
+          // Log cart total (0 is valid for empty cart)
+          if (cartTotal === 0) {
+            console.log('💰 [Milestones] Cart total is $0 (empty cart)');
           }
           
           console.log('💰 [Milestones] Final cart total: $' + cartTotal.toFixed(2));
@@ -169,9 +274,11 @@ console.log('🔧 [Custom JS] Script loaded!');
             console.log('📝 [Message] Cart total: $' + cartTotal.toFixed(2), 'Gift threshold: $' + giftThreshold);
             
             let newMessage = null;
+            let isSuccessMessage = false;
             
             if (showShipping && showGift && isFreeGiftEnabled) {
               newMessage = 'Congratulations! Your order qualifies for free shipping with a free gift';
+              isSuccessMessage = true;
               console.log('✅ [Message] Setting combined message (free shipping + gift)');
             } else if (showShipping && isFreeGiftEnabled && !showGift) {
               // Free shipping reached, but free gift not reached yet
@@ -188,30 +295,77 @@ console.log('🔧 [Custom JS] Script loaded!');
                 } else {
                   formattedAmount = '$' + amountNeeded.toFixed(2);
                 }
-                newMessage = `You're ${formattedAmount} away from a FREE Key Tag!`;
+                newMessage = `${formattedAmount} away from a FREE Key Tag!`;
+                isSuccessMessage = true;
                 console.log('✅ [Message] Setting gift message:', newMessage);
               } else {
                 newMessage = 'Congratulations! Your order qualifies for free shipping';
+                isSuccessMessage = true;
                 console.log('✅ [Message] Setting shipping-only message (amount needed <= 0)');
               }
             } else if (showShipping) {
               // Free shipping reached, but no free gift feature enabled
               newMessage = 'Congratulations! Your order qualifies for free shipping';
+              isSuccessMessage = true;
               console.log('✅ [Message] Setting shipping-only message (no gift feature)');
+            } else {
+              // Free shipping NOT reached - show amount needed for free shipping
+              const amountNeeded = shippingLimit - cartTotal;
+              console.log('💰 [Message] Amount needed for shipping:', 'Threshold:', shippingLimit, 'Cart:', cartTotal, 'Needed:', amountNeeded);
+              
+              if (amountNeeded > 0) {
+                let formattedAmount;
+                const amountInCents = Math.round(amountNeeded * 100);
+                if (typeof formatMoney !== 'undefined' && window.theme && window.theme.moneyFormat) {
+                  formattedAmount = formatMoney(amountInCents, window.theme.moneyFormat);
+                } else if (typeof formatMoney !== 'undefined' && window.theme && window.theme.moneyWithCurrencyFormat) {
+                  formattedAmount = formatMoney(amountInCents, window.theme.moneyWithCurrencyFormat);
+                } else {
+                  formattedAmount = '$' + amountNeeded.toFixed(2);
+                }
+                newMessage = `Get free shipping in ${formattedAmount}`;
+                isSuccessMessage = false;
+                console.log('✅ [Message] Setting shipping-needed message:', newMessage);
+              }
             }
             
-            if (newMessage && messageElement.textContent.trim() !== newMessage) {
-              messageElement.textContent = newMessage;
-              // If it was a default message, convert to success message
-              if (defaultMessage && !successMessage) {
-                defaultMessage.classList.remove('free-shipping__default-message');
-                defaultMessage.classList.add('free-shipping__success-message');
+            // Always update if we have a new message, even if it seems the same
+            // This ensures updates happen when cart total changes
+            if (newMessage) {
+              const currentMessage = messageElement.textContent.trim();
+              if (currentMessage !== newMessage) {
+                messageElement.textContent = newMessage;
+                
+                // Update message class based on state
+                if (isSuccessMessage) {
+                  messageElement.classList.remove('free-shipping__default-message');
+                  messageElement.classList.add('free-shipping__success-message');
+                } else {
+                  messageElement.classList.remove('free-shipping__success-message');
+                  messageElement.classList.add('free-shipping__default-message');
+                }
+                
+                console.log('✅ [Message] Updated successfully to:', newMessage);
+                console.log('📊 [Message] Previous message was:', currentMessage);
+              } else {
+                // Even if message is same, verify classes are correct
+                const hasSuccessClass = messageElement.classList.contains('free-shipping__success-message');
+                const hasDefaultClass = messageElement.classList.contains('free-shipping__default-message');
+                
+                if (isSuccessMessage && !hasSuccessClass) {
+                  messageElement.classList.remove('free-shipping__default-message');
+                  messageElement.classList.add('free-shipping__success-message');
+                  console.log('✅ [Message] Fixed class - added success-message');
+                } else if (!isSuccessMessage && !hasDefaultClass) {
+                  messageElement.classList.remove('free-shipping__success-message');
+                  messageElement.classList.add('free-shipping__default-message');
+                  console.log('✅ [Message] Fixed class - added default-message');
+                } else {
+                  console.log('ℹ️ [Message] Message unchanged (already correct):', newMessage);
+                }
               }
-              console.log('✅ [Message] Updated successfully to:', newMessage);
-            } else if (newMessage) {
-              console.log('ℹ️ [Message] Message unchanged (already correct)');
             } else {
-              console.log('ℹ️ [Message] No new message to set');
+              console.log('⚠️ [Message] No new message to set - cart total:', cartTotal, 'shipping:', showShipping, 'gift:', showGift);
             }
             
             console.log('📝 [Message] Final message:', messageElement.textContent.trim());
@@ -224,66 +378,230 @@ console.log('🔧 [Custom JS] Script loaded!');
       }, 150); // Increased delay to ensure DOM is updated
     }
     
+    // Debounce function to prevent too many rapid updates
+    let updateTimeout;
+    function debouncedUpdate(delay = 150) {
+      clearTimeout(updateTimeout);
+      updateTimeout = setTimeout(() => {
+        console.log('🔄 [Debounced] Running debounced update');
+        updateMilestones();
+      }, delay);
+    }
+    
+    // Force update function (no debounce) for critical events
+    function forceUpdate() {
+      console.log('⚡ [Force] Force updating milestones immediately');
+      updateMilestones();
+    }
+    
     // Listen to ALL possible cart update events
     const events = [
       'theme:cart:update',
       'theme:product:added', 
       'theme:cart:change',
       'theme:cart:load',
-      'theme:cart-drawer:open'
+      'theme:cart-drawer:open',
+      'cart:updated',
+      'cart:change',
+      'cart:refresh'
     ];
     
     events.forEach(eventName => {
       document.addEventListener(eventName, () => {
         console.log('📢 [Events]', eventName, 'triggered');
-        updateMilestones();
+        debouncedUpdate();
       });
     });
     
-    // Watch for DOM mutations in cart drawer
-    const cartDrawer = document.querySelector('#cart-drawer');
-    if (cartDrawer) {
-      const observer = new MutationObserver((mutations) => {
-        let shouldUpdate = false;
+    // Watch for quantity button clicks (minus/plus buttons)
+    document.addEventListener('click', (e) => {
+      if (e.target && (
+        e.target.closest('.cart__quantity-minus') ||
+        e.target.closest('.cart__quantity-plus') ||
+        e.target.closest('.quantity__minus') ||
+        e.target.closest('.quantity__plus') ||
+        e.target.closest('button[name="decrease"]') ||
+        e.target.closest('button[name="increase"]')
+      )) {
+        console.log('➖➕ [Button] Quantity button clicked');
+        // Wait for AJAX to complete - check multiple times
+        setTimeout(() => updateMilestones(), 200);
+        setTimeout(() => updateMilestones(), 500);
+        setTimeout(() => updateMilestones(), 1000);
+      }
+    });
+    
+    // Watch for quantity input changes
+    document.addEventListener('input', (e) => {
+      if (e.target && (
+        e.target.matches('input[data-qty]') ||
+        e.target.matches('input[name*="quantity"]') ||
+        e.target.matches('.qty-input input') ||
+        e.target.matches('.cart__quantity-field') ||
+        e.target.closest('[data-cart-item]') ||
+        e.target.closest('[data-line-item]')
+      )) {
+        console.log('📝 [Input] Quantity input changed');
+        // Wait for potential AJAX update
+        setTimeout(() => updateMilestones(), 300);
+        setTimeout(() => updateMilestones(), 800);
+      }
+    });
+    
+    // Watch for change events on quantity inputs
+    document.addEventListener('change', (e) => {
+      if (e.target && (
+        e.target.matches('input[data-qty]') ||
+        e.target.matches('input[name*="quantity"]') ||
+        e.target.matches('.qty-input input') ||
+        e.target.matches('.cart__quantity-field')
+      )) {
+        console.log('📝 [Change] Quantity changed');
+        // Wait for AJAX to complete
+        setTimeout(() => updateMilestones(), 300);
+        setTimeout(() => updateMilestones(), 800);
+        setTimeout(() => updateMilestones(), 1500);
+      }
+    });
+    
+    // Watch for cart loading state changes (when cart finishes updating)
+    const watchCartLoading = () => {
+      const cartDrawer = document.querySelector('#cart-drawer');
+      if (!cartDrawer) return;
+      
+      // Watch for when loading class is removed (cart update complete)
+      const loadingObserver = new MutationObserver((mutations) => {
         mutations.forEach((mutation) => {
-          if (mutation.addedNodes.length || mutation.removedNodes.length || mutation.type === 'attributes') {
-            // Check if free-shipping or cart-price was updated
-            Array.from(mutation.addedNodes).forEach(node => {
-              if (node.nodeType === 1 && (
-                node.querySelector && (
-                  node.querySelector('[data-free-shipping-limit]') || 
-                  node.querySelector('[data-cart-total]') ||
-                  node.classList?.contains('free-shipping')
-                )
-              )) {
-                shouldUpdate = true;
-              }
-            });
+          if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+            const target = mutation.target;
+            const wasLoading = mutation.oldValue && mutation.oldValue.includes('loading');
+            const isNowLoading = target.classList.contains('loading');
             
-            if (mutation.target && mutation.target.hasAttribute && (
-              mutation.target.hasAttribute('data-cart-total') ||
-              mutation.target.closest('.free-shipping') ||
-              mutation.target.closest('[data-free-shipping-limit]')
-            )) {
-              shouldUpdate = true;
+            // If cart was loading and is now not loading, update
+            if (wasLoading && !isNowLoading) {
+              console.log('✅ [Loading] Cart finished loading, updating milestones');
+              setTimeout(() => updateMilestones(), 100);
+              setTimeout(() => updateMilestones(), 400);
             }
           }
         });
+      });
+      
+      loadingObserver.observe(cartDrawer, {
+        attributes: true,
+        attributeFilter: ['class'],
+        attributeOldValue: true
+      });
+      
+      console.log('👀 [Loading] Watching cart loading state');
+    };
+    
+    // Start watching cart loading after a delay
+    setTimeout(watchCartLoading, 1000);
+    
+    // Watch for DOM mutations in cart drawer and document
+    const cartDrawer = document.querySelector('#cart-drawer');
+    const observerOptions = {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ['data-cart-total', 'class', 'value'],
+      characterData: true
+    };
+    
+    const observer = new MutationObserver((mutations) => {
+      let shouldUpdate = false;
+      
+      mutations.forEach((mutation) => {
+        // Check for added/removed nodes
+        if (mutation.addedNodes.length || mutation.removedNodes.length) {
+          Array.from(mutation.addedNodes).forEach(node => {
+            if (node.nodeType === 1 && (
+              (node.querySelector && (
+                node.querySelector('[data-free-shipping-limit]') || 
+                node.querySelector('[data-cart-total]') ||
+                node.querySelector('[data-cart-item]') ||
+                node.classList?.contains('free-shipping')
+              )) ||
+              node.hasAttribute('data-cart-total') ||
+              node.hasAttribute('data-cart-item')
+            )) {
+              shouldUpdate = true;
+            }
+          });
+          
+          Array.from(mutation.removedNodes).forEach(node => {
+            if (node.nodeType === 1 && (
+              node.hasAttribute('data-cart-item') ||
+              node.classList?.contains('cart__item')
+            )) {
+              shouldUpdate = true;
+            }
+          });
+        }
         
-        if (shouldUpdate) {
-          console.log('👀 [Observer] Cart DOM changed, updating milestones');
-          updateMilestones();
+        // Check for attribute changes
+        if (mutation.type === 'attributes') {
+          const target = mutation.target;
+          if (target && (
+            target.hasAttribute('data-cart-total') ||
+            target.closest('.free-shipping') ||
+            target.closest('[data-free-shipping-limit]') ||
+            target.closest('[data-cart-item]') ||
+            target.closest('[data-items-holder]') ||
+            target.closest('cart-items')
+          )) {
+            // If data-cart-total changed, update immediately
+            if (target.hasAttribute('data-cart-total') || mutation.attributeName === 'data-cart-total') {
+              console.log('💰 [Observer] Cart total attribute changed');
+              setTimeout(() => forceUpdate(), 50);
+            } else {
+              shouldUpdate = true;
+            }
+          }
+        }
+        
+        // Check for text content changes (cart totals, prices)
+        if (mutation.type === 'characterData' || mutation.type === 'childList') {
+          const target = mutation.target;
+          if (target && (
+            target.nodeType === 3 || // Text node
+            target.classList?.contains('cart__total') ||
+            target.classList?.contains('cart__price') ||
+            target.closest('.cart__total') ||
+            target.closest('.cart__price')
+          )) {
+            shouldUpdate = true;
+          }
         }
       });
       
-      observer.observe(cartDrawer, {
-        childList: true,
-        subtree: true,
-        attributes: true,
-        attributeFilter: ['data-cart-total', 'class']
+      if (shouldUpdate) {
+        console.log('👀 [Observer] Cart DOM changed, updating milestones');
+        // Use shorter debounce for DOM changes
+        debouncedUpdate(100);
+      }
+    });
+    
+    // Observe cart drawer if it exists
+    if (cartDrawer) {
+      observer.observe(cartDrawer, observerOptions);
+      console.log('✅ [Observer] MutationObserver started on cart drawer');
+    }
+    
+    // Also observe the document body for cart changes outside drawer
+    observer.observe(document.body, observerOptions);
+    console.log('✅ [Observer] MutationObserver started on document body');
+    
+    // Watch for cart drawer open/close
+    const cartDrawerToggle = document.querySelector('[data-cart-drawer-toggle], [data-cart-open]');
+    if (cartDrawerToggle) {
+      cartDrawerToggle.addEventListener('click', () => {
+        console.log('🛒 [Cart] Cart drawer opened');
+        setTimeout(() => {
+          updateMilestones();
+        }, 300);
       });
-      
-      console.log('✅ [Observer] MutationObserver started');
     }
     
     // Initial update - run multiple times to catch different load scenarios
@@ -302,14 +620,23 @@ console.log('🔧 [Custom JS] Script loaded!');
       setTimeout(updateMilestones, 1000);
     }
     
-    // Force update periodically to catch any missed updates
+    // Force update periodically to catch any missed updates (less frequent now since we have better event detection)
     setInterval(() => {
       const containers = document.querySelectorAll('[data-free-shipping-limit]');
       if (containers.length > 0) {
-        console.log('🔄 [Periodic] Running periodic milestone update');
-        updateMilestones();
+        // Only update if cart drawer is visible/open
+        const cartDrawer = document.querySelector('#cart-drawer');
+        const isDrawerOpen = cartDrawer && (cartDrawer.classList.contains('is-open') || cartDrawer.hasAttribute('open') || !cartDrawer.hasAttribute('hidden'));
+        
+        // Also update if we're on cart page
+        const isCartPage = document.body.classList.contains('template-cart') || window.location.pathname.includes('/cart');
+        
+        if (isDrawerOpen || isCartPage) {
+          console.log('🔄 [Periodic] Running periodic milestone update');
+          updateMilestones();
+        }
       }
-    }, 2000);
+    }, 3000);
   }
 
 })();

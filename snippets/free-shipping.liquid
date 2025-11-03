@@ -71,13 +71,12 @@
     endcapture
 
     assign message = message | replace: '||amount||', left_to_spend
-    assign qualified_shipping_message = 'cart.general.qualified_shipping_message' | t
+    assign qualified_shipping_message = ''
     
     assign free_gift_product = all_products[free_gift_product_handle]
     assign free_gift_product_title = 'Free Gift'
     if free_gift_product.title != blank
         assign free_gift_product_title = free_gift_product.title 
-      
     endif
     
     if subtotal_without_currency >= free_shipping_limit and settings.enable_free_gift and free_gift_product_handle != blank and subtotal_without_currency >= free_gift_threshold
@@ -94,15 +93,28 @@
         assign amount_needed_formatted = amount_needed_cents | money_without_trailing_zeros
       endif
       capture gift_message
-        echo 'You'
-        echo "'"
-        echo 're '
         echo amount_needed_formatted
         echo ' away from a FREE Key Tag!'
       endcapture
       assign qualified_shipping_message = gift_message
     elsif subtotal_without_currency >= free_shipping_limit
       assign qualified_shipping_message = 'Congratulations! Your order qualifies for free shipping'
+    else
+      assign shipping_limit_cents = free_shipping_limit | times: 100
+      assign amount_needed_cents = shipping_limit_cents | minus: cart.total_price
+      if amount_needed_cents < 0
+        assign amount_needed_cents = 0
+      endif
+      if settings.currency_code_enable
+        assign amount_needed_formatted = amount_needed_cents | money_with_currency
+      else
+        assign amount_needed_formatted = amount_needed_cents | money_without_trailing_zeros
+      endif
+      capture shipping_message
+        echo 'Get free shipping in '
+        echo amount_needed_formatted
+      endcapture
+      assign qualified_shipping_message = shipping_message
     endif
 
     capture free_shipping_classes
@@ -352,7 +364,7 @@
     {%- endif -%}
 
     {%- if qualified_shipping_message != blank -%}
-      <span class="free-shipping__success-message">{{ qualified_shipping_message }}</span>
+      <span class="free-shipping__success-message{% if subtotal_without_currency < free_shipping_limit %} free-shipping__default-message{% endif %}">{{ qualified_shipping_message }}</span>
     {%- elsif message != blank -%}
       <span class="free-shipping__default-message">
         {{ message }}
