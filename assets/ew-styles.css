@@ -1,0 +1,23 @@
+.free-gift-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.free-gift-info img {
+    width: 40px;
+}
+
+.free-gift-title {
+    margin:0;
+    color:#000;
+}
+
+.free-gift-price {
+    color: #000;
+    margin: 0;
+}
+
+.free-shipping__milestone-label-text {
+    color: #000 !IMPORTANT;
+}

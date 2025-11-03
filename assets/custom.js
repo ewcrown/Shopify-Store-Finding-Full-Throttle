@@ -93,62 +93,48 @@ console.log('🔧 [Custom JS] Script loaded!');
           console.log('💰 [Milestones] Final cart total: $' + cartTotal.toFixed(2));
           console.log('📊 [Milestones] Thresholds - Shipping: $' + shippingLimit + ', Gift: $' + giftThreshold);
           
-          // Find elements
-          const shippingLabel = container.querySelector('.free-shipping__milestone-labels .free-shipping__milestone--shipping');
-          const giftLabel = container.querySelector('.free-shipping__milestone-labels .free-shipping__milestone--gift');
-          const shippingPoint = container.querySelector('.free-shipping__milestone--shipping .free-shipping__milestone-point');
-          const giftPoint = container.querySelector('.free-shipping__milestone--gift .free-shipping__milestone-point');
+          // Find elements - new structure with labels inside milestone containers
+          const shippingMilestone = container.querySelector('.free-shipping__milestone--shipping');
+          const giftMilestone = container.querySelector('.free-shipping__milestone--gift');
+          const shippingPoint = shippingMilestone?.querySelector('.free-shipping__milestone-point');
+          const shippingLabel = shippingMilestone?.querySelector('.free-shipping__milestone-label');
+          const giftPoint = giftMilestone?.querySelector('.free-shipping__milestone-point');
+          const giftLabel = giftMilestone?.querySelector('.free-shipping__milestone-label');
           
-          // Update shipping milestone (show when >= $75)
+          // Update shipping milestone (mark as reached when >= $75)
           const showShipping = cartTotal >= shippingLimit;
-          console.log('🚚 [Milestones] Shipping:', showShipping ? '✅ SHOW ($' + cartTotal.toFixed(2) + ' >= $' + shippingLimit + ')' : '❌ HIDE');
+          console.log('🚚 [Milestones] Shipping:', showShipping ? '✅ REACHED ($' + cartTotal.toFixed(2) + ' >= $' + shippingLimit + ')' : '⏳ PENDING');
           
-          if (shippingLabel && shippingPoint) {
+          if (shippingPoint) {
             if (showShipping) {
               shippingPoint.classList.add('is-reached');
-              shippingLabel.classList.add('is-reached');
-              // REMOVE all inline styles so CSS can control it
-              shippingLabel.style.removeProperty('display');
-              shippingLabel.style.removeProperty('opacity');
-              shippingLabel.style.removeProperty('visibility');
-              console.log('✅ [Milestones] Shipping label SHOWN - inline styles REMOVED');
+              shippingMilestone?.classList.add('is-reached');
+              console.log('✅ [Milestones] Shipping milestone marked as reached');
             } else {
               shippingPoint.classList.remove('is-reached');
-              shippingLabel.classList.remove('is-reached');
-              // Only add inline styles when hiding
-              shippingLabel.style.setProperty('display', 'none', 'important');
-              shippingLabel.style.setProperty('opacity', '0', 'important');
-              shippingLabel.style.setProperty('visibility', 'hidden', 'important');
-              console.log('❌ [Milestones] Shipping label HIDDEN');
+              shippingMilestone?.classList.remove('is-reached');
+              console.log('⏳ [Milestones] Shipping milestone pending');
             }
           } else {
-            console.log('⚠️ [Milestones] Shipping elements not found - Label:', !!shippingLabel, 'Point:', !!shippingPoint);
+            console.log('⚠️ [Milestones] Shipping milestone elements not found');
           }
           
-          // Update gift milestone (show only when >= $99)
+          // Update gift milestone (mark as reached when >= $99)
           const showGift = cartTotal >= giftThreshold;
-          console.log('🎁 [Milestones] Gift:', showGift ? '✅ SHOW ($' + cartTotal.toFixed(2) + ' >= $' + giftThreshold + ')' : '❌ HIDE');
+          console.log('🎁 [Milestones] Gift:', showGift ? '✅ REACHED ($' + cartTotal.toFixed(2) + ' >= $' + giftThreshold + ')' : '⏳ PENDING');
           
-          if (giftLabel && giftPoint) {
+          if (giftPoint) {
             if (showGift) {
               giftPoint.classList.add('is-reached');
-              giftLabel.classList.add('is-reached');
-              // REMOVE all inline styles so CSS can control it
-              giftLabel.style.removeProperty('display');
-              giftLabel.style.removeProperty('opacity');
-              giftLabel.style.removeProperty('visibility');
-              console.log('✅ [Milestones] Gift label SHOWN - inline styles REMOVED');
+              giftMilestone?.classList.add('is-reached');
+              console.log('✅ [Milestones] Gift milestone marked as reached');
             } else {
               giftPoint.classList.remove('is-reached');
-              giftLabel.classList.remove('is-reached');
-              // Only add inline styles when hiding
-              giftLabel.style.setProperty('display', 'none', 'important');
-              giftLabel.style.setProperty('opacity', '0', 'important');
-              giftLabel.style.setProperty('visibility', 'hidden', 'important');
-              console.log('❌ [Milestones] Gift label HIDDEN');
+              giftMilestone?.classList.remove('is-reached');
+              console.log('⏳ [Milestones] Gift milestone pending');
             }
           } else {
-            console.log('⚠️ [Milestones] Gift elements not found - Label:', !!giftLabel, 'Point:', !!giftPoint);
+            console.log('⚠️ [Milestones] Gift milestone elements not found');
           }
           
           // Update container classes
@@ -168,13 +154,30 @@ console.log('🔧 [Custom JS] Script loaded!');
             console.log('📊 [Progress] Updated progress bar to', progressPercent.toFixed(2) + '% (max: $' + progressMax + ')');
           }
           
+          // Check for both success and default message elements
           const successMessage = container.querySelector('.free-shipping__success-message');
-          if (successMessage) {
-            if (showShipping && showGift) {
-              successMessage.textContent = 'Congratulations! Your order qualifies for free shipping with a free gift';
-              console.log('✅ [Message] Updated to combined message (free shipping + gift)');
-            } else if (showShipping) {
+          const defaultMessage = container.querySelector('.free-shipping__default-message');
+          const messageElement = successMessage || defaultMessage;
+          
+          if (messageElement) {
+            // Check if free gift is enabled (gift milestone exists)
+            const isFreeGiftEnabled = giftMilestone !== null;
+            
+            console.log('📝 [Message] Found element:', successMessage ? 'success-message' : 'default-message');
+            console.log('📝 [Message] Current message:', messageElement.textContent.trim());
+            console.log('📝 [Message] Conditions - Shipping:', showShipping, 'Gift:', showGift, 'GiftEnabled:', isFreeGiftEnabled);
+            console.log('📝 [Message] Cart total: $' + cartTotal.toFixed(2), 'Gift threshold: $' + giftThreshold);
+            
+            let newMessage = null;
+            
+            if (showShipping && showGift && isFreeGiftEnabled) {
+              newMessage = 'Congratulations! Your order qualifies for free shipping with a free gift';
+              console.log('✅ [Message] Setting combined message (free shipping + gift)');
+            } else if (showShipping && isFreeGiftEnabled && !showGift) {
+              // Free shipping reached, but free gift not reached yet
               const amountNeeded = giftThreshold - cartTotal;
+              console.log('💰 [Message] Amount needed calculation:', 'Threshold:', giftThreshold, 'Cart:', cartTotal, 'Needed:', amountNeeded);
+              
               if (amountNeeded > 0) {
                 let formattedAmount;
                 const amountInCents = Math.round(amountNeeded * 100);
@@ -185,13 +188,35 @@ console.log('🔧 [Custom JS] Script loaded!');
                 } else {
                   formattedAmount = '$' + amountNeeded.toFixed(2);
                 }
-                successMessage.textContent = `You're ${formattedAmount} behind the free gift`;
-                console.log('✅ [Message] Updated to show amount needed for gift');
+                newMessage = `You're ${formattedAmount} away from a FREE Key Tag!`;
+                console.log('✅ [Message] Setting gift message:', newMessage);
               } else {
-                successMessage.textContent = 'Congratulations! Your order qualifies for free shipping';
-                console.log('✅ [Message] Updated to shipping-only message');
+                newMessage = 'Congratulations! Your order qualifies for free shipping';
+                console.log('✅ [Message] Setting shipping-only message (amount needed <= 0)');
               }
+            } else if (showShipping) {
+              // Free shipping reached, but no free gift feature enabled
+              newMessage = 'Congratulations! Your order qualifies for free shipping';
+              console.log('✅ [Message] Setting shipping-only message (no gift feature)');
             }
+            
+            if (newMessage && messageElement.textContent.trim() !== newMessage) {
+              messageElement.textContent = newMessage;
+              // If it was a default message, convert to success message
+              if (defaultMessage && !successMessage) {
+                defaultMessage.classList.remove('free-shipping__default-message');
+                defaultMessage.classList.add('free-shipping__success-message');
+              }
+              console.log('✅ [Message] Updated successfully to:', newMessage);
+            } else if (newMessage) {
+              console.log('ℹ️ [Message] Message unchanged (already correct)');
+            } else {
+              console.log('ℹ️ [Message] No new message to set');
+            }
+            
+            console.log('📝 [Message] Final message:', messageElement.textContent.trim());
+          } else {
+            console.log('⚠️ [Message] No message element found!');
           }
           
           console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
@@ -261,14 +286,30 @@ console.log('🔧 [Custom JS] Script loaded!');
       console.log('✅ [Observer] MutationObserver started');
     }
     
-    // Initial update
-    document.addEventListener('DOMContentLoaded', () => {
-      console.log('📢 [Events] DOMContentLoaded - running initial update');
+    // Initial update - run multiple times to catch different load scenarios
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => {
+        console.log('📢 [Events] DOMContentLoaded - running initial update');
+        updateMilestones();
+        setTimeout(updateMilestones, 300);
+        setTimeout(updateMilestones, 1000);
+      });
+    } else {
+      // DOM already loaded
+      console.log('📢 [Events] DOM already loaded - running initial update');
+      updateMilestones();
       setTimeout(updateMilestones, 300);
-    });
+      setTimeout(updateMilestones, 1000);
+    }
     
-    // Also update after a delay in case DOM is already loaded
-    setTimeout(updateMilestones, 500);
+    // Force update periodically to catch any missed updates
+    setInterval(() => {
+      const containers = document.querySelectorAll('[data-free-shipping-limit]');
+      if (containers.length > 0) {
+        console.log('🔄 [Periodic] Running periodic milestone update');
+        updateMilestones();
+      }
+    }, 2000);
   }
 
 })();

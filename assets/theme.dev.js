@@ -4014,7 +4014,9 @@
         if (!this.freeShipping.length) return;
 
         const percentValue = isNaN(this.subtotal / this.freeShippingLimit) ? 100 : this.subtotal / this.freeShippingLimit;
+        
         const percent = Math.min(percentValue * 100, 100);
+
         const dashoffset = this.circumference - ((percent / 100) * this.circumference) / 2;
         const leftToSpend = formatMoney(this.freeShippingLimit - this.subtotal, theme.moneyFormat);
 

@@ -74,13 +74,20 @@
     assign qualified_shipping_message = 'cart.general.qualified_shipping_message' | t
     
     assign free_gift_product = all_products[free_gift_product_handle]
-    assign free_gift_product_title = free_gift_product.title | default: 'Free Gift'
+    assign free_gift_product_title = 'Free Gift'
+    if free_gift_product.title != blank
+        assign free_gift_product_title = free_gift_product.title 
+      
+    endif
     
     if subtotal_without_currency >= free_shipping_limit and settings.enable_free_gift and free_gift_product_handle != blank and subtotal_without_currency >= free_gift_threshold
       assign qualified_shipping_message = 'Congratulations! Your order qualifies for free shipping with a free gift'
     elsif subtotal_without_currency >= free_shipping_limit and settings.enable_free_gift and free_gift_product_handle != blank and subtotal_without_currency < free_gift_threshold
-      assign amount_needed = free_gift_threshold | minus: subtotal_without_currency
-      assign amount_needed_cents = amount_needed | times: 100
+      assign free_gift_threshold_cents = free_gift_threshold | times: 100
+      assign amount_needed_cents = free_gift_threshold_cents | minus: cart.total_price
+      if amount_needed_cents < 0
+        assign amount_needed_cents = 0
+      endif
       if settings.currency_code_enable
         assign amount_needed_formatted = amount_needed_cents | money_with_currency
       else
@@ -91,9 +98,11 @@
         echo "'"
         echo 're '
         echo amount_needed_formatted
-        echo ' behind the free gift'
+        echo ' away from a FREE Key Tag!'
       endcapture
       assign qualified_shipping_message = gift_message
+    elsif subtotal_without_currency >= free_shipping_limit
+      assign qualified_shipping_message = 'Congratulations! Your order qualifies for free shipping'
     endif
 
     capture free_shipping_classes
@@ -122,137 +131,204 @@
   -%}
 
   {%- style -%}
+    .free-shipping__default-message,
+    .free-shipping__success-message {
+      display: block;
+      text-align: center;
+      font-size: 14px;
+      line-height: 1.5;
+      color: #333333;
+      font-weight: 400;
+      margin-bottom: 12px;
+    }
+    
+    .free-shipping__success-message {
+      color: #f5a623;
+      font-weight: 500;
+    }
+    
     .free-shipping__progress-wrapper {
       position: relative;
-      width: 100%;
-      margin-top: 5px;
+      width: 95%;
+      margin-top: 8px;
     }
     
     .free-shipping__progress-bar-holder {
       position: relative;
       width: 100%;
+      height: 8px;
+    }
+    
+    .free-shipping__progress-bar {
+      width: 100%;
+      height: 8px;
+      border-radius: 4px;
+      background-color: #e5e5e5;
+      border: none;
+      overflow: visible;
+      position: relative;
+      -webkit-appearance: none;
+      appearance: none;
+    }
+    
+    .free-shipping__progress-bar::-webkit-progress-bar {
+      background-color: #e5e5e5;
+      border-radius: 4px;
+    }
+    
+    .free-shipping__progress-bar::-webkit-progress-value {
+      background: linear-gradient(to right, #ff7b00, #f5a623, #ffcc33);
+      border-radius: 4px;
+      transition: width 0.3s ease;
+    }
+    
+    .free-shipping__progress-bar::-moz-progress-bar {
+      background: linear-gradient(to right, #ff7b00, #f5a623, #ffcc33);
+      border-radius: 4px;
     }
     
     .free-shipping__milestones {
-      position: relative;
+      position: absolute;
+      top: 0;
+      left: 0;
       width: 100%;
-      margin-top: 0;
+      height: 100%;
+      pointer-events: none;
     }
     
     .free-shipping__milestone {
       position: absolute;
-      top: -6px;
-      transform: translateX(-50%);
+      top: 50%;
+      transform: translate(-50%, -50%);
       display: flex;
       flex-direction: column;
       align-items: center;
-      z-index: 1;
+      z-index: 2;
     }
     
     .free-shipping__milestone-point {
-      width: 12px;
-      height: 12px;
-      display:none !important;
+      width: 32px;
+      height: 32px;
       border-radius: 50%;
-      background: var(--border);
-      border: 2px solid var(--bg);
+      background: #f5a623;
+      border: 3px dashed #f5a623;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       position: relative;
-      z-index: 2;
+      z-index: 3;
       transition: all 0.3s ease;
       flex-shrink: 0;
+      box-shadow: 0 0 0 2px #ffffff;
     }
     
     .free-shipping__milestone-point.is-reached {
-      background: var(--accent, var(--COLOR-ACCENT));
-      border-color: var(--accent, var(--COLOR-ACCENT));
-      box-shadow: 0 0 0 3px rgba(var(--COLOR-ACCENT-RGB, 29, 34, 38), 0.2);
-    }
-    
-    .free-shipping__milestone-labels {
-      position: relative;
-      width: 100%;
-      margin-top: 12px;
-      min-height: 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 4px;
-    }
-    
-    .free-shipping__milestone-label {
-      position: relative;
-      left: 0;
-      transform: none;
-      white-space: nowrap;
-      opacity: 0;
-      display: none;
-      transition: opacity 0.3s ease, transform 0.3s ease, color 0.3s ease;
-      font-size: 11px;
-      line-height: 1.3;
-      text-align: left;
-      max-width: 100%;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      pointer-events: none;
-    }
-    
-    /* CRITICAL: Show labels when milestones are reached - MUST OVERRIDE EVERYTHING */
-    .free-shipping__milestone-label.is-reached,
-    .free-shipping__milestone-labels .free-shipping__milestone-label.is-reached,
-    [data-free-shipping-limit] .free-shipping__milestone-label.is-reached,
-    .free-shipping .free-shipping__milestone-label.is-reached,
-    .free-shipping__milestone-label.is-reached.free-shipping__milestone--shipping,
-    .free-shipping__milestone-label.is-reached.free-shipping__milestone--gift {
-      opacity: 1 !important;
-      display: block !important;
-      visibility: visible !important;
-      height: auto !important;
-      width: auto !important;
-      max-height: none !important;
-      overflow: visible !important;
-    }
-    
-    /* Hide labels by default - only when NOT reached */
-    .free-shipping__milestone-label:not(.is-reached),
-    .free-shipping__milestone-labels .free-shipping__milestone-label:not(.is-reached) {
-      opacity: 0 !important;
-      display: none !important;
-      visibility: hidden !important;
-    }
-    
-    .free-shipping__milestone-label-text {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      color: var(--text);
-      font-weight: 500;
-    }
-    
-    .free-shipping__milestone-label.is-reached .free-shipping__milestone-label-text {
-      color: var(--accent, var(--COLOR-ACCENT));
-      font-weight: 600;
+      background: #f5a623;
+      border-color: #f5a623;
+      box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px rgba(245, 166, 35, 0.3);
+      transform: scale(1.1);
     }
     
     .free-shipping__milestone-icon {
-      width: 16px;
-      height: 16px;
+      width: 18px;
+      height: 18px;
       flex-shrink: 0;
       display: inline-flex;
       align-items: center;
       justify-content: center;
+      color: #ffffff;
+    }
+    
+    .free-shipping__milestone-icon svg {
+      width: 18px;
+      height: 18px;
+      display: block;
     }
     
     .free-shipping__milestone-icon .icon {
-      stroke: var(--accent, var(--COLOR-ACCENT));
-      width: 16px;
-      height: 16px;
-      stroke-width: 2.5;
+      width: 18px;
+      height: 18px;
+      stroke: #ffffff;
+      fill: #ffffff;
+      stroke-width: 2;
+    }
+    
+    .free-shipping__milestone-label {
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      margin-top: 10px;
+      white-space: nowrap;
+      font-size: 13px;
+      line-height: 1.5;
+      text-align: center;
+      color: #333333;
+      font-weight: 500;
+      pointer-events: none;
+      letter-spacing: 0.01em;
+    }
+    
+    .free-shipping__milestone.is-reached .free-shipping__milestone-label {
+      color: #f5a623;
+      font-weight: 600;
+    }
+    
+    .free-shipping__milestone-label-text {
+      display: block;
+      text-align: center;
+    }
+    
+    /* Free gift label can wrap to 2 lines */
+    .free-shipping__milestone--gift .free-shipping__milestone-label {
+      white-space: normal;
+      max-width: 100px;
+      line-height: 1.4;
+      word-wrap: break-word;
+      hyphens: auto;
+      margin-top: 10px;
+    }
+    
+    .free-shipping__milestone--gift .free-shipping__milestone-label-text {
+      display: block;
+      text-align: center;
+      line-height: 1.3;
+    }
+    
+    .free-shipping__milestone-labels {
+      display: none; /* Hide old label container */
     }
     
     @media (max-width: 480px) {
+      .free-shipping__milestone-point {
+        width: 28px;
+        height: 28px;
+      }
+      
+      .free-shipping__milestone-icon {
+        width: 16px;
+        height: 16px;
+      }
+      
+      .free-shipping__milestone-icon .icon {
+        width: 16px;
+        height: 16px;
+      }
+      
       .free-shipping__milestone-label {
+        font-size: 11px;
+        margin-top: 8px;
+      }
+      
+      .free-shipping__milestone--gift .free-shipping__milestone-label {
+        max-width: 90px;
         font-size: 10px;
-        max-width: 70px;
+      }
+      
+      .free-shipping__default-message,
+      .free-shipping__success-message {
+        font-size: 13px;
+        margin-bottom: 10px;
       }
     }
   {%- endstyle -%}
@@ -277,77 +353,66 @@
 
     {%- if qualified_shipping_message != blank -%}
       <span class="free-shipping__success-message">{{ qualified_shipping_message }}</span>
+    {%- elsif message != blank -%}
+      <span class="free-shipping__default-message">
+        {{ message }}
+      </span>
     {%- endif -%}
-
-    <span class="free-shipping__default-message">
-      {{ message }}
-    </span>
 
     {%- if show_progress_bar -%}
       <div class="free-shipping__progress-wrapper">
         <div class="free-shipping__progress-bar-holder">
           <progress class="free-shipping__progress-bar" data-progress-bar value="{{ percent }}" max="100"></progress>
           
-          {%- comment -%} Milestone points on the progress bar {%- endcomment -%}
+          {%- comment -%} Milestone points on the progress bar with labels below {%- endcomment -%}
           <div class="free-shipping__milestones">
             {%- comment -%} Free Shipping Milestone at $75 {%- endcomment -%}
             <div class="free-shipping__milestone free-shipping__milestone--shipping" 
                  style="left: {{ milestone_75_percent }}%"
                  data-milestone-type="shipping"
                  data-milestone-percent="{{ milestone_75_percent }}">
-              <div class="free-shipping__milestone-point{% if subtotal_without_currency >= free_shipping_limit %} is-reached{% endif %}"></div>
+              <div class="free-shipping__milestone-point">
+                <span class="free-shipping__milestone-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M1 12h4l2-4h12l2 4h4v2h-2v6c0 1.1-.9 2-2 2h-2c-1.1 0-2-.9-2-2v-2H9v2c0 1.1-.9 2-2 2H5c-1.1 0-2-.9-2-2v-6H1v-2z"/>
+                    <circle cx="7" cy="18" r="1.5" fill="currentColor"/>
+                    <circle cx="17" cy="18" r="1.5" fill="currentColor"/>
+                    <path d="M22 8l-1.5-1-1.5 1" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" fill="none" opacity="0.6"/>
+                  </svg>
+                </span>
+              </div>
+              <div class="free-shipping__milestone-label">
+                <span class="free-shipping__milestone-label-text">Free Shipping</span>
+              </div>
             </div>
             
             {%- comment -%} Free Gift Milestone at $99 {%- endcomment -%}
             {%- if settings.enable_free_gift and free_gift_product_handle != blank -%}
+              {%- assign free_gift_product = all_products[free_gift_product_handle] -%}
               <div class="free-shipping__milestone free-shipping__milestone--gift" 
                    style="left: {{ milestone_99_percent }}%"
                    data-milestone-type="gift"
                    data-milestone-percent="{{ milestone_99_percent }}">
-                <div class="free-shipping__milestone-point{% if subtotal_without_currency >= free_gift_threshold %} is-reached{% endif %}"></div>
+                <div class="free-shipping__milestone-point">
+                  <span class="free-shipping__milestone-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1">
+                      <rect x="6" y="9" width="12" height="9" rx="1" fill="currentColor"/>
+                      <path d="M12 9V7c0-1.1.9-2 2-2h2c1.1 0 2 .9 2 2v2M12 9V7c0-1.1-.9-2-2-2H8c-1.1 0-2 .9-2 2v2" stroke="currentColor" stroke-width="1.2" fill="none"/>
+                      <path d="M12 10l-1.5 3 1.5 3 1.5-3L12 10z" fill="currentColor" opacity="0.95"/>
+                      <path d="M10 12h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                    </svg>
+                  </span>
+                </div>
+                <div class="free-shipping__milestone-label">
+                  <span class="free-shipping__milestone-label-text">{{ free_gift_product_title }}</span>
+                </div>
               </div>
             {%- endif -%}
           </div>
         </div>
         
-        {%- comment -%} Milestone labels at bottom left of progress bar {%- endcomment -%}
-        <div class="free-shipping__milestone-labels">
-          {%- comment -%} Free Shipping Label at $75 with check icon {%- endcomment -%}
-          <div class="free-shipping__milestone-label free-shipping__milestone--shipping{% if subtotal_without_currency >= free_shipping_limit %} is-reached{% endif %}">
-            <span class="free-shipping__milestone-label-text">
-              <span class="free-shipping__milestone-icon">
-                {%- render 'icon-check' -%}
-              </span>
-              Free Shipping
-            </span>
-          </div>
-          
-          {%- comment -%} Free Gift Label at $99 with check icon {%- endcomment -%}
-       {%- if settings.enable_free_gift and free_gift_product_handle != blank -%}
-  {%- assign free_gift_product = all_products[free_gift_product_handle] -%}
-
-  <div class="free-shipping__milestone-label free-shipping__milestone--gift{% if subtotal_without_currency >= free_gift_threshold %} is-reached{% endif %}">
-    <span class="free-shipping__milestone-label-text">
-      <span class="free-shipping__milestone-icon">
-        {%- render 'icon-check' -%}
-      </span>
-      <div class="free-gift-info">
-        <div class="free-gift-info-left">
-          <img 
-            src="{{ free_gift_product.featured_image | img_url: '100x100' }}" 
-            alt="{{ free_gift_product.title }}" 
-            class="free-gift-image"
-          >
-        </div>
-        <div class="free-gift-info-right">
-          <p class="free-gift-title">{{ free_gift_product.title }}</p>
-          <p class="free-gift-price">{{ free_gift_product.price | money }}</p>
-        </div>
-      </div>
-    </span>
-  </div>
-{%- endif -%}
-        </div>
+        {%- comment -%} Legacy label container - hidden {%- endcomment -%}
+        <div class="free-shipping__milestone-labels" style="display: none;"></div>
       </div>
     {%- endif -%}
 
