@@ -295,7 +295,7 @@ console.log('🔧 [Custom JS] Script loaded!');
                 } else {
                   formattedAmount = '$' + amountNeeded.toFixed(2);
                 }
-                newMessage = `${formattedAmount} away from a FREE Key Tag!`;
+                newMessage = `You are ${formattedAmount} away from a FREE Key Tag!`;
                 isSuccessMessage = true;
                 console.log('✅ [Message] Setting gift message:', newMessage);
               } else {
@@ -323,7 +323,7 @@ console.log('🔧 [Custom JS] Script loaded!');
                 } else {
                   formattedAmount = '$' + amountNeeded.toFixed(2);
                 }
-                newMessage = `Get free shipping in ${formattedAmount}`;
+                newMessage = `You are ${formattedAmount} away from FREE SHIPPING!`;
                 isSuccessMessage = false;
                 console.log('✅ [Message] Setting shipping-needed message:', newMessage);
               }
