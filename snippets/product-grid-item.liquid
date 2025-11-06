@@ -445,58 +445,59 @@
       assign unique = section.id | append: '-' | append: product.id
     -%}
 
-    <quick-add-product>
-      <div class="quick-add__holder" data-quick-add-holder="{{ product.id }}">
-        {%- if product.variants.size == 1 -%}
-          {%- assign product_form_id = 'ProductForm--' | append: unique -%}
-          {%- form 'product', product, id: product_form_id -%}
-            <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+    {%- unless product.id == 9357096386777 -%}
+      <quick-add-product>
+        <div class="quick-add__holder" data-quick-add-holder="{{ product.id }}">
+          {%- if product.variants.size == 1 -%}
+            {%- assign product_form_id = 'ProductForm--' | append: unique -%}
+            {%- form 'product', product, id: product_form_id -%}
+              <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
 
-            {%- if sibling_property_value != blank -%}
-              <input
-                type="hidden"
-                name="properties[{{ sibling_property_name }}]"
-                value="{{ sibling_property_value }}">
-            {%- endif -%}
+              {%- if sibling_property_value != blank -%}
+                <input
+                  type="hidden"
+                  name="properties[{{ sibling_property_name }}]"
+                  value="{{ sibling_property_value }}">
+              {%- endif -%}
 
-            {%- if preorder_value != blank -%}
-              <input
-                type="hidden"
-                name="properties[{{ preorder_name }}]"
-                value="{{ preorder_value }}">
-            {%- endif -%}
+              {%- if preorder_value != blank -%}
+                <input
+                  type="hidden"
+                  name="properties[{{ preorder_name }}]"
+                  value="{{ preorder_value }}">
+              {%- endif -%}
 
+              <button class="quick-add__button caps--link"
+                type="submit"
+                name="add"
+                aria-label="{{ 'products.general.quick_add' | t }}"
+                data-add-to-cart
+              >
+                <span class="btn__text">
+                  {%- if preorder -%}
+                    {{ 'products.product.pre_order' | t }}
+                  {%- else -%}
+                    {{ 'products.general.quick_add' | t }}
+                  {%- endif -%}
+                </span>
+                <span class="btn__plus"></span>
+                <span class="btn__added">&nbsp;</span>
+                <span class="btn__loader">
+                  <svg height="18" width="18" class="svg-loader">
+                    <circle r="7" cx="9" cy="9" />
+                    <circle stroke-dasharray="87.96459430051421 87.96459430051421" r="7" cx="9" cy="9" />
+                  </svg>
+                </span>
+                <span class="btn__error" data-message-error>&nbsp;</span>
+              </button>
+            {%- endform -%}
+          {%- else -%}
             <button class="quick-add__button caps--link"
-              type="submit"
-              name="add"
+              type="button"
               aria-label="{{ 'products.general.quick_add' | t }}"
-              data-add-to-cart
+              data-quick-add-btn
+              data-quick-add-modal-handle="{{ product.handle }}"
             >
-              <span class="btn__text">
-                {%- if preorder -%}
-                  {{ 'products.product.pre_order' | t }}
-                {%- else -%}
-                  {{ 'products.general.quick_add' | t }}
-                {%- endif -%}
-              </span>
-              <span class="btn__plus"></span>
-              <span class="btn__added">&nbsp;</span>
-              <span class="btn__loader">
-                <svg height="18" width="18" class="svg-loader">
-                  <circle r="7" cx="9" cy="9" />
-                  <circle stroke-dasharray="87.96459430051421 87.96459430051421" r="7" cx="9" cy="9" />
-                </svg>
-              </span>
-              <span class="btn__error" data-message-error>&nbsp;</span>
-            </button>
-          {%- endform -%}
-        {%- else -%}
-          <button class="quick-add__button caps--link"
-            type="button"
-            aria-label="{{ 'products.general.quick_add' | t }}"
-            data-quick-add-btn
-            data-quick-add-modal-handle="{{ product.handle }}"
-          >
             <span class="btn__text">
               {%- if preorder -%}
                 {{ 'products.product.pre_order' | t }}
@@ -520,6 +521,7 @@
         {%- endunless -%}
       </div>
     </quick-add-product>
+    {%- endunless -%}
   {%- endif -%}
 {%- endcapture -%}
 

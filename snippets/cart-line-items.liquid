@@ -173,49 +173,61 @@
           {%- endif -%}
         </p>
 
-        <quantity-counter class="cart__quantity-counter">
-          <div class="cart__quantity">
-            <button
-              class="cart__quantity-minus"
-              type="button"
-              name="decrease"
-              title="{{ 'cart.general.decrease_quantity_label' | t }} - {{ line_item.product.title | strip_html }}">
-              {%- render 'icon-minus' -%}
-            </button>
+        {%- unless line_item.product.id == 9357096386777 -%}
+          <quantity-counter class="cart__quantity-counter">
+            <div class="cart__quantity">
+              <button
+                class="cart__quantity-minus"
+                type="button"
+                name="decrease"
+                title="{{ 'cart.general.decrease_quantity_label' | t }} - {{ line_item.product.title | strip_html }}">
+                {%- render 'icon-minus' -%}
+              </button>
 
-            {%- assign quantity = line_item.quantity -%}
+              {%- assign quantity = line_item.quantity -%}
 
-            {%- if line_item.variant.inventory_policy == 'deny' and line_item.variant.inventory_management != nil and line_item.variant.inventory_quantity < quantity -%}
-              {%- assign quantity = line_item.variant.inventory_quantity -%}
-            {%- endif -%}
+              {%- if line_item.variant.inventory_policy == 'deny' and line_item.variant.inventory_management != nil and line_item.variant.inventory_quantity < quantity -%}
+                {%- assign quantity = line_item.variant.inventory_quantity -%}
+              {%- endif -%}
 
-            <input
-              class="cart__quantity-field"
-              type="number"
-              id="updates_{{ line_item.key }}"
-              name="updates[]"
+              <input
+                class="cart__quantity-field"
+                type="number"
+                id="updates_{{ line_item.key }}"
+                name="updates[]"
+                data-id="{{ line_item.key }}"
+                value="{{ quantity }}"
+                title="{{ 'cart.general.quantity_field_label' | t }} - {{ line_item.product.title | strip_html }}"
+                pattern="[0-9]*">
+
+              <button
+                class="cart__quantity-plus"
+                type="button"
+                name="increase"
+                title="{{ 'cart.general.increase_quantity_label' | t }} - {{ line_item.product.title | strip_html }}">
+                {%- render 'icon-plus' -%}
+              </button>
+            </div>
+
+            <a class="cart__item__remove"
+              href="{{ routes.cart_change_url }}?line={{ forloop.index }}&amp;quantity=0"
+              data-item-remove
               data-id="{{ line_item.key }}"
-              value="{{ quantity }}"
-              title="{{ 'cart.general.quantity_field_label' | t }} - {{ line_item.product.title | strip_html }}"
-              pattern="[0-9]*">
-
-            <button
-              class="cart__quantity-plus"
-              type="button"
-              name="increase"
-              title="{{ 'cart.general.increase_quantity_label' | t }} - {{ line_item.product.title | strip_html }}">
-              {%- render 'icon-plus' -%}
-            </button>
+              title="{{ 'cart.general.remove' | t }}">
+                {{- 'cart.general.remove' | t -}}
+            </a>
+          </quantity-counter>
+        {%- else -%}
+          <div class="cart__quantity-counter">
+            <a class="cart__item__remove"
+              href="{{ routes.cart_change_url }}?line={{ forloop.index }}&amp;quantity=0"
+              data-item-remove
+              data-id="{{ line_item.key }}"
+              title="{{ 'cart.general.remove' | t }}">
+                {{- 'cart.general.remove' | t -}}
+            </a>
           </div>
-
-          <a class="cart__item__remove"
-            href="{{ routes.cart_change_url }}?line={{ forloop.index }}&amp;quantity=0"
-            data-item-remove
-            data-id="{{ line_item.key }}"
-            title="{{ 'cart.general.remove' | t }}">
-              {{- 'cart.general.remove' | t -}}
-          </a>
-        </quantity-counter>
+        {%- endunless -%}
       </div>
 
       {%- if line_item.original_price > line_item.final_price -%}

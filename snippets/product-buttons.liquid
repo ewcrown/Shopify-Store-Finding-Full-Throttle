@@ -36,7 +36,7 @@
 -%}
 
 {%- capture quantity_selector -%}
-  {%- if show_quantity -%}
+  {%- if show_quantity and product.id != 9357096386777 -%}
     <script src="{{ 'quantity-counter.js' | asset_url }}" defer="defer"></script>
 
     <popout-select class="select-popout">
@@ -118,66 +118,68 @@
         {% endif %}>
         <div class="product__form__errors" data-cart-errors-container></div>
 
-        <div class="product__submit__buttons{% if buybutton_setting and show_quantity == false %} product__submit__buttons--inline{% endif %}">
-          <div class="product__submit__item{% if show_quantity %} product__submit__item--inline{% endif %}">
-            {{ quantity_selector }}
+        {%- unless product.id == 9357096386777 -%}
+          <div class="product__submit__buttons{% if buybutton_setting and show_quantity == false %} product__submit__buttons--inline{% endif %}">
+            <div class="product__submit__item{% if show_quantity %} product__submit__item--inline{% endif %}">
+              {{ quantity_selector }}
 
-            {%- liquid
-             assign button_style = block.settings.button_style | default: 'btn--solid'
-             assign button_type = block.settings.button_type | default: 'btn--primary'
-            -%}
+              {%- liquid
+               assign button_style = block.settings.button_style | default: 'btn--solid'
+               assign button_type = block.settings.button_type | default: 'btn--primary'
+              -%}
 
-            <button
-              type="submit"
-              name="add"
-              id="AddToCart--{{ section.id }}"
-              class="btn {{ button_style }} {{ button_type }}"
-              data-add-to-cart
-              {% unless current_variant.available %}disabled="disabled"{% endunless %}>
-              <span class="btn__text" data-add-to-cart-text>{{ button_text }}</span>
-              <span class="btn__added">&nbsp;</span>
+              <button
+                type="submit"
+                name="add"
+                id="AddToCart--{{ section.id }}"
+                class="btn {{ button_style }} {{ button_type }}"
+                data-add-to-cart
+                {% unless current_variant.available %}disabled="disabled"{% endunless %}>
+                <span class="btn__text" data-add-to-cart-text>{{ button_text }}</span>
+                <span class="btn__added">&nbsp;</span>
 
-              <span class="btn__loader">
-                <svg height="18" width="18" class=" svg-loader">
-                  <circle r="7" cx="9" cy="9" />
-                  <circle stroke-dasharray="87.96459430051421 87.96459430051421" r="7" cx="9" cy="9" />
-                </svg>
-              </span>
-            </button>
+                <span class="btn__loader">
+                  <svg height="18" width="18" class=" svg-loader">
+                    <circle r="7" cx="9" cy="9" />
+                    <circle stroke-dasharray="87.96459430051421 87.96459430051421" r="7" cx="9" cy="9" />
+                  </svg>
+                </span>
+              </button>
 
-            {%- if show_newsletter -%}
-              {%- assign newsletter_text = 'general.newsletter_form.newsletter_product_availability' | t -%}
-              {%- assign button_text = 'products.product.sold_out' | t | append: ' - ' | append: newsletter_text -%}
+              {%- if show_newsletter -%}
+                {%- assign newsletter_text = 'general.newsletter_form.newsletter_product_availability' | t -%}
+                {%- assign button_text = 'products.product.sold_out' | t | append: ' - ' | append: newsletter_text -%}
 
-              <product-modal class="product-soldout-notification">
-                <button type="button" class="btn {{ button_style }} {{ button_type }}" data-popup-open>
-                  <span class="btn__text">{{ button_text }}</span>
-                </button>
+                <product-modal class="product-soldout-notification">
+                  <button type="button" class="btn {{ button_style }} {{ button_type }}" data-popup-open>
+                    <span class="btn__text">{{ button_text }}</span>
+                  </button>
 
-                <dialog class="product-modal" aria-hidden="true" inert data-scroll-lock-required>
-                  <form method="dialog">
-                    <button class="visually-hidden no-js" aria-label="{{ 'general.accessibility.close' | t }}"></button>
-                  </form>
+                  <dialog class="product-modal" aria-hidden="true" inert data-scroll-lock-required>
+                    <form method="dialog">
+                      <button class="visually-hidden no-js" aria-label="{{ 'general.accessibility.close' | t }}"></button>
+                    </form>
 
-                  <div class="drawer__inner product-modal__notification">
-                    <div class="product-modal__content small" data-scroll-lock-scrollable>
-                      <button type="button" class="product-modal__close" data-popup-close aria-label="{{ 'general.accessibility.close' | t }}">
-                        {%- render 'icon-cancel' -%}
-                      </button>
+                    <div class="drawer__inner product-modal__notification">
+                      <div class="product-modal__content small" data-scroll-lock-scrollable>
+                        <button type="button" class="product-modal__close" data-popup-close aria-label="{{ 'general.accessibility.close' | t }}">
+                          {%- render 'icon-cancel' -%}
+                        </button>
 
-                      {%- render 'notification-form' product_title: product.title, current_variant: current_variant -%}
+                        {%- render 'notification-form' product_title: product.title, current_variant: current_variant -%}
+                      </div>
                     </div>
-                  </div>
-                </dialog>
-              </product-modal>
+                  </dialog>
+                </product-modal>
+              {%- endif -%}
+            </div>
+            {%- if buybutton_setting -%}
+              <div class="product__submit__item {{ block.settings.button_type_dynamic }} {{ block.settings.button_style_dynamic }}">
+                {{ form | payment_button }}
+              </div>
             {%- endif -%}
           </div>
-          {%- if buybutton_setting -%}
-            <div class="product__submit__item {{ block.settings.button_type_dynamic }} {{ block.settings.button_style_dynamic }}">
-              {{ form | payment_button }}
-            </div>
-          {%- endif -%}
-        </div>
+        {%- endunless -%}
       </div>
     {%- endform -%}
   </product-form>
