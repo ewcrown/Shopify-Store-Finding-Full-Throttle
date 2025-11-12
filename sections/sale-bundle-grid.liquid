@@ -1,0 +1,447 @@
+{{ 'sale-bundle-grid.css' | asset_url | stylesheet_tag }}
+{{ 'component-card.css' | asset_url | stylesheet_tag }}
+{{ 'component-price.css' | asset_url | stylesheet_tag }}
+{{ 'sale-product-grid.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign color_scheme = 'color-' | append: section.settings.color_scheme | default: ''
+-%}
+
+{%- style -%}
+  #sale-bundle-grid-{{ section.id }} {
+    --PT: {{ section.settings.padding_top }}px;
+    --PB: {{ section.settings.padding_bottom }}px;
+  }
+
+  @media (max-width: 749px) {
+    #sale-bundle-grid-{{ section.id }} > div {
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+  }
+{%- endstyle -%}
+
+<style>
+
+  .sale-bundle-grid .product-grid{
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    list-style: none;
+    gap: 20px;
+}
+.sale-bundle-grid .carousel__slide {
+  width: 100%;
+  max-width: 100%;
+  padding: 0;
+}
+@media (max-width: 767px) {
+  .sale-bundle-grid .product-grid{
+    grid-template-columns: repeat(1,1fr);
+    gap: 10px;
+  }
+}
+</style>
+
+<section class="sale-bundle-grid sale-bundle-grid-{{ section.id }} section-padding {{ color_scheme }}" id="sale-bundle-grid-{{ section.id }}">
+  <div class="{{ section.settings.width | default: 'wrapper--full-padded' }}">
+    <div class="grid-container{% if section.settings.width == 'wrapper' %} {{ section.settings.width }}{% endif %}">
+      {% if section.settings.heading != blank or section.settings.subheading != blank %}
+        <div class="grid__heading-holder text-center">
+          <div class="grid__heading-text">
+            {% if section.settings.heading != blank %}
+              <h2 class="grid__heading">{{ section.settings.heading }}</h2>
+            {% endif %}
+            {% if section.settings.subheading != blank %}
+              <div class="grid__description">{{ section.settings.subheading }}</div>
+            {% endif %}
+          </div>
+        </div>
+      {% endif %}
+      
+      <div class="grid__items-holder">
+        <div class="grid-outer">
+          <div class="grid grid--{{ section.settings.columns_mobile | default: '2' }}-col-tablet-down grid--{{ section.settings.columns_desktop }}-col-desktop">
+            {% for block in section.blocks %}
+              {% if block.settings.product != blank %}
+                {% assign bundle_product = block.settings.product %}
+                <div class="grid__item" {{ block.shopify_attributes }}>
+                  {% render 'product-grid-item', product: bundle_product, index: forloop.index %}
+                  {% if bundle_product.description != blank and section.settings.show_description %}
+                    <div class="sale-product-description">
+                      {% render 'toggle-ellipsis', content: bundle_product.description, show_read_more: true %}
+                    </div>
+                  {% endif %}
+                  {% if section.settings.show_add_to_cart %}
+                    {% assign first_variant = bundle_product.selected_or_first_available_variant %}
+                    {% if first_variant and first_variant.available and bundle_product.available %}
+                      <form action="{{ routes.cart_add_url }}" method="post" enctype="multipart/form-data" class="sale-bundle-add-to-cart-form">
+                        <input type="hidden" name="id" value="{{ first_variant.id }}">
+                        <button type="submit" class="btn {{ section.settings.cart_button_style }} {{ section.settings.cart_button_size }} {{ section.settings.cart_button_type }}" name="add">
+                          <span>{% if block.settings.button_text != blank %}{{ block.settings.button_text }}{% elsif section.settings.add_to_cart_text != blank %}{{ section.settings.add_to_cart_text }}{% else %}Add to cart{% endif %}</span>
+                        </button>
+                      </form>
+                    {% else %}
+                      <button type="button" class="btn {{ section.settings.cart_button_style }} {{ section.settings.cart_button_size }} {{ section.settings.cart_button_type }}" disabled>
+                        <span>Sold out</span>
+                      </button>
+                    {% endif %}
+                  {% endif %}
+                </div>
+              {% else %}
+                <div class="grid__item" {{ block.shopify_attributes }}>
+                  <div class="bundle-card-placeholder">
+                    {% if block.settings.title != blank %}
+                      <h3 class="bundle-title">{{ block.settings.title }}</h3>
+                    {% endif %}
+                    {% if block.settings.description != blank %}
+                      <p class="bundle-description">{{ block.settings.description }}</p>
+                    {% endif %}
+                    {% if block.settings.button_text != blank and block.settings.button_url != blank %}
+                      <a href="{{ block.settings.button_url }}" class="btn {{ section.settings.button_style }} {{ section.settings.button_size }} {{ section.settings.button_type }}">
+                        <span>{{ block.settings.button_text }}</span>
+                      </a>
+                    {% endif %}
+                  </div>
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% style %}
+  .sale-bundle-grid-{{ section.id }} {
+    background-color: {{ section.settings.bg_color }};
+    color: {{ section.settings.text_color }};
+    padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px;
+  }
+  .sale-bundle-grid-{{ section.id }} .section-heading {
+    color: {{ section.settings.text_color }};
+    font-size: {{ section.settings.heading_size }}px;
+  }
+  .sale-bundle-grid-{{ section.id }} .sale-product-description {
+    margin-top: 1rem;
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+{% endstyle %}
+
+<script>
+(function() {
+  const sectionId = '{{ section.id }}';
+  const forms = document.querySelectorAll(`#sale-bundle-grid-${sectionId} .sale-bundle-add-to-cart-form`);
+  
+  forms.forEach(form => {
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const button = form.querySelector('button[type="submit"]');
+      const buttonSpan = button.querySelector('span');
+      const originalText = buttonSpan ? buttonSpan.textContent : button.textContent;
+      
+      button.disabled = true;
+      button.classList.add('loading');
+      
+      try {
+        const res = await fetch('/cart/add.js', {
+          method: 'POST',
+          body: new FormData(form)
+        });
+        
+        const data = await res.json();
+        
+        if (data.status) {
+          alert(data.description || 'Error adding to cart');
+          button.disabled = false;
+          if (buttonSpan) buttonSpan.textContent = originalText;
+          else button.textContent = originalText;
+          button.classList.remove('loading');
+          return;
+        }
+        
+        document.dispatchEvent(new CustomEvent('theme:cart:refresh'));
+        
+        setTimeout(() => {
+          const drawer = document.querySelector('cart-drawer');
+          if (drawer && drawer.openCartDrawer) drawer.openCartDrawer(true);
+        }, 300);
+        
+        button.disabled = false;
+        button.textContent = originalText;
+        button.classList.remove('loading');
+      } catch (error) {
+        console.error(error);
+        alert('Error adding to cart');
+        button.disabled = false;
+        button.textContent = originalText;
+        button.classList.remove('loading');
+      }
+    });
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Sale Bundle Grid",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Save on Our Best Selling Bundles"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#000000"
+    },
+    {
+      "type": "select",
+      "id": "button_type",
+      "label": "Button color",
+      "default": "btn--primary",
+      "options": [
+        { "value": "btn--black", "label": "Black" },
+        { "value": "btn--white", "label": "White" },
+        { "value": "btn--primary", "label": "Primary" },
+        { "value": "btn--secondary", "label": "Secondary" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "button_size",
+      "label": "Button size",
+      "default": "",
+      "options": [
+        { "label": "Small", "value": "btn--small" },
+        { "label": "Medium", "value": "" },
+        { "label": "Large", "value": "btn--large" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "button_style",
+      "label": "Button style",
+      "default": "btn--solid",
+      "options": [
+        { "label": "Solid", "value": "btn--solid" },
+        { "label": "Outline", "value": "btn--outline" },
+        { "label": "Text", "value": "btn--text" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "min": 24,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading Size",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "label": "Columns (Desktop)",
+      "default": 3
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "options": [
+        {
+          "value": "1",
+          "label": "1"
+        },
+        {
+          "value": "2",
+          "label": "2"
+        }
+      ],
+      "default": "2",
+      "label": "Columns (Mobile)"
+    },
+    {
+      "type": "header",
+      "content": "Product Display"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_description",
+      "label": "Show Product Description",
+      "default": true,
+      "info": "Product descriptions will show with read more/read less functionality"
+    },
+    {
+      "type": "header",
+      "content": "Add to Cart Button"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_add_to_cart",
+      "label": "Show Add to Cart Button",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "add_to_cart_text",
+      "label": "Add to Cart Button Text",
+      "default": "Add to cart",
+      "info": "Can be overridden per bundle block"
+    },
+    {
+      "type": "select",
+      "id": "cart_button_type",
+      "label": "Add to Cart Button color",
+      "default": "btn--primary",
+      "options": [
+        { "value": "btn--black", "label": "Black" },
+        { "value": "btn--white", "label": "White" },
+        { "value": "btn--primary", "label": "Primary" },
+        { "value": "btn--secondary", "label": "Secondary" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "cart_button_size",
+      "label": "Add to Cart Button size",
+      "default": "",
+      "options": [
+        { "label": "Small", "value": "btn--small" },
+        { "label": "Medium", "value": "" },
+        { "label": "Large", "value": "btn--large" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "cart_button_style",
+      "label": "Add to Cart Button style",
+      "default": "btn--solid",
+      "options": [
+        { "label": "Solid", "value": "btn--solid" },
+        { "label": "Outline", "value": "btn--outline" },
+        { "label": "Text", "value": "btn--text" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 60
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "width",
+      "label": "Width",
+      "default": "wrapper--full-padded",
+      "options": [
+        {"value": "wrapper--full", "label": "Full width"},
+        {"value": "wrapper--full-padded", "label": "Full width padded"},
+        {"value": "wrapper", "label": "Normal"}
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme_1"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "bundle",
+      "name": "Bundle",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "Product"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "info": "Leave blank to use product title"
+        },
+        {
+          "type": "text",
+          "id": "description",
+          "label": "Description"
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button Text",
+          "default": "Add to cart",
+          "info": "Product price and sale price will be automatically displayed from the selected product"
+        },
+        {
+          "type": "url",
+          "id": "button_url",
+          "label": "Button URL",
+          "info": "Only used if product is not selected"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Sale Bundle Grid",
+      "blocks": [
+        {
+          "type": "bundle"
+        },
+        {
+          "type": "bundle"
+        },
+        {
+          "type": "bundle"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+

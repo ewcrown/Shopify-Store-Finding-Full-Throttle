@@ -1,0 +1,193 @@
+.sale-promo-banner {
+  text-align: center;
+}
+
+.promo-banner-wrapper {
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.promo-badge {
+  display: inline-block;
+  background-color: #ff0000;
+  color: #ffffff;
+  padding: 8px 20px;
+  border-radius: 4px;
+  font-weight: bold;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 20px;
+}
+
+.promo-heading {
+  font-weight: bold;
+  margin-bottom: 15px;
+  line-height: 1.2;
+}
+
+.promo-subheading {
+  font-size: 18px;
+  margin-bottom: 20px;
+  opacity: 0.9;
+}
+
+.promo-description {
+  font-size: 16px;
+  line-height: 1.6;
+  margin-bottom: 30px;
+  max-width: 700px;
+}
+
+.promo-description p {
+  margin-bottom: 10px;
+}
+
+.promo-product-info {
+  margin: 20px 0;
+}
+
+.promo-product-price {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.original-price {
+  font-size: 24px;
+  text-decoration: line-through;
+  opacity: 0.6;
+  color: #666;
+}
+
+.current-price {
+  font-size: 32px;
+  font-weight: bold;
+  color: #ff0000;
+}
+
+.promo-button {
+  display: inline-block;
+  padding: 15px 40px;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 16px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+  margin-top: 20px;
+}
+
+.promo-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.promo-image-wrapper {
+  margin-top: 30px;
+  max-width: 100%;
+}
+
+.promo-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+}
+
+@media (max-width: 989px) {
+  .promo-banner-wrapper {
+    padding: 0 20px;
+  }
+  
+  .promo-heading {
+    font-size: 28px;
+  }
+  
+  .promo-description {
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 768px) {
+  .sale-promo-banner {
+    padding: 40px 0;
+  }
+  
+  .promo-banner-wrapper {
+    padding: 0 15px;
+  }
+  
+  .promo-badge {
+    font-size: 12px;
+    padding: 6px 15px;
+    margin-bottom: 15px;
+  }
+  
+  .promo-heading {
+    font-size: 22px !important;
+    margin-bottom: 12px;
+  }
+  
+  .promo-subheading {
+    font-size: 15px;
+    margin-bottom: 15px;
+  }
+  
+  .promo-description {
+    font-size: 14px;
+    margin-bottom: 20px;
+  }
+  
+  .promo-product-price {
+    gap: 10px;
+    margin: 15px 0;
+  }
+  
+  .promo-button {
+    padding: 12px 30px;
+    font-size: 14px;
+    width: 100%;
+    max-width: 300px;
+  }
+  
+  .original-price {
+    font-size: 20px;
+  }
+  
+  .current-price {
+    font-size: 26px;
+  }
+  
+  .promo-image-wrapper {
+    margin-top: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .promo-heading {
+    font-size: 20px !important;
+  }
+  
+  .promo-subheading {
+    font-size: 14px;
+  }
+  
+  .promo-description {
+    font-size: 13px;
+  }
+  
+  .original-price {
+    font-size: 18px;
+  }
+  
+  .current-price {
+    font-size: 24px;
+  }
+}
+

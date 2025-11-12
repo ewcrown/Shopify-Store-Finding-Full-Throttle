@@ -1,0 +1,76 @@
+.sale-discount-tiers {
+  padding: 40px 0;
+}
+
+.discount-tiers-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  max-width: 800px;
+  margin: 0 auto;
+  align-items: center;
+}
+
+.discount-tier-image {
+  width: 100%;
+  max-width: 100%;
+}
+
+.tier-image-link {
+  display: block;
+  width: 100%;
+  text-decoration: none;
+}
+
+.tier-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.tier-image-link:hover .tier-image,
+.discount-tier-image:hover .tier-image {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+@media (max-width: 989px) {
+  .sale-discount-tiers {
+    padding: 35px 0;
+  }
+  
+  .discount-tiers-wrapper {
+    max-width: 700px;
+    gap: 12px;
+  }
+}
+
+@media (max-width: 768px) {
+  .sale-discount-tiers {
+    padding: 30px 0;
+  }
+  
+  .discount-tiers-wrapper {
+    padding: 0 15px;
+    gap: 12px;
+  }
+  
+  .tier-image {
+    border-radius: 6px;
+  }
+}
+
+@media (max-width: 480px) {
+  .sale-discount-tiers {
+    padding: 25px 0;
+  }
+  
+  .discount-tiers-wrapper {
+    padding: 0 10px;
+    gap: 10px;
+  }
+}
+

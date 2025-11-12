@@ -1,0 +1,416 @@
+{{ 'sale-product-grid.css' | asset_url | stylesheet_tag }}
+{{ 'component-card.css' | asset_url | stylesheet_tag }}
+{{ 'component-price.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign color_scheme = 'color-' | append: section.settings.color_scheme | default: ''
+-%}
+
+{%- style -%}
+  #sale-product-grid-{{ section.id }} {
+    --PT: {{ section.settings.padding_top }}px;
+    --PB: {{ section.settings.padding_bottom }}px;
+  }
+
+  @media (max-width: 749px) {
+    #sale-product-grid-{{ section.id }} > div {
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+  }
+{%- endstyle -%}
+
+<style>
+
+  .sale-product-grid .product-grid{
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    list-style: none;
+    gap: 20px;
+}
+.sale-product-grid .carousel__slide {
+  width: 100%;
+  max-width: 100%;
+  padding: 0;
+}
+
+@media (max-width: 767px) {
+  .sale-product-grid .product-grid{
+    grid-template-columns: repeat(1,1fr);
+    gap: 10px;
+    margin:0 !important;
+  }
+}
+</style>
+
+<section class="sale-product-grid sale-product-grid-{{ section.id }} section-padding {{ color_scheme }}" id="sale-product-grid-{{ section.id }}">
+  <div class="{{ section.settings.width | default: 'wrapper--full-padded' }}">
+    <div class="grid-container{% if section.settings.width == 'wrapper' %} {{ section.settings.width }}{% endif %}">
+      {% if section.settings.heading != blank or section.settings.subheading != blank %}
+        <div class="grid__heading-holder text-center">
+          <div class="grid__heading-text">
+            {% if section.settings.heading != blank %}
+              <h2 class="grid__heading">{{ section.settings.heading }}</h2>
+            {% endif %}
+            {% if section.settings.subheading != blank %}
+              <div class="grid__description">{{ section.settings.subheading }}</div>
+            {% endif %}
+          </div>
+        </div>
+      {% endif %}
+      
+      {% if section.settings.collection != blank %}
+        <div class="grid__items-holder">
+          <div class="grid-outer">
+            <div class="grid grid--{{ section.settings.columns_mobile }}-col-tablet-down grid--{{ section.settings.columns_desktop }}-col-desktop">
+              {% for product in section.settings.collection.products limit: section.settings.products_limit %}
+                <div class="grid__item">
+                  {% render 'product-grid-item', product: product, index: forloop.index %}
+                  {% if product.description != blank and section.settings.show_description %}
+                    <div class="sale-product-description">
+                      {% render 'toggle-ellipsis', content: product.description, show_read_more: true %}
+                    </div>
+                  {% endif %}
+                  {% if section.settings.show_add_to_cart %}
+                    {% assign first_variant = product.selected_or_first_available_variant %}
+                    {% if first_variant and first_variant.available and product.available %}
+                      <form action="{{ routes.cart_add_url }}" method="post" enctype="multipart/form-data" class="sale-product-add-to-cart-form">
+                        <input type="hidden" name="id" value="{{ first_variant.id }}">
+                        <button type="submit" class="btn {{ section.settings.cart_button_style }} {{ section.settings.cart_button_size }} {{ section.settings.cart_button_type }}" name="add">
+                          <span>{% if section.settings.add_to_cart_text != blank %}{{ section.settings.add_to_cart_text }}{% else %}Add to cart{% endif %}</span>
+                        </button>
+                      </form>
+                    {% else %}
+                      <button type="button" class="btn {{ section.settings.cart_button_style }} {{ section.settings.cart_button_size }} {{ section.settings.cart_button_type }}" disabled>
+                        <span>Sold out</span>
+                      </button>
+                    {% endif %}
+                  {% endif %}
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+        
+        {% if section.settings.button_text != blank and section.settings.button_url != blank %}
+          <div class="grid__heading-actions text-center" style="margin-top: 2rem;">
+            <a href="{{ section.settings.button_url }}" class="btn {{ section.settings.button_style }} {{ section.settings.button_size }} {{ section.settings.button_type }}">
+              <span>{{ section.settings.button_text }}</span>
+            </a>
+          </div>
+        {% endif %}
+      {% else %}
+        <p class="no-collection-message">Please select a collection in the section settings.</p>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% style %}
+  .sale-product-grid-{{ section.id }} {
+    background-color: {{ section.settings.bg_color }};
+    color: {{ section.settings.text_color }};
+  }
+  .sale-product-grid-{{ section.id }} .section-heading {
+    color: {{ section.settings.text_color }};
+    font-size: {{ section.settings.heading_size }}px;
+  }
+  .sale-product-grid-{{ section.id }} .sale-product-description {
+    margin-top: 1rem;
+    font-size: 0.875rem;
+    line-height: 1.5;
+  }
+{% endstyle %}
+
+<script>
+(function() {
+  const sectionId = '{{ section.id }}';
+  const forms = document.querySelectorAll(`#sale-product-grid-${sectionId} .sale-product-add-to-cart-form`);
+  
+  forms.forEach(form => {
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const button = form.querySelector('button[type="submit"]');
+      const buttonSpan = button.querySelector('span');
+      const originalText = buttonSpan ? buttonSpan.textContent : button.textContent;
+      
+      button.disabled = true;
+      button.classList.add('loading');
+      
+      try {
+        const res = await fetch('/cart/add.js', {
+          method: 'POST',
+          body: new FormData(form)
+        });
+        
+        const data = await res.json();
+        
+        if (data.status) {
+          alert(data.description || 'Error adding to cart');
+          button.disabled = false;
+          if (buttonSpan) buttonSpan.textContent = originalText;
+          else button.textContent = originalText;
+          button.classList.remove('loading');
+          return;
+        }
+        
+        document.dispatchEvent(new CustomEvent('theme:cart:refresh'));
+        
+        setTimeout(() => {
+          const drawer = document.querySelector('cart-drawer');
+          if (drawer && drawer.openCartDrawer) drawer.openCartDrawer(true);
+        }, 300);
+        
+        button.disabled = false;
+        button.textContent = originalText;
+        button.classList.remove('loading');
+      } catch (error) {
+        console.error(error);
+        alert('Error adding to cart');
+        button.disabled = false;
+        button.textContent = originalText;
+        button.classList.remove('loading');
+      }
+    });
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Sale Product Grid",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Holiday Favorites, Gifts, and Best Sellers"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "products_limit",
+      "min": 4,
+      "max": 24,
+      "step": 4,
+      "label": "Products to Show",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "label": "Columns (Desktop)",
+      "default": 4
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "options": [
+        {
+          "value": "1",
+          "label": "1"
+        },
+        {
+          "value": "2",
+          "label": "2"
+        }
+      ],
+      "default": "2",
+      "label": "Columns (Mobile)"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "SHOP OUR FULL MENU"
+    },
+    {
+      "type": "url",
+      "id": "button_url",
+      "label": "Button URL"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#000000"
+    },
+    {
+      "type": "select",
+      "id": "button_type",
+      "label": "Button color",
+      "default": "btn--primary",
+      "options": [
+        { "value": "btn--black", "label": "Black" },
+        { "value": "btn--white", "label": "White" },
+        { "value": "btn--primary", "label": "Primary" },
+        { "value": "btn--secondary", "label": "Secondary" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "button_size",
+      "label": "Button size",
+      "default": "",
+      "options": [
+        { "label": "Small", "value": "btn--small" },
+        { "label": "Medium", "value": "" },
+        { "label": "Large", "value": "btn--large" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "button_style",
+      "label": "Button style",
+      "default": "btn--solid",
+      "options": [
+        { "label": "Solid", "value": "btn--solid" },
+        { "label": "Outline", "value": "btn--outline" },
+        { "label": "Text", "value": "btn--text" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "min": 24,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading Size",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 60
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "width",
+      "label": "Width",
+      "default": "wrapper--full-padded",
+      "options": [
+        {"value": "wrapper--full", "label": "Full width"},
+        {"value": "wrapper--full-padded", "label": "Full width padded"},
+        {"value": "wrapper", "label": "Normal"}
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme_1"
+    },
+    {
+      "type": "header",
+      "content": "Product Display"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_description",
+      "label": "Show Product Description",
+      "default": true,
+      "info": "Product descriptions will show with read more/read less functionality"
+    },
+    {
+      "type": "header",
+      "content": "Add to Cart Button"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_add_to_cart",
+      "label": "Show Add to Cart Button",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "add_to_cart_text",
+      "label": "Add to Cart Button Text",
+      "default": "Add to cart"
+    },
+    {
+      "type": "select",
+      "id": "cart_button_type",
+      "label": "Add to Cart Button color",
+      "default": "btn--primary",
+      "options": [
+        { "value": "btn--black", "label": "Black" },
+        { "value": "btn--white", "label": "White" },
+        { "value": "btn--primary", "label": "Primary" },
+        { "value": "btn--secondary", "label": "Secondary" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "cart_button_size",
+      "label": "Add to Cart Button size",
+      "default": "",
+      "options": [
+        { "label": "Small", "value": "btn--small" },
+        { "label": "Medium", "value": "" },
+        { "label": "Large", "value": "btn--large" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "cart_button_style",
+      "label": "Add to Cart Button style",
+      "default": "btn--solid",
+      "options": [
+        { "label": "Solid", "value": "btn--solid" },
+        { "label": "Outline", "value": "btn--outline" },
+        { "label": "Text", "value": "btn--text" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Sale Product Grid"
+    }
+  ]
+}
+{% endschema %}
+

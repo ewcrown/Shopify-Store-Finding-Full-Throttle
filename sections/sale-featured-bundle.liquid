@@ -1,0 +1,366 @@
+{{ 'sale-featured-bundle.css' | asset_url | stylesheet_tag }}
+
+
+{%- liquid
+  assign color_scheme = 'color-' | append: section.settings.color_scheme | default: ''
+-%}
+
+{%- style -%}
+  #sale-featured-bundle-{{ section.id }} {
+    --PT: {{ section.settings.padding_top }}px;
+    --PB: {{ section.settings.padding_bottom }}px;
+  }
+
+  @media (max-width: 749px) {
+    #sale-featured-bundle-{{ section.id }} > div {
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+  }
+{%- endstyle -%}
+
+<section class="sale-featured-bundle sale-featured-bundle-{{ section.id }} section-padding {{ color_scheme }}" id="sale-featured-bundle-{{ section.id }}">
+  <div class="{{ section.settings.width | default: 'wrapper--full-padded' }}">
+    <div class="featured-bundle-wrapper">
+      {% assign bundle_product = section.settings.product %}
+      {% assign display_image = section.settings.image %}
+      {% if display_image == blank and bundle_product != blank and bundle_product.featured_image != blank %}
+        {% assign display_image = bundle_product.featured_image %}
+      {% endif %}
+      
+      {% if display_image != blank %}
+        <div class="bundle-image-wrapper">
+          {% if bundle_product != blank %}
+            <a href="{{ bundle_product.url }}">
+          {% endif %}
+          <img 
+            src="{{ display_image | image_url: width: 800 }}" 
+            alt="{{ display_image.alt | escape }}"
+            class="bundle-image"
+            width="800"
+            height="{{ 800 | divided_by: display_image.aspect_ratio | round }}"
+            loading="lazy"
+          >
+          {% if bundle_product != blank %}
+            </a>
+          {% endif %}
+        </div>
+      {% endif %}
+      
+      <div class="bundle-content">
+        {% assign display_heading = section.settings.heading %}
+        {% if display_heading == blank and bundle_product != blank %}
+          {% assign display_heading = bundle_product.title %}
+        {% endif %}
+        
+        {% if display_heading != blank %}
+          <h2 class="bundle-heading">{{ display_heading }}</h2>
+        {% endif %}
+        
+        {% assign display_subheading = section.settings.subheading %}
+        {% if display_subheading == blank and bundle_product != blank %}
+          {% assign display_subheading = bundle_product.description | strip_html | truncate: 150 %}
+        {% endif %}
+        
+        {% if display_subheading != blank %}
+          <p class="bundle-subheading">{{ display_subheading }}</p>
+        {% endif %}
+        
+        {% if section.settings.description != blank %}
+          <div class="bundle-description">
+            {% render 'toggle-ellipsis', content: section.settings.description, show_read_more: true %}
+          </div>
+        {% elsif bundle_product != blank and bundle_product.description != blank %}
+          <div class="bundle-description">
+            {% render 'toggle-ellipsis', content: bundle_product.description, show_read_more: true %}
+          </div>
+        {% endif %}
+        
+        {% if section.settings.features != blank %}
+          <div class="bundle-features">
+            {{ section.settings.features }}
+          </div>
+        {% endif %}
+        
+        <div class="bundle-pricing">
+          {% if bundle_product != blank %}
+            {% assign first_variant = bundle_product.selected_or_first_available_variant %}
+            {% if first_variant.compare_at_price > first_variant.price %}
+              <span class="bundle-original-price">{{ first_variant.compare_at_price | money }}</span>
+            {% elsif section.settings.original_price != blank %}
+              <span class="bundle-original-price">{{ section.settings.original_price }}</span>
+            {% endif %}
+            <span class="bundle-current-price">{{ first_variant.price | money }}</span>
+          {% else %}
+            {% if section.settings.original_price != blank %}
+              <span class="bundle-original-price">{{ section.settings.original_price }}</span>
+            {% endif %}
+            {% if section.settings.current_price != blank %}
+              <span class="bundle-current-price">{{ section.settings.current_price }}</span>
+            {% endif %}
+          {% endif %}
+        </div>
+        
+        {% if bundle_product != blank %}
+          <form action="{{ routes.cart_add_url }}" method="post" enctype="multipart/form-data" class="bundle-form">
+            <input type="hidden" name="id" value="{{ bundle_product.selected_or_first_available_variant.id }}">
+            <button type="submit" class="btn {{ section.settings.button_style }} {{ section.settings.button_size }} {{ section.settings.button_type }}" name="add">
+              <span>{% if section.settings.button_text != blank %}{{ section.settings.button_text }}{% else %}Add to cart{% endif %}</span>
+            </button>
+          </form>
+        {% elsif section.settings.button_url != blank %}
+          <a href="{{ section.settings.button_url }}" class="btn {{ section.settings.button_style }} {{ section.settings.button_size }} {{ section.settings.button_type }}">
+            <span>{% if section.settings.button_text != blank %}{{ section.settings.button_text }}{% else %}Shop Now{% endif %}</span>
+          </a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% style %}
+  .sale-featured-bundle-{{ section.id }} {
+    background-color: {{ section.settings.bg_color }};
+    color: {{ section.settings.text_color }};
+    padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px;
+  }
+  .sale-featured-bundle-{{ section.id }} .bundle-heading {
+    color: {{ section.settings.text_color }};
+    font-size: {{ section.settings.heading_size }}px;
+  }
+{% endstyle %}
+
+<script>
+(function() {
+  const sectionId = '{{ section.id }}';
+  const form = document.querySelector(`#sale-featured-bundle-${sectionId} .bundle-form`);
+  
+  if (form) {
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const button = form.querySelector('button[type="submit"]');
+      const buttonSpan = button.querySelector('span');
+      const originalText = buttonSpan ? buttonSpan.textContent : button.textContent;
+      
+      button.disabled = true;
+      button.classList.add('loading');
+      
+      try {
+        const res = await fetch('/cart/add.js', {
+          method: 'POST',
+          body: new FormData(form)
+        });
+        
+        const data = await res.json();
+        
+        if (data.status) {
+          alert(data.description || 'Error adding to cart');
+          button.disabled = false;
+          if (buttonSpan) buttonSpan.textContent = originalText;
+          else button.textContent = originalText;
+          button.classList.remove('loading');
+          return;
+        }
+        
+        document.dispatchEvent(new CustomEvent('theme:cart:refresh'));
+        
+        setTimeout(() => {
+          const drawer = document.querySelector('cart-drawer');
+          if (drawer && drawer.openCartDrawer) drawer.openCartDrawer(true);
+        }, 300);
+        
+        button.disabled = false;
+        button.textContent = originalText;
+        button.classList.remove('loading');
+      } catch (error) {
+        console.error(error);
+        alert('Error adding to cart');
+        button.disabled = false;
+        button.textContent = originalText;
+        button.classList.remove('loading');
+      }
+    });
+  }
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Sale Featured Bundle",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "info": "Leave blank to use product title",
+      "default": "The BIG Holiday Gift Box: A Holiday Feast Delivered with Love!"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "info": "Leave blank to use product description excerpt",
+      "default": "Make the season merry, bright, and oh-so-delicious with The Big Holiday Gift Box!"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "info": "Leave blank to use product description",
+      "default": "<p>Packed with an assortment of top-selling, chef-prepared favorites, this gift box is the ultimate way to celebrate or show someone you care.</p>"
+    },
+    {
+      "type": "richtext",
+      "id": "features",
+      "label": "Features List",
+      "default": "<ul><li>9 Entrees</li><li>2 Soups</li><li>2 Desserts</li><li>2 Wings</li><li>1 Hot Lava Hot Sauce</li><li>$25 Gift Certificate</li></ul>"
+    },
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Product"
+    },
+    {
+      "type": "text",
+      "id": "original_price",
+      "label": "Original Price",
+      "info": "Leave blank to use product compare_at_price",
+      "default": "$242.10"
+    },
+    {
+      "type": "text",
+      "id": "current_price",
+      "label": "Current Price",
+      "info": "Leave blank to use product price",
+      "default": "$199.99"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image",
+      "info": "Leave blank to use product featured image"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "info": "Product price and sale price will be automatically displayed from the selected product",
+      "default": "Add to cart"
+    },
+    {
+      "type": "url",
+      "id": "button_url",
+      "label": "Button URL"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#000000"
+    },
+    {
+      "type": "select",
+      "id": "button_type",
+      "label": "Button color",
+      "default": "btn--primary",
+      "options": [
+        { "value": "btn--black", "label": "Black" },
+        { "value": "btn--white", "label": "White" },
+        { "value": "btn--primary", "label": "Primary" },
+        { "value": "btn--secondary", "label": "Secondary" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "button_size",
+      "label": "Button size",
+      "default": "",
+      "options": [
+        { "label": "Small", "value": "btn--small" },
+        { "label": "Medium", "value": "" },
+        { "label": "Large", "value": "btn--large" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "button_style",
+      "label": "Button style",
+      "default": "btn--solid",
+      "options": [
+        { "label": "Solid", "value": "btn--solid" },
+        { "label": "Outline", "value": "btn--outline" },
+        { "label": "Text", "value": "btn--text" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "min": 24,
+      "max": 60,
+      "step": 2,
+      "unit": "px",
+      "label": "Heading Size",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 60
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "width",
+      "label": "Width",
+      "default": "wrapper--full-padded",
+      "options": [
+        {"value": "wrapper--full", "label": "Full width"},
+        {"value": "wrapper--full-padded", "label": "Full width padded"},
+        {"value": "wrapper", "label": "Normal"}
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme_1"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Sale Featured Bundle"
+    }
+  ]
+}
+{% endschema %}
+

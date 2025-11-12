@@ -9,58 +9,257 @@
  */
 {
   "sections": {
-    "hero": {
-      "type": "collection-image-with-title",
-      "settings": {
-        "show_title": true,
-        "show_description": false,
-        "flex_align": "align--bottom-left",
-        "color_scheme": "scheme-2",
-        "show_text_background": false,
-        "show_image": false,
-        "banner_layout": "overlay",
-        "height": "two-fifty-height-hero",
-        "mobile_height": "two-fifty-height-hero--mobile",
-        "overlay_opacity": 0,
-        "show_overlay_text": false,
-        "padding_top": 0,
-        "padding_bottom": 0
-      }
-    },
-    "subcollections": {
-      "type": "subcollections",
+    "announcement_banner": {
+      "type": "sale-announcement-banner",
       "disabled": true,
+      "settings": {}
+    },
+    "discount_tiers": {
+      "type": "sale-discount-tiers",
+      "blocks": {
+        "tier_1": {
+          "type": "tier",
+          "settings": {
+            "image": "shopify://shop_images/Spend-130-1024x379.png",
+            "link_url": ""
+          }
+        }
+      },
+      "block_order": [
+        "tier_1"
+      ],
       "settings": {
-        "subcollection_layout": "grid",
-        "subcollection_description": false,
-        "select_image": "collection",
-        "color_scheme": "",
-        "color": "#ffffff",
-        "bg_color": "",
+        "bg_color": "#ffffff",
         "padding_top": 20,
         "padding_bottom": 20
       }
     },
-    "main": {
-      "type": "collection",
+    "promo_banner": {
+      "type": "sale-promo-banner",
       "settings": {
-        "enable_sort": true,
-        "enable_filters": true,
-        "filter_layout": "inline-open",
-        "default_open": true,
-        "collection_linklist": "accessories",
-        "grid": 3,
-        "grid_mobile": "2",
-        "products_per_page": 24,
-        "color_scheme": "scheme-4",
-        "padding_top": 0,
+        "badge_text": "",
+        "heading": "Our NEW YEAR Countdown sale is here!",
+        "subheading": "",
+        "description": "",
+        "product": "",
+        "original_price": "",
+        "current_price": "",
+        "button_text": "Shop Our Full Menu",
+        "button_url": "",
+        "bg_color": "#000000",
+        "text_color": "#ffffff",
+        "button_bg_color": "#000000",
+        "button_text_color": "#ffffff",
+        "button_hover_bg_color": "#333333",
+        "heading_size": 60,
+        "padding_top": 20,
+        "padding_bottom": 12,
+        "width": "wrapper--full-padded",
+        "color_scheme": ""
+      }
+    },
+    "countdown": {
+      "type": "sale-countdown",
+      "settings": {
+        "heading": "NEW YEAR SALE ENDS IN",
+        "end_date": "2025-11-15T23:59:59",
+        "subheading": "",
+        "bg_color": "#ffebba",
+        "text_color": "#121212",
+        "heading_size": 24,
+        "padding_top": 12,
+        "padding_bottom": 12,
+        "width": "wrapper--full-padded",
+        "color_scheme": ""
+      }
+    },
+    "featured_bundle": {
+      "type": "sale-featured-bundle",
+      "settings": {
+        "heading": "The BIG Holiday Gift Box: A Holiday Feast Delivered with Love!",
+        "subheading": "Make the season merry, bright, and oh-so-delicious with The Big Holiday Gift Box!",
+        "description": "<p>Packed with an assortment of top-selling, chef-prepared favorites, this gift box is the ultimate way to celebrate or show someone you care. With 9 flavorful entrees, 2 comforting soups, 2 indulgent desserts, 2 varieties of wings, and our signature Hot Lava Hot Sauce, this bundle transforms the freezer into a treasure trove of gourmet delights. Plus, a $25 gift card keeps the goodness going!</p>",
+        "features": "<p><strong>Each Holiday Box Includes:</strong></p><ul><li>9 Entrees</li><li>2 Soups</li><li>2 Desserts</li><li>2 Wings</li><li>1 Hot Lava Hot Sauce</li><li>$25 Gift Certificate</li></ul>",
+        "product": "3-pedal-society-hoodie",
+        "original_price": "",
+        "current_price": "$199.99",
+        "button_text": "Shop Now",
+        "button_url": "",
+        "bg_color": "#ffffff",
+        "text_color": "#000000",
+        "button_bg_color": "#000000",
+        "button_text_color": "#ffffff",
+        "button_hover_bg_color": "#333333",
+        "heading_size": 36,
+        "padding_top": 28,
         "padding_bottom": 0
+      }
+    },
+    "sale_featured_bundle_FTB3LD": {
+      "type": "sale-featured-bundle",
+      "settings": {
+        "heading": "",
+        "subheading": "",
+        "description": "<p>Packed with an assortment of top-selling, chef-prepared favorites, this gift box is the ultimate way to celebrate or show someone you care. With 9 flavorful entrees, 2 comforting soups, 2 indulgent desserts, 2 varieties of wings, and our signature Hot Lava Hot Sauce, this bundle transforms the freezer into a treasure trove of gourmet delights. Plus, a $25 gift card keeps the goodness going!</p>",
+        "features": "<p><strong>Each Holiday Box Includes:</strong></p><ul><li>9 Entrees</li><li>2 Soups</li><li>2 Desserts</li><li>2 Wings</li><li>1 Hot Lava Hot Sauce</li><li>$25 Gift Certificate</li></ul>",
+        "product": "3-pedal-society-stealth-hat",
+        "original_price": "",
+        "current_price": "$199.99",
+        "button_text": "Shop Now",
+        "button_url": "",
+        "bg_color": "#ffffff",
+        "text_color": "#000000",
+        "button_bg_color": "#000000",
+        "button_text_color": "#ffffff",
+        "button_hover_bg_color": "#333333",
+        "heading_size": 36,
+        "padding_top": 0,
+        "padding_bottom": 60
+      }
+    },
+    "testimonials": {
+      "type": "sale-testimonials",
+      "blocks": {
+        "testimonial_1": {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "text": "<p>The experience we had ordering 15 meals was most excellent! The variety is amazing… real food perfected in spice, flavor and proportion. We absolutely recommend!</p>",
+            "author": "The Tarantowski Family",
+            "author_title": "Verified Customer"
+          }
+        },
+        "testimonial_2": {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "text": "<p>I have tried several delivery meal services over the last few years and none of hold a candle to EatFlavorly! A solid 10/10. Highly recommended!</p>",
+            "author": "Eboni M.",
+            "author_title": "Verified Customer"
+          }
+        },
+        "testimonial_3": {
+          "type": "testimonial",
+          "settings": {
+            "rating": 5,
+            "text": "<p>I have tried several meals from EatFlavorly. They have all exceeded my expectations. Order a box for your family or gift one to a friends or family. You won't regret it!</p>",
+            "author": "Wendy S.",
+            "author_title": "Verified Customer"
+          }
+        }
+      },
+      "block_order": [
+        "testimonial_1",
+        "testimonial_2",
+        "testimonial_3"
+      ],
+      "settings": {
+        "heading": "",
+        "bg_color": "#f5f5f5",
+        "text_color": "#000000",
+        "heading_size": 36,
+        "columns_desktop": 3,
+        "padding_top": 60,
+        "padding_bottom": 60
+      }
+    },
+    "product_grid": {
+      "type": "sale-product-grid",
+      "settings": {
+        "heading": "Holiday Favorites, Gifts, and Best Sellers",
+        "subheading": "",
+        "collection": "accessories",
+        "products_limit": 8,
+        "columns_desktop": 4,
+        "columns_mobile": "2",
+        "button_text": "SHOP OUR FULL MENU",
+        "button_url": "",
+        "bg_color": "#ffffff",
+        "text_color": "#000000",
+        "button_bg_color": "#000000",
+        "button_text_color": "#ffffff",
+        "button_hover_bg_color": "#333333",
+        "heading_size": 36,
+        "padding_top": 60,
+        "padding_bottom": 60,
+        "width": "wrapper--full-padded",
+        "color_scheme": "",
+        "show_add_to_cart": true,
+        "add_to_cart_text": "Add to cart",
+        "cart_button_bg_color": "#000000",
+        "cart_button_text_color": "#ffffff",
+        "cart_button_hover_bg_color": "#333333"
+      }
+    },
+    "bundle_grid": {
+      "type": "sale-bundle-grid",
+      "blocks": {
+        "bundle_1": {
+          "type": "bundle",
+          "settings": {
+            "product": "car-girl-trucker",
+            "title": "The Hungry Pack",
+            "description": "",
+            "button_text": "Add to cart",
+            "button_url": ""
+          }
+        },
+        "bundle_2": {
+          "type": "bundle",
+          "settings": {
+            "product": "launch-key-tag",
+            "title": "The Lighter Side",
+            "description": "",
+            "button_text": "Add to cart",
+            "button_url": ""
+          }
+        },
+        "bundle_3": {
+          "type": "bundle",
+          "settings": {
+            "product": "3-pedal-society-kit",
+            "title": "The Foodies Pack",
+            "description": "",
+            "button_text": "Add to cart",
+            "button_url": ""
+          }
+        }
+      },
+      "block_order": [
+        "bundle_1",
+        "bundle_2",
+        "bundle_3"
+      ],
+      "settings": {
+        "heading": "Save on Our Best Selling Bundles",
+        "subheading": "",
+        "bg_color": "#ffffff",
+        "text_color": "#000000",
+        "button_bg_color": "#000000",
+        "button_text_color": "#ffffff",
+        "button_hover_bg_color": "#333333",
+        "heading_size": 36,
+        "columns_desktop": 3,
+        "columns_mobile": "2",
+        "show_add_to_cart": true,
+        "add_to_cart_text": "Add to cart",
+        "cart_button_bg_color": "#000000",
+        "cart_button_text_color": "#ffffff",
+        "cart_button_hover_bg_color": "#333333",
+        "padding_top": 60,
+        "padding_bottom": 60
       }
     }
   },
   "order": [
-    "hero",
-    "subcollections",
-    "main"
+    "announcement_banner",
+    "discount_tiers",
+    "promo_banner",
+    "countdown",
+    "featured_bundle",
+    "sale_featured_bundle_FTB3LD",
+    "testimonials",
+    "product_grid",
+    "bundle_grid"
   ]
 }
