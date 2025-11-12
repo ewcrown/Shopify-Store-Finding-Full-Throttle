@@ -145,7 +145,7 @@
         "show_cart_bar": true,
         "enable_zoom": false,
         "enable_video_looping": false,
-        "image_layout": "grid-1",
+        "image_layout": "thumbnails-left",
         "image_size": "normal",
         "mobile_image_style": "thumbs",
         "color_scheme": "scheme-4",
@@ -348,7 +348,7 @@
         "height": "screen-height-three-quarters",
         "mobile_height": "screen-height-one-half--mobile",
         "reverse_blocks": true,
-        "color_scheme": "scheme-2",
+        "color_scheme": "scheme-4",
         "padding_top": 20,
         "padding_bottom": 20,
         "show_placeholder": true
@@ -400,7 +400,7 @@
         "height": "screen-height-three-quarters",
         "mobile_height": "screen-height-one-half--mobile",
         "reverse_blocks": true,
-        "color_scheme": "scheme-2",
+        "color_scheme": "scheme-4",
         "padding_top": 20,
         "padding_bottom": 20,
         "show_placeholder": true

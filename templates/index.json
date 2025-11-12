@@ -55,6 +55,49 @@
         "show_placeholder": true
       }
     },
+    "section_hero_HQEqDw": {
+      "type": "section-hero",
+      "blocks": {
+        "heading_Bmtyzd": {
+          "type": "heading",
+          "settings": {
+            "title": "APPAREL FOR DRIVERS",
+            "heading_font_size": "heading-medium",
+            "heading_tag": "automatic"
+          }
+        },
+        "button_pDGiqd": {
+          "type": "button",
+          "settings": {
+            "link_text": "Shop Now",
+            "link": "shopify://collections/all",
+            "button_type": "btn--secondary",
+            "button_size": "btn--small",
+            "button_style": "btn--solid",
+            "show_arrow": true
+          }
+        }
+      },
+      "block_order": [
+        "heading_Bmtyzd",
+        "button_pDGiqd"
+      ],
+      "settings": {
+        "image_1": "shopify://shop_images/3_Pedal_15_of_20_f251198f-e078-4c0b-a5c1-2a78aa62b58a.jpg",
+        "link": "",
+        "width": "wrapper--full",
+        "height": "screen-height-full",
+        "flex_align_desktop": "align--top-right-desktop",
+        "mobile_image": "shopify://shop_images/3_Pedal_15_of_20_0e0cc5e6-bf2b-45de-9c72-45409723e831.png",
+        "mobile_height": "four-fifty-height-hero--mobile",
+        "flex_align_mobile": "align--top-right-mobile",
+        "color_scheme": "scheme-2",
+        "show_text_background": false,
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "show_placeholder": true
+      }
+    },
     "section_hero_gfjC7y": {
       "type": "section-hero",
       "blocks": {
@@ -82,6 +125,7 @@
         "heading_K93TaB",
         "button_HRhRKw"
       ],
+      "disabled": true,
       "settings": {
         "image_1": "shopify://shop_images/3_Pedal_39_of_42.png",
         "link": "",
@@ -100,10 +144,10 @@
         "show_placeholder": true
       }
     },
-    "section_text_row_JAH4HU": {
+    "section_text_row_h8Tmwr": {
       "type": "section-text-row",
       "blocks": {
-        "icon_i6UeHm": {
+        "icon_JFKD6r": {
           "type": "icon",
           "settings": {
             "icon_name": "icon-location",
@@ -116,7 +160,7 @@
             "heading_tag": "automatic"
           }
         },
-        "icon_yyLKJm": {
+        "icon_nFDEEd": {
           "type": "icon",
           "settings": {
             "icon_name": "icon-shield",
@@ -129,20 +173,7 @@
             "heading_tag": "automatic"
           }
         },
-        "icon_a9X8H6": {
-          "type": "icon",
-          "settings": {
-            "icon_name": "icon-trophy",
-            "icon_size": 40,
-            "icon_color": "",
-            "title": "",
-            "heading_font_size": "heading-mini",
-            "text": "<p>FOR DRIVERS, BY DRIVERS</p>",
-            "text_font_size": "body-medium",
-            "heading_tag": "automatic"
-          }
-        },
-        "icon_YcqPVe": {
+        "icon_AWFx3g": {
           "type": "icon",
           "settings": {
             "icon_name": "icon-truck",
@@ -157,22 +188,21 @@
         }
       },
       "block_order": [
-        "icon_i6UeHm",
-        "icon_yyLKJm",
-        "icon_a9X8H6",
-        "icon_YcqPVe"
+        "icon_JFKD6r",
+        "icon_nFDEEd",
+        "icon_AWFx3g"
       ],
       "settings": {
-        "title": "Our apparel reflects the passion and precision that drive us.",
-        "heading_font_size": "heading-x-small",
+        "title": "Timeless gear for the modern driver.",
+        "heading_font_size": "heading-small",
         "align_heading": "text-center",
         "align_text": "text-center",
-        "icon_alignment": "icon--top",
+        "icon_alignment": "icon--left",
         "width": "wrapper--full-padded",
         "align_columns": "flex-align-center",
         "layout": "grid",
-        "grid": 4,
-        "layout_mobile": "2",
+        "grid": 3,
+        "layout_mobile": "slider",
         "color_scheme": "scheme-2",
         "padding_top": 30,
         "padding_bottom": 30,
@@ -184,7 +214,7 @@
       "settings": {
         "featured_collection": "new-arrivals",
         "heading": "Shop New Releases",
-        "heading_font_size": "heading-small",
+        "heading_font_size": "heading-medium",
         "description": "",
         "text_font_size": "body-medium",
         "layout": "inline",
@@ -376,7 +406,7 @@
             "featured_collection": "3-pedal-collection",
             "show_image": true,
             "align_with_product_images": false,
-            "image": "shopify://shop_images/3_Pedal_Society_Zach_1_of_1.jpg",
+            "image": "shopify://shop_images/3_Pedal_29_of_42.jpg",
             "overlay_opacity": 0,
             "overlay_color": "#000000",
             "description": "",
@@ -459,7 +489,7 @@
       "settings": {
         "show_product_count": false,
         "title": "Newest Collections",
-        "heading_font_size": "heading-x-small",
+        "heading_font_size": "heading-medium",
         "text": "",
         "text_font_size": "body-medium",
         "layout": "inline",
@@ -468,7 +498,7 @@
         "product_limit": 6,
         "grid": 3,
         "rows": 3,
-        "color_scheme": "scheme-4",
+        "color_scheme": "scheme-2",
         "padding_top": 30,
         "padding_bottom": 30,
         "heading_tag": "automatic"
@@ -479,7 +509,7 @@
       "settings": {
         "show_line": true,
         "width": "wrapper--full-padded",
-        "color_scheme": "scheme-4",
+        "color_scheme": "scheme-2",
         "padding_top": 30,
         "padding_bottom": 30
       }
@@ -519,7 +549,7 @@
       "settings": {
         "show_line": true,
         "width": "wrapper--full-padded",
-        "color_scheme": "scheme-4",
+        "color_scheme": "scheme-1",
         "padding_top": 30,
         "padding_bottom": 30
       }
@@ -656,12 +686,23 @@
       "settings": {
         "include_margins": false
       }
+    },
+    "section_divider_MKzezA": {
+      "type": "section-divider",
+      "settings": {
+        "show_line": true,
+        "width": "wrapper--full-padded",
+        "color_scheme": "scheme-2",
+        "padding_top": 30,
+        "padding_bottom": 30
+      }
     }
   },
   "order": [
     "hero",
+    "section_hero_HQEqDw",
     "section_hero_gfjC7y",
-    "section_text_row_JAH4HU",
+    "section_text_row_h8Tmwr",
     "section_collection_rV9cEB",
     "section_double_ECmVQt",
     "section_highlights_UamgmV",
@@ -673,6 +714,7 @@
     "1736005939970b9b9c",
     "section_rich_text_n4iHjm",
     "section_video_Hhy99B",
-    "1735853721c520e402"
+    "1735853721c520e402",
+    "section_divider_MKzezA"
   ]
 }
