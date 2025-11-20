@@ -331,3 +331,202 @@
     requestAnimationFrame(() => scheduleUpdate(0));
   }
 })();
+
+// Size Swatches with Add to Cart functionality - Optimized
+(function(){
+  'use strict';
+
+  let isProcessing = false;
+  const processingSwatches = new Set();
+
+  if (typeof theme === 'undefined') {
+    window.addEventListener('DOMContentLoaded', () => initSizeSwatches());
+  } else {
+    initSizeSwatches();
+  }
+
+  function initSizeSwatches(){
+    const sizeSwatches = document.querySelectorAll('.size-swatch:not([disabled])');
+    
+    sizeSwatches.forEach(swatch => {
+      if (!swatch.hasAttribute('data-size-listener')) {
+        swatch.setAttribute('data-size-listener', 'true');
+        swatch.addEventListener('click', handleSizeSwatchClick, { passive: true });
+      }
+    });
+  }
+
+  function handleSizeSwatchClick(e){
+    e.preventDefault();
+    e.stopPropagation();
+    
+    const swatch = e.currentTarget;
+    const variantId = swatch.getAttribute('data-variant-id');
+    const productHandle = swatch.getAttribute('data-product-handle');
+    
+    if (!variantId || swatch.disabled || swatch.classList.contains('is-loading') || processingSwatches.has(swatch)) {
+      return;
+    }
+
+    // Use requestAnimationFrame for instant visual feedback
+    requestAnimationFrame(() => {
+      addToCartFromSizeSwatch(swatch, variantId, productHandle);
+    });
+  }
+
+  async function addToCartFromSizeSwatch(swatch, variantId, productHandle){
+    // Prevent duplicate clicks
+    if (processingSwatches.has(swatch)) return;
+    processingSwatches.add(swatch);
+
+    // Immediate visual feedback
+    swatch.classList.add('is-loading');
+    swatch.disabled = true;
+
+    const productContainer = swatch.closest('.product-item__size-swatches');
+    const allSwatches = productContainer ? productContainer.querySelectorAll('.size-swatch') : [];
+    
+    // Disable other swatches temporarily
+    allSwatches.forEach(s => {
+      if (s !== swatch) {
+        s.classList.add('is-disabled');
+        s.disabled = true;
+      }
+    });
+
+    try {
+      // Use the theme's cart system if available for better integration
+      const cartItems = document.querySelector('cart-items');
+      
+      if (cartItems && typeof cartItems.addToCart === 'function') {
+        // Use theme's addToCart method for better integration
+        const formData = new FormData();
+        formData.append('id', variantId);
+        formData.append('quantity', '1');
+        
+        // Create a temporary button for the theme's addToCart method
+        const tempButton = document.createElement('button');
+        tempButton.setAttribute('data-add-to-cart', '');
+        tempButton.style.display = 'none';
+        
+        cartItems.addToCart(formData, tempButton);
+        
+        // Wait a bit for the cart to update
+        await new Promise(resolve => setTimeout(resolve, 100));
+      } else {
+        // Fallback to direct fetch - optimized
+        const formData = new FormData();
+        formData.append('id', variantId);
+        formData.append('quantity', '1');
+
+        const cartAddUrl = window.theme?.routes?.cart_add_url || '/cart/add.js';
+        
+        const response = await fetch(cartAddUrl, {
+          method: 'POST',
+          headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'Accept': 'application/json',
+          },
+          body: formData,
+          cache: 'no-store'
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        if (data.status) {
+          throw new Error(data.description || 'Failed to add to cart');
+        }
+
+        // Dispatch cart:add event to trigger theme's cart system
+        document.dispatchEvent(new CustomEvent('theme:cart:add', {
+          detail: { variantId, quantity: 1 },
+          bubbles: true
+        }));
+      }
+
+      // Success - immediate visual feedback
+      swatch.classList.remove('is-loading');
+      swatch.classList.add('is-added');
+      
+      // Dispatch cart refresh immediately
+      document.dispatchEvent(new CustomEvent('theme:cart:refresh', { bubbles: true }));
+      
+      // Dispatch product added event (this triggers cart drawer opening)
+      document.dispatchEvent(new CustomEvent('theme:product:added', {
+        detail: { 
+          variantId, 
+          productHandle,
+          response: { items: [{ variant_id: parseInt(variantId), quantity: 1 }] }
+        },
+        bubbles: true
+      }));
+      
+      // Also explicitly trigger cart drawer if it exists
+      const cartDrawer = document.querySelector('cart-drawer');
+      if (cartDrawer && typeof cartDrawer.openCartDrawer === 'function') {
+        setTimeout(() => {
+          cartDrawer.openCartDrawer(true);
+        }, 50);
+      }
+
+      // Reset UI after brief delay
+      setTimeout(() => {
+        swatch.classList.remove('is-added');
+        resetSwatches(allSwatches);
+        processingSwatches.delete(swatch);
+      }, 1500);
+
+    } catch (error) {
+      console.error('Error adding to cart:', error);
+      swatch.classList.remove('is-loading');
+      swatch.classList.add('is-error');
+      
+      // Show error briefly, then reset
+      setTimeout(() => {
+        swatch.classList.remove('is-error');
+        resetSwatches(allSwatches);
+        processingSwatches.delete(swatch);
+      }, 2000);
+    }
+  }
+
+  function resetSwatches(swatches) {
+    swatches.forEach(s => {
+      s.classList.remove('is-disabled', 'is-loading', 'is-added', 'is-error');
+      const isAvailable = s.getAttribute('data-variant-id') && !s.classList.contains('size-swatch--soldout');
+      s.disabled = !isAvailable;
+    });
+  }
+
+  // Re-initialize when new products are loaded (optimized observer)
+  const observer = new MutationObserver((mutations) => {
+    let hasNewSwatches = false;
+    mutations.forEach((mutation) => {
+      mutation.addedNodes.forEach((node) => {
+        if (node.nodeType === 1) {
+          const newSwatches = node.querySelectorAll ? node.querySelectorAll('.size-swatch:not([disabled]):not([data-size-listener])') : [];
+          if (newSwatches.length > 0) {
+            hasNewSwatches = true;
+            newSwatches.forEach(swatch => {
+              swatch.setAttribute('data-size-listener', 'true');
+              swatch.addEventListener('click', handleSizeSwatchClick, { passive: true });
+            });
+          }
+        }
+      });
+    });
+  });
+
+  // Observe only product items to reduce overhead
+  const productItems = document.querySelectorAll('.product-item');
+  productItems.forEach(item => {
+    observer.observe(item, { childList: true, subtree: true });
+  });
+  
+  // Also observe body for dynamically added product grids
+  observer.observe(document.body, { childList: true, subtree: false });
+})();

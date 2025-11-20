@@ -9,237 +9,58 @@
  */
 {
   "sections": {
-    "announcement_banner": {
-      "type": "sale-announcement-banner",
+    "hero": {
+      "type": "collection-image-with-title",
+      "settings": {
+        "show_title": true,
+        "show_description": false,
+        "flex_align": "align--bottom-left",
+        "color_scheme": "scheme-2",
+        "show_text_background": false,
+        "show_image": false,
+        "banner_layout": "overlay",
+        "height": "two-fifty-height-hero",
+        "mobile_height": "two-fifty-height-hero--mobile",
+        "overlay_opacity": 0,
+        "show_overlay_text": false,
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "subcollections": {
+      "type": "subcollections",
       "disabled": true,
-      "settings": {}
-    },
-    "promo_banner": {
-      "type": "sale-promo-banner",
       "settings": {
-        "badge_text": "",
-        "heading": "Our NEW YEAR Countdown sale is here!",
-        "subheading": "",
-        "description": "",
-        "product": "",
-        "original_price": "",
-        "current_price": "",
-        "button_text": "Shop Our Full Menu",
-        "button_url": "",
-        "bg_color": "#000000",
-        "text_color": "#f4c012",
-        "button_bg_color": "#000000",
-        "button_text_color": "#ffffff",
-        "button_hover_bg_color": "#333333",
-        "heading_size": 60,
-        "padding_top": 20,
-        "padding_bottom": 12,
-        "width": "wrapper--full-padded",
-        "color_scheme": ""
-      }
-    },
-    "countdown": {
-      "type": "sale-countdown",
-      "settings": {
-        "heading": "NEW YEAR SALE ENDS IN",
-        "end_date": "2025-11-15T23:59:59",
-        "subheading": "",
-        "bg_color": "#ffffff",
-        "text_color": "#000000",
-        "heading_size": 24,
-        "padding_top": 12,
-        "padding_bottom": 12,
-        "width": "wrapper--full-padded",
-        "color_scheme": ""
-      }
-    },
-    "sale_discount_tiers_pT4mUM": {
-      "type": "sale-discount-tiers",
-      "blocks": {
-        "tier_gHkCU8": {
-          "type": "tier",
-          "settings": {
-            "image": "shopify://shop_images/ChatGPT_Image_Nov_13_2025_12_34_03_AM.png",
-            "link_url": ""
-          }
-        }
-      },
-      "block_order": [
-        "tier_gHkCU8"
-      ],
-      "name": "Sale Discount Tiers",
-      "settings": {
-        "bg_color": "#000000",
-        "padding_top": 0,
-        "padding_bottom": 0,
-        "width": "wrapper--full-padded",
-        "color_scheme": ""
-      }
-    },
-    "featured_bundle": {
-      "type": "sale-featured-bundle",
-      "settings": {
-        "heading": "",
-        "subheading": "",
-        "description": "",
-        "features": "",
-        "product": "3-pedal-society-hoodie",
-        "original_price": "",
-        "current_price": "$199.99",
-        "button_text": "Shop Now",
-        "button_url": "",
-        "bg_color": "#ffffff",
-        "text_color": "#000000",
-        "button_type": "btn--secondary",
-        "button_size": "",
-        "button_style": "btn--solid",
-        "heading_size": 36,
-        "padding_top": 28,
-        "padding_bottom": 0,
-        "width": "wrapper--full-padded",
-        "color_scheme": ""
-      }
-    },
-    "sale_featured_bundle_FTB3LD": {
-      "type": "sale-featured-bundle",
-      "settings": {
-        "heading": "",
-        "subheading": "",
-        "description": "",
-        "features": "",
-        "product": "3-pedal-society-stealth-hat",
-        "original_price": "",
-        "current_price": "",
-        "button_text": "Shop Now",
-        "button_url": "",
-        "bg_color": "#ffffff",
-        "text_color": "#000000",
-        "button_type": "btn--secondary",
-        "button_size": "",
-        "button_style": "btn--solid",
-        "heading_size": 36,
-        "padding_top": 0,
-        "padding_bottom": 60,
-        "width": "wrapper--full-padded",
-        "color_scheme": ""
-      }
-    },
-    "176299220279eb999f": {
-      "type": "apps",
-      "blocks": {
-        "klaviyo_reviews_featured_reviews_carousel_qqmNgz": {
-          "type": "shopify://apps/klaviyo-reviews/blocks/featured-reviews-carousel/db20e365-d984-4ac4-9655-e1588d951ca9",
-          "settings": {}
-        }
-      },
-      "block_order": [
-        "klaviyo_reviews_featured_reviews_carousel_qqmNgz"
-      ],
-      "settings": {
-        "include_margins": false
-      }
-    },
-    "product_grid": {
-      "type": "sale-product-grid",
-      "settings": {
-        "heading": "Holiday Favorites, Gifts, and Best Sellers",
-        "subheading": "",
-        "collection": "accessories",
-        "products_limit": 8,
-        "columns_desktop": 4,
-        "columns_mobile": "2",
-        "button_text": "SHOP OUR FULL MENU",
-        "button_url": "",
-        "bg_color": "#ffffff",
-        "text_color": "#000000",
-        "button_type": "btn--primary",
-        "button_size": "",
-        "button_style": "btn--solid",
-        "heading_size": 36,
-        "padding_top": 60,
-        "padding_bottom": 60,
-        "width": "wrapper--full-padded",
+        "subcollection_layout": "grid",
+        "subcollection_description": false,
+        "select_image": "collection",
         "color_scheme": "",
-        "show_description": true,
-        "show_add_to_cart": true,
-        "add_to_cart_text": "Add to cart",
-        "cart_button_type": "btn--secondary",
-        "cart_button_size": "",
-        "cart_button_style": "btn--solid"
+        "color": "#ffffff",
+        "bg_color": "",
+        "padding_top": 20,
+        "padding_bottom": 20
       }
     },
-    "bundle_grid": {
-      "type": "sale-bundle-grid",
-      "blocks": {
-        "bundle_1": {
-          "type": "bundle",
-          "settings": {
-            "product": "car-girl-trucker",
-            "title": "The Hungry Pack",
-            "description": "",
-            "button_text": "Add to cart",
-            "button_url": ""
-          }
-        },
-        "bundle_2": {
-          "type": "bundle",
-          "settings": {
-            "product": "launch-key-tag",
-            "title": "The Lighter Side",
-            "description": "",
-            "button_text": "Add to cart",
-            "button_url": ""
-          }
-        },
-        "bundle_3": {
-          "type": "bundle",
-          "settings": {
-            "product": "3-pedal-society-kit",
-            "title": "The Foodies Pack",
-            "description": "",
-            "button_text": "Add to cart",
-            "button_url": ""
-          }
-        }
-      },
-      "block_order": [
-        "bundle_1",
-        "bundle_2",
-        "bundle_3"
-      ],
+    "main": {
+      "type": "collection",
       "settings": {
-        "heading": "Save on Our Best Selling Bundles",
-        "subheading": "",
-        "bg_color": "#ffffff",
-        "text_color": "#000000",
-        "button_type": "btn--primary",
-        "button_size": "",
-        "button_style": "btn--solid",
-        "heading_size": 36,
-        "columns_desktop": 3,
-        "columns_mobile": "2",
-        "show_description": true,
-        "show_add_to_cart": true,
-        "add_to_cart_text": "Add to cart",
-        "cart_button_type": "btn--secondary",
-        "cart_button_size": "",
-        "cart_button_style": "btn--solid",
-        "padding_top": 60,
-        "padding_bottom": 60,
-        "width": "wrapper--full-padded",
-        "color_scheme": ""
+        "enable_sort": true,
+        "enable_filters": true,
+        "filter_layout": "inline-open",
+        "default_open": true,
+        "collection_linklist": "accessories",
+        "grid": 3,
+        "grid_mobile": "2",
+        "products_per_page": 24,
+        "color_scheme": "scheme-4",
+        "padding_top": 0,
+        "padding_bottom": 0
       }
     }
   },
   "order": [
-    "announcement_banner",
-    "promo_banner",
-    "countdown",
-    "sale_discount_tiers_pT4mUM",
-    "featured_bundle",
-    "sale_featured_bundle_FTB3LD",
-    "176299220279eb999f",
-    "product_grid",
-    "bundle_grid"
+    "hero",
+    "subcollections",
+    "main"
   ]
 }
