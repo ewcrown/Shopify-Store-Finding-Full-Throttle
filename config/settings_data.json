@@ -84,7 +84,7 @@
     "variant_lines": true,
     "show_variant_image": false,
     "variant_image_style": "inline",
-    "show_newsletter": true,
+    "show_newsletter": false,
     "final_sale": false,
     "swatches_type": "theme",
     "swatch_size": "large",
@@ -197,6 +197,21 @@
       },
       "15393088698543645836": {
         "type": "shopify://apps/essential-preorder/blocks/app-embed/bb7e7a06-2a82-4e7d-8984-c3918deb1c2a",
+        "disabled": false,
+        "settings": {}
+      },
+      "13145062406772878421": {
+        "type": "shopify://apps/bundlemaster/blocks/counter/e3ce2762-55fa-429b-a70b-dfd6b2f61214",
+        "disabled": false,
+        "settings": {}
+      },
+      "1862246505023995306": {
+        "type": "shopify://apps/bundlemaster/blocks/drawcart/e3ce2762-55fa-429b-a70b-dfd6b2f61214",
+        "disabled": false,
+        "settings": {}
+      },
+      "back-in-stock-restock-alerts-4bb73be2-b7c2-4870-949f-c528145452a3": {
+        "type": "shopify://apps/back-in-stock-restock-alerts/blocks/main/4bb73be2-b7c2-4870-949f-c528145452a3",
         "disabled": false,
         "settings": {}
       }

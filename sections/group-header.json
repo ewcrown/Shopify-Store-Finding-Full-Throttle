@@ -11,7 +11,7 @@
   "type": "header",
   "name": "Header",
   "sections": {
-    "announcement": {
+     "announcement": {
       "type": "announcement",
       "blocks": {
         "text": {
