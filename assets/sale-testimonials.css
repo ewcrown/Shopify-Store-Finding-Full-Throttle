@@ -1,0 +1,163 @@
+.sale-testimonials {
+  padding: 60px 0;
+}
+
+.testimonials-heading {
+  font-weight: bold;
+  margin-bottom: 40px;
+}
+
+.testimonials-grid {
+  display: grid;
+  gap: 30px;
+}
+
+.testimonial-card {
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.testimonial-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.testimonial-rating {
+  margin-bottom: 15px;
+}
+
+.star {
+  color: #ddd;
+  font-size: 20px;
+  margin-right: 2px;
+}
+
+.star.filled {
+  color: #ffc107;
+}
+
+.testimonial-text {
+  font-size: 16px;
+  line-height: 1.6;
+  margin-bottom: 20px;
+  flex-grow: 1;
+  color: #333;
+}
+
+.testimonial-text p {
+  margin: 0;
+}
+
+.testimonial-author {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: auto;
+}
+
+.author-image {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.author-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.author-name {
+  font-weight: bold;
+  font-size: 14px;
+  color: #000;
+}
+
+.author-title {
+  font-size: 12px;
+  color: #666;
+  margin-top: 2px;
+}
+
+@media (max-width: 989px) {
+  .sale-testimonials {
+    padding: 50px 0;
+  }
+  
+  .testimonials-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
+  }
+  
+  .testimonials-heading {
+    margin-bottom: 30px;
+    font-size: 28px;
+  }
+}
+
+@media (max-width: 768px) {
+  .sale-testimonials {
+    padding: 40px 0;
+  }
+  
+  .testimonials-grid {
+    grid-template-columns: 1fr !important;
+    gap: 20px;
+  }
+  
+  .testimonials-heading {
+    margin-bottom: 25px;
+    font-size: 24px;
+  }
+  
+  .testimonial-card {
+    padding: 20px;
+  }
+  
+  .testimonial-text {
+    font-size: 15px;
+    margin-bottom: 15px;
+  }
+  
+  .star {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 480px) {
+  .sale-testimonials {
+    padding: 30px 0;
+  }
+  
+  .testimonials-heading {
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .testimonial-card {
+    padding: 15px;
+  }
+  
+  .testimonial-text {
+    font-size: 14px;
+  }
+  
+  .author-image {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .author-name {
+    font-size: 13px;
+  }
+  
+  .author-title {
+    font-size: 11px;
+  }
+}
+

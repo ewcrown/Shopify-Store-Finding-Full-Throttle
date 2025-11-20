@@ -11,7 +11,7 @@
   "type": "header",
   "name": "Header",
   "sections": {
-     "announcement": {
+    "announcement": {
       "type": "announcement",
       "blocks": {
         "text": {
@@ -50,12 +50,25 @@
             "target_device_enabled": false,
             "target_device": "mobile"
           }
+        },
+        "text_qnzXjb": {
+          "type": "text",
+          "settings": {
+            "text": "<p><a href=\"/pages/holiday-sale\" title=\"Holiday Sale\">Get Revved Up: Early Bird Black Friday Sale. Use code EARLYBIRD for 15% Off!</a></p>",
+            "target_url_enabled": false,
+            "target_url": "",
+            "target_referrer_enabled": false,
+            "target_referrer": "",
+            "target_device_enabled": false,
+            "target_device": "mobile"
+          }
         }
       },
       "block_order": [
         "text",
         "text_HY69Dq",
-        "text-2"
+        "text-2",
+        "text_qnzXjb"
       ],
       "settings": {
         "show_border": false,

@@ -696,64 +696,6 @@
             </span>
           </div>
         {%- endif -%}
-
-        {%- comment -%} Size Swatches with Add to Cart {%- endcomment -%}
-        {%- liquid
-          assign has_size_option = false
-          assign size_option_index = 0
-          assign size_option_values = ''
-          
-          for option in product.options_with_values
-            assign option_name_lower = option.name | downcase | strip
-            if option_name_lower == 'size' or option_name_lower == 'sizes'
-              assign has_size_option = true
-              assign size_option_index = forloop.index0
-              assign size_option_values = option.values
-              break
-            endif
-          endfor
-        -%}
-
-        {%- if has_size_option and size_option_values.size > 0 -%}
-          <div class="product-item__size-swatches" data-product-id="{{ product.id }}" data-product-handle="{{ product.handle }}">
-            <form class="radio__fieldset radio__fieldset--size-swatches" data-size-swatch-form>
-              <div class="size-swatches__wrapper" data-size-swatches-wrapper>
-                {%- for size_value in size_option_values -%}
-                  {%- liquid
-                    assign variant_id = ''
-                    assign is_available = false
-                    for variant in product.variants
-                      assign variant_size = ''
-                      if size_option_index == 0
-                        assign variant_size = variant.option1
-                      elsif size_option_index == 1
-                        assign variant_size = variant.option2
-                      elsif size_option_index == 2
-                        assign variant_size = variant.option3
-                      endif
-                      if variant_size == size_value and variant.available
-                        assign variant_id = variant.id
-                        assign is_available = true
-                        break
-                      endif
-                    endfor
-                  -%}
-                  <button
-                    type="button"
-                    class="size-swatch size-swatch--{{ settings.swatch_style }} {% unless is_available %}size-swatch--soldout{% endunless %}"
-                    data-size-value="{{ size_value }}"
-                    data-variant-id="{{ variant_id }}"
-                    data-product-handle="{{ product.handle }}"
-                    {% unless is_available %}disabled{% endunless %}
-                    aria-label="Add {{ product.title }} - Size {{ size_value }} to cart"
-                  >
-                    {{ size_value }}
-                  </button>
-                {%- endfor -%}
-              </div>
-            </form>
-          </div>
-        {%- endif -%}
       </div>
     </div>
   </div>
