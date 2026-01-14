@@ -94,7 +94,7 @@
     "swatch_color_list": "Black: #000000\nWhite: #fafafa\nBlue: #6686A8\nMacadamia: #F6F0E2\nBlank: blank.png\nCharcoal: #5D585A\nBrown: #806C61\nGrey: #EBE8E0\nSage: #A9C1B4\nMint: #96B0A7\nForest: #4B6867\nMango: #F7E7BB\nGreige: #9E998E\nTan: #D7B389\nSmoke Grey: #EDEAE2\nSun: #F8CD49\nPigment Dye Black: #444444\nAqua Blue: #4AAAC8\nCreme: #F7F2ED\nForest Green: #094C25\nHeather Grey: #BAB8B6\nHeather Sand: #EAE7DD\nIndigo Camo: #252F3F\nIndigo Paisley: #2D3953\nMulticolor: #6E1B1E\nOcean Blue: #4ACEEA\nOffwhite: #F7F7E8\nOlive Green: #928A35\nSolid Heavy Metal: #3F403E\nSolid Midnight Navy: #112838\nSolid Military Green: #464E2F\nSolid Purple Rush: #573781\nSolid Royal: #103C7B\nColor Logo: #F4C012\nWhite Logo: #fafafa\nLight Blue: #749AD6\nBright Royal: #395793\nArctic Blue: #2d77ac\nArmy: #4D4A36\nAtlantic: #0F535B\nBerry: #8B4354\nCharcoal: #6B6666\nLoden: #8D835D\nSlate: #66829A\nCobalt: #212b50\nLatte: #D6C4AD\nGraphite: #686767\nRed/Navy/White: 112_FINAL_red_navy_white.jpg\nBlack/White: 112_FINAL_black_white.jpg\nSolid Black: 112_FINAL.jpg\nNavy/Khaki: Blue_Khakihat.jpg\nBrown/Khaki: Brown_khakihat.jpg",
     "favicon": "shopify://shop_images/favicon-32x32.png",
     "free_shipping_limit": "75",
-    "enable_free_gift": true,
+    "enable_free_gift": false,
     "free_gift_product": "launch-key-tag",
     "show_lock_icon": true,
     "enable_accept_terms": false,
@@ -200,18 +200,25 @@
         "disabled": false,
         "settings": {}
       },
-      "13145062406772878421": {
-        "type": "shopify://apps/bundlemaster/blocks/counter/e3ce2762-55fa-429b-a70b-dfd6b2f61214",
-        "disabled": false,
-        "settings": {}
-      },
-      "1862246505023995306": {
-        "type": "shopify://apps/bundlemaster/blocks/drawcart/e3ce2762-55fa-429b-a70b-dfd6b2f61214",
-        "disabled": false,
-        "settings": {}
-      },
       "back-in-stock-restock-alerts-4bb73be2-b7c2-4870-949f-c528145452a3": {
         "type": "shopify://apps/back-in-stock-restock-alerts/blocks/main/4bb73be2-b7c2-4870-949f-c528145452a3",
+        "disabled": false,
+        "settings": {}
+      },
+      "1530068250781986104": {
+        "type": "shopify://apps/fbp-fast-bundle/blocks/fast_bundle/9e87fbe2-9041-4c23-acf5-322413994cef",
+        "disabled": false,
+        "settings": {
+          "home": false
+        }
+      },
+      "17676059084223943535": {
+        "type": "shopify://apps/triplewhale/blocks/triple_pixel_snippet/483d496b-3f1a-4609-aea7-8eee3b6b7a2a",
+        "disabled": false,
+        "settings": {}
+      },
+      "17005076403371700552": {
+        "type": "shopify://apps/isonomy-accessibility/blocks/star_rating/76c1181f-4ef0-456f-a697-018bd41083f6",
         "disabled": false,
         "settings": {}
       }

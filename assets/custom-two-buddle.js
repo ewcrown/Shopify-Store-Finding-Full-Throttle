@@ -10,6 +10,7 @@
   }
 
   function init(){
+    const FREE_GIFT_VARIANT_ID = 47687962558681;
     const FREE_KEY_TAG_VARIANT_ID = 47468490064089;
     // Cached elements / config
     let containers = null; // NodeList (cached) - refreshed when DOM changes significantly
@@ -96,13 +97,60 @@
     }
 
     // Fast helpers
+    const isFreeGiftInCart = (cart) => !!(cart && cart.items && cart.items.some(i => i.variant_id === FREE_GIFT_VARIANT_ID));
+    const getFreeGiftLineItem = (cart) => cart?.items?.find(i => i.variant_id === FREE_GIFT_VARIANT_ID) || null;
     const isVariantInCart = (cart, variantId) =>
-      cart?.items?.some(i => i.variant_id === variantId);
+  cart?.items?.some(i => i.variant_id === variantId);
 
-    const getGiftLineItem = (cart, variantId) =>
-      cart?.items?.find(i => i.variant_id === variantId) || null;
+const getGiftLineItem = (cart, variantId) =>
+  cart?.items?.find(i => i.variant_id === variantId) || null;
 
-    // Remove Key Tag - optimized for speed
+    // Remove gift - optimized for speed
+    async function removeFreeGift(){
+      if (isManagingGift) return;
+      isManagingGift = true;
+      toggleLoader(true, 'removing');
+      
+      // Show loader immediately using requestAnimationFrame for instant feedback
+      requestAnimationFrame(() => {
+        const cartPromise = getCartState(true);
+        cartPromise.then(async (cart) => {
+          if (!cart) {
+            toggleLoader(false);
+            isManagingGift = false;
+            return;
+          }
+          const idx = cart.items.findIndex(i => i.variant_id === FREE_GIFT_VARIANT_ID);
+          if (idx === -1) {
+            toggleLoader(false);
+            isManagingGift = false;
+            return;
+          }
+          const line = idx + 1;
+          try {
+            const res = await fetch(window.theme?.routes?.cart_change_url || '/cart/change.js', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ line, quantity: 0 })
+            });
+            if (res.ok) {
+              lastCartFetch = { ts: 0, data: null };
+              document.dispatchEvent(new CustomEvent('theme:cart:refresh'));
+            }
+          } catch(e) { 
+            console.error(e); 
+          } finally {
+            toggleLoader(false);
+            setTimeout(()=> isManagingGift = false, 50);
+          }
+        }).catch(e => {
+          console.error(e);
+          toggleLoader(false);
+          isManagingGift = false;
+        });
+      });
+    }
+    // Remove Key - optimized for speed
     async function removeKeyGift(){
       if (isManagingGift) return;
       isManagingGift = true;
@@ -148,23 +196,23 @@
       });
     }
 
-    // Add Key Tag - optimized for speed
-    async function addKeyGift(){
+    // Add gift - optimized for speed
+    async function addFreeGift(){
       if (isManagingGift) return;
       isManagingGift = true;
       toggleLoader(true, 'adding');
       
+      // Show loader immediately using requestAnimationFrame for instant feedback
       requestAnimationFrame(async () => {
         try {
           const cart = await getCartState();
-          // Check if KEY TAG is already in cart
-          if (cart && isVariantInCart(cart, FREE_KEY_TAG_VARIANT_ID)) {
+          if (cart && isFreeGiftInCart(cart)) {
             toggleLoader(false);
             isManagingGift = false;
             return;
           }
           const fd = new FormData();
-          fd.append('id', String(FREE_KEY_TAG_VARIANT_ID));
+          fd.append('id', String(FREE_GIFT_VARIANT_ID));
           fd.append('quantity','1');
           fd.append('properties[_free_gift]','true');
           const res = await fetch(window.theme?.routes?.cart_add_url || '/cart/add.js', {
@@ -184,42 +232,101 @@
         }
       });
     }
-
-    // Manage gift based on cart state - single source of truth (only $75 threshold)
-    async function manageFreeGift(){
-      if (isManagingGift) return;
-
-      const containers = getContainers();
-      if (!containers.length) return;
-
+    // Add Key Tag - optimized for speed
+   async function addKeyGift(){
+  if (isManagingGift) return;
+  isManagingGift = true;
+  toggleLoader(true, 'adding');
+  
+  requestAnimationFrame(async () => {
+    try {
       const cart = await getCartState();
-      if (!cart) return;
-
-      const apiTotal = (cart.total_price || 0) / 100;
-
-      // subtract key tag gift from total
-      let totalWithoutGift = apiTotal;
-      const g = getGiftLineItem(cart, FREE_KEY_TAG_VARIANT_ID);
-      if (g) {
-        const price = (g.final_price || g.price || 0) / 100;
-        totalWithoutGift -= price;
+      // Check if KEY TAG is already in cart, not t-shirt
+      if (cart && isVariantInCart(cart, FREE_KEY_TAG_VARIANT_ID)) {
+        toggleLoader(false);
+        isManagingGift = false;
+        return;
       }
-
-      const hasKeyTag = isVariantInCart(cart, FREE_KEY_TAG_VARIANT_ID);
-      const shippingLimit = 75;
-
-      // Only $75 threshold logic - add/remove key tag
-      if (totalWithoutGift >= shippingLimit) {
-        if (!hasKeyTag) {
-          await addKeyGift();
-        }
-      } else {
-        // Below $75 → remove key tag
-        if (hasKeyTag) {
-          await removeKeyGift();
-        }
+      const fd = new FormData();
+      fd.append('id', String(FREE_KEY_TAG_VARIANT_ID));
+      fd.append('quantity','1');
+      fd.append('properties[_free_gift]','true');
+      const res = await fetch(window.theme?.routes?.cart_add_url || '/cart/add.js', {
+        method: 'POST',
+        headers: { 'X-Requested-With': 'XMLHttpRequest' },
+        body: fd
+      });
+      if (res.ok){
+        lastCartFetch = { ts: 0, data: null };
+        document.dispatchEvent(new CustomEvent('theme:cart:refresh'));
       }
+    } catch(e) { 
+      console.error(e); 
+    } finally {
+      toggleLoader(false);
+      setTimeout(()=> isManagingGift = false, 50);
     }
+  });
+}
+
+    // Manage gift based on cart state - single source of truth
+  async function manageFreeGift(){
+  if (isManagingGift) return;
+
+  const containers = getContainers();
+  if (!containers.length) return;
+
+  const cart = await getCartState();
+  if (!cart) return;
+
+  const apiTotal = (cart.total_price || 0) / 100;
+
+  // subtract BOTH gifts from total
+  let totalWithoutGifts = apiTotal;
+
+  [FREE_GIFT_VARIANT_ID, FREE_KEY_TAG_VARIANT_ID].forEach(id => {
+    const g = getGiftLineItem(cart, id);
+    if (g) {
+      const price = (g.final_price || g.price || 0) / 100;
+      totalWithoutGifts -= price;
+    }
+  });
+
+  const hasTshirt = isVariantInCart(cart, FREE_GIFT_VARIANT_ID);
+  const hasKeyTag = isVariantInCart(cart, FREE_KEY_TAG_VARIANT_ID);
+
+  // 🔥 TIER LOGIC - CORRECTED
+  if (totalWithoutGifts >= 99) {
+    // $99+ tier: Should have t-shirt AND key tag
+    if (!hasTshirt) {
+      await addFreeGift();
+    }
+    if (!hasKeyTag) {
+      await addKeyGift();
+    }
+    return;
+  }
+
+  if (totalWithoutGifts >= 75) {
+    // $75-98.99 tier: Should have key tag ONLY
+    if (!hasKeyTag) {
+      await addKeyGift();
+    }
+    // Remove t-shirt if present (we're below $99 threshold)
+    if (hasTshirt) {
+      await removeFreeGift();
+    }
+    return;
+  }
+
+  // Below $75 → remove all gifts
+  if (hasTshirt) {
+    await removeFreeGift();
+  }
+  if (hasKeyTag) {
+    await removeKeyGift();
+  }
+}
 
     // Update UI milestones (fast, minimal DOM touches)
     function updateMilestonesFast(){
@@ -227,6 +334,7 @@
       if (!containers || !containers.length) return;
       const container = containers[0];
       const shippingLimit = parseFloat(container.getAttribute('data-free-shipping-limit')) || 75;
+      const giftThreshold = parseFloat(container.getAttribute('data-free-gift-threshold')) || 99;
 
       // Try to read a single authoritative source for cart total first
       let cartTotal = 0;
@@ -257,17 +365,24 @@
 
       // Update progress bar & messages with minimal writes
       const shippingMilestone = container.querySelector('.free-shipping__milestone--shipping');
+      const giftMilestone = container.querySelector('.free-shipping__milestone--gift');
       const showShipping = cartTotal >= shippingLimit;
+      const showGift = cartTotal >= giftThreshold;
 
       if (shippingMilestone){
         shippingMilestone.classList.toggle('is-reached', showShipping);
       }
+      if (giftMilestone){
+        giftMilestone.classList.toggle('is-reached', showGift);
+      }
 
       container.classList.toggle('has-free-shipping', showShipping);
+      container.classList.toggle('has-free-gift', showGift);
 
       const progressBar = container.querySelector('[data-progress-bar]');
       if (progressBar){
-        const pct = shippingLimit > 0 ? Math.min((cartTotal / shippingLimit) * 100, 100) : 0;
+        const max = giftMilestone ? giftThreshold : shippingLimit;
+        const pct = max > 0 ? Math.min((cartTotal / max) * 100, 100) : 0;
         progressBar.setAttribute('value', pct.toFixed(2));
       }
 
@@ -275,7 +390,9 @@
       const msgEl = container.querySelector('.free-shipping__success-message, .free-shipping__default-message');
       if (msgEl){
         let newMsg = '';
-        if (showShipping) newMsg = 'Congratulations! Your order qualifies for free shipping with KEY TAG!';
+        if (showShipping && giftMilestone && showGift) newMsg = 'Congratulations! Your order qualifies for free shipping including Free key Tag with a free FFT Signature Shirt';
+        else if (showShipping && giftMilestone && !showGift) newMsg = `You are $${(giftThreshold - cartTotal).toFixed(2)} away from a FREE SHIRT`;
+        else if (showShipping) newMsg = 'Congratulations! Your order qualifies for free shipping';
         else newMsg = `You are $${(shippingLimit - cartTotal).toFixed(2)} away from FREE SHIPPING with KEY TAG!`;
         if (msgEl.textContent.trim() !== newMsg) msgEl.textContent = newMsg;
       }

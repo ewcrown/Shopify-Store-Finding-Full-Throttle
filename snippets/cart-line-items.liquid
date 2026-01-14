@@ -7,7 +7,11 @@
   assign animation_delay_increment = 50
   assign animation_delay = animation_delay | default: 0
 -%}
-
+<style>
+  .cart__item.FFT.Speed.Limit.Shirt quantity-counter {
+    display: none;
+}
+</style>
 {%- comment -%}
   Capture line items
 {%- endcomment -%}
@@ -23,7 +27,7 @@
 
   {%- capture cart_line_item -%}
 
-    <div class="cart__item{% if forloop.last %} cart__item--no-border{% endif %}"
+    <div class="cart__item{% if forloop.last %} cart__item--no-border{% endif %} {{ line_item.title | strip_html }}-ai"
       data-item="{{ line_item.key }}"
       data-item-index="{{ forloop.index }}"
       data-item-title="{{ line_item.title | strip_html }}"

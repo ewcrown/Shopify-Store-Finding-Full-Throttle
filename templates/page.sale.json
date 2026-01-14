@@ -9,58 +9,313 @@
  */
 {
   "sections": {
-    "hero": {
-      "type": "collection-image-with-title",
+    "announcement_banner": {
+      "type": "sale-announcement-banner",
+      "disabled": true,
+      "settings": {}
+    },
+    "countdown": {
+      "type": "sale-countdown",
       "settings": {
-        "show_title": true,
-        "show_description": false,
-        "flex_align": "align--bottom-left",
-        "color_scheme": "scheme-2",
-        "show_text_background": false,
-        "show_image": false,
-        "banner_layout": "overlay",
-        "height": "two-fifty-height-hero",
-        "mobile_height": "two-fifty-height-hero--mobile",
+        "heading": "HOLIDAY SALE ENDS IN",
+        "end_date": "2025-12-24T23:59:59",
+        "subheading": "",
+        "bg_color": "#d21212",
+        "text_color": "#fcfcfc",
+        "heading_size": 24,
+        "padding_top": 12,
+        "padding_bottom": 12,
+        "width": "wrapper--full-padded",
+        "color_scheme": ""
+      }
+    },
+    "section_rich_text_BFLBbA": {
+      "type": "section-rich-text",
+      "blocks": {
+        "heading_EVgPQ7": {
+          "type": "heading",
+          "settings": {
+            "title": "15% Off HOLIDAY SALE!",
+            "heading_font_size": "heading-large",
+            "padding_bottom": 0,
+            "heading_tag": "automatic"
+          }
+        }
+      },
+      "block_order": [
+        "heading_EVgPQ7"
+      ],
+      "name": "% Off",
+      "settings": {
+        "align_text": "text-center",
+        "width": "wrapper",
+        "color_scheme": "scheme-1",
         "overlay_opacity": 0,
         "show_overlay_text": false,
-        "padding_top": 0,
-        "padding_bottom": 0
+        "padding_top": 12,
+        "padding_bottom": 12
       }
     },
-    "subcollections": {
-      "type": "subcollections",
+    "promo_banner": {
+      "type": "sale-promo-banner",
+      "name": "Hero Sale Promo Banner",
+      "settings": {
+        "badge_text": "",
+        "heading": "STACK YOUR SAVINGS!",
+        "subheading": "",
+        "description": "",
+        "product": "",
+        "original_price": "",
+        "current_price": "",
+        "button_text": "Shop Our Full Menu",
+        "button_url": "",
+        "bg_color": "#000000",
+        "text_color": "#f4c012",
+        "button_bg_color": "#000000",
+        "button_text_color": "#ffffff",
+        "button_hover_bg_color": "#333333",
+        "heading_size": 60,
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "width": "wrapper--full",
+        "color_scheme": ""
+      }
+    },
+    "sale_discount_tiers_pT4mUM": {
+      "type": "sale-discount-tiers",
+      "blocks": {
+        "tier_gHkCU8": {
+          "type": "tier",
+          "settings": {
+            "image": "shopify://shop_images/ChatGPT_Image_Nov_13_2025_12_34_03_AM.png",
+            "link_url": ""
+          }
+        }
+      },
+      "block_order": [
+        "tier_gHkCU8"
+      ],
       "disabled": true,
+      "name": "Sale Discount Tiers",
       "settings": {
-        "subcollection_layout": "grid",
-        "subcollection_description": false,
-        "select_image": "collection",
-        "color_scheme": "",
-        "color": "#ffffff",
-        "bg_color": "",
-        "padding_top": 20,
-        "padding_bottom": 20
+        "bg_color": "#000000",
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "width": "wrapper--full-padded",
+        "color_scheme": ""
       }
     },
-    "main": {
-      "type": "collection",
+    "section_rich_text_FzriQE": {
+      "type": "section-rich-text",
+      "blocks": {
+        "heading_3eXif4": {
+          "type": "heading",
+          "settings": {
+            "title": "15% OFF, DISCOUNTED BUNDLES, FREE SHIPPING, AND FREE KEY TAG!",
+            "heading_font_size": "heading-small",
+            "padding_bottom": 0,
+            "heading_tag": "automatic"
+          }
+        }
+      },
+      "block_order": [
+        "heading_3eXif4"
+      ],
+      "name": "Free Shipping and Gift",
       "settings": {
-        "enable_sort": true,
-        "enable_filters": true,
-        "filter_layout": "inline-open",
-        "default_open": true,
-        "collection_linklist": "accessories",
-        "grid": 3,
-        "grid_mobile": "2",
-        "products_per_page": 24,
-        "color_scheme": "scheme-4",
+        "align_text": "text-center",
+        "width": "wrapper",
+        "color_scheme": "scheme-2",
+        "overlay_opacity": 0,
+        "show_overlay_text": false,
+        "padding_top": 12,
+        "padding_bottom": 12
+      }
+    },
+    "section_rich_text_xn9Q8V": {
+      "type": "section-rich-text",
+      "blocks": {
+        "heading_4yLFgJ": {
+          "type": "heading",
+          "settings": {
+            "title": "Some exclusions apply.",
+            "heading_font_size": "heading-mini",
+            "padding_bottom": 0,
+            "heading_tag": "automatic"
+          }
+        }
+      },
+      "block_order": [
+        "heading_4yLFgJ"
+      ],
+      "name": "Free Shipping and Gift",
+      "settings": {
+        "align_text": "text-center",
+        "width": "wrapper",
+        "color_scheme": "scheme-2",
+        "overlay_opacity": 0,
+        "show_overlay_text": false,
+        "padding_top": 12,
+        "padding_bottom": 12
+      }
+    },
+    "section_rich_text_Eq3mYV": {
+      "type": "section-rich-text",
+      "blocks": {
+        "heading_UEHUXk": {
+          "type": "heading",
+          "settings": {
+            "title": "BIG SAVINGS ON BUNDLES:",
+            "heading_font_size": "heading-large",
+            "padding_bottom": 0,
+            "heading_tag": "automatic"
+          }
+        }
+      },
+      "block_order": [
+        "heading_UEHUXk"
+      ],
+      "name": "Bundles Heading",
+      "settings": {
+        "align_text": "text-center",
+        "width": "wrapper",
+        "color_scheme": "scheme-1",
+        "overlay_opacity": 0,
+        "show_overlay_text": false,
+        "padding_top": 12,
+        "padding_bottom": 12
+      }
+    },
+    "featured_bundle": {
+      "type": "sale-featured-bundle",
+      "settings": {
+        "heading": "",
+        "subheading": "",
+        "description": "",
+        "features": "",
+        "product": "mix-match-3",
+        "original_price": "",
+        "current_price": "$199.99",
+        "button_text": "Shop Now",
+        "button_url": "shopify://products/mix-match-3",
+        "bg_color": "#ffffff",
+        "text_color": "#000000",
+        "button_type": "btn--secondary",
+        "button_size": "",
+        "button_style": "btn--solid",
+        "heading_size": 36,
+        "padding_top": 28,
+        "padding_bottom": 0,
+        "width": "wrapper--full-padded",
+        "color_scheme": ""
+      }
+    },
+    "sale_featured_bundle_FTB3LD": {
+      "type": "sale-featured-bundle",
+      "settings": {
+        "heading": "",
+        "subheading": "",
+        "description": "",
+        "features": "",
+        "product": "mix-match-2",
+        "original_price": "",
+        "current_price": "",
+        "button_text": "Shop Now",
+        "button_url": "shopify://products/mix-match-2",
+        "bg_color": "#ffffff",
+        "text_color": "#000000",
+        "button_type": "btn--secondary",
+        "button_size": "",
+        "button_style": "btn--solid",
+        "heading_size": 36,
         "padding_top": 0,
-        "padding_bottom": 0
+        "padding_bottom": 60,
+        "width": "wrapper--full-padded",
+        "color_scheme": ""
+      }
+    },
+    "sale_featured_bundle_PMe89q": {
+      "type": "sale-featured-bundle",
+      "settings": {
+        "heading": "",
+        "subheading": "",
+        "description": "",
+        "features": "",
+        "product": "3-pedal-society-shirt-bundle-1",
+        "original_price": "",
+        "current_price": "",
+        "button_text": "Shop Now",
+        "button_url": "shopify://products/3-pedal-society-shirt-bundle-1",
+        "bg_color": "#ffffff",
+        "text_color": "#000000",
+        "button_type": "btn--secondary",
+        "button_size": "",
+        "button_style": "btn--solid",
+        "heading_size": 36,
+        "padding_top": 0,
+        "padding_bottom": 60,
+        "width": "wrapper--full-padded",
+        "color_scheme": ""
+      }
+    },
+    "product_grid": {
+      "type": "sale-product-grid",
+      "settings": {
+        "heading": "Best Sellers, Holiday Favorites, and Gifts",
+        "subheading": "",
+        "collection": "best-sellers",
+        "products_limit": 12,
+        "columns_desktop": 4,
+        "columns_mobile": "2",
+        "button_text": "SHOP ALL PRODUCTS",
+        "button_url": "",
+        "bg_color": "#ffffff",
+        "text_color": "#000000",
+        "button_type": "btn--primary",
+        "button_size": "",
+        "button_style": "btn--solid",
+        "heading_size": 36,
+        "padding_top": 60,
+        "padding_bottom": 60,
+        "width": "wrapper--full-padded",
+        "color_scheme": "",
+        "show_description": true,
+        "show_add_to_cart": true,
+        "add_to_cart_text": "Add to cart",
+        "cart_button_type": "btn--secondary",
+        "cart_button_size": "",
+        "cart_button_style": "btn--solid"
+      }
+    },
+    "176299220279eb999f": {
+      "type": "apps",
+      "blocks": {
+        "klaviyo_reviews_featured_reviews_carousel_qqmNgz": {
+          "type": "shopify://apps/klaviyo-reviews/blocks/featured-reviews-carousel/db20e365-d984-4ac4-9655-e1588d951ca9",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "klaviyo_reviews_featured_reviews_carousel_qqmNgz"
+      ],
+      "settings": {
+        "include_margins": false
       }
     }
   },
   "order": [
-    "hero",
-    "subcollections",
-    "main"
+    "announcement_banner",
+    "countdown",
+    "section_rich_text_BFLBbA",
+    "promo_banner",
+    "sale_discount_tiers_pT4mUM",
+    "section_rich_text_FzriQE",
+    "section_rich_text_xn9Q8V",
+    "section_rich_text_Eq3mYV",
+    "featured_bundle",
+    "sale_featured_bundle_FTB3LD",
+    "sale_featured_bundle_PMe89q",
+    "product_grid",
+    "176299220279eb999f"
   ]
 }

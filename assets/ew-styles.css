@@ -107,8 +107,8 @@
 
 /* Size Swatches on Product Cards */
 .product-item__size-swatches {
-  margin-top: 12px;
-  padding-top: 12px;
+  /* margin-top: 12px;
+  padding-top: 12px; */
   border-top: 1px solid var(--lines-and-border, #f0f0f0);
   width: 100%;
   clear: both;
@@ -242,7 +242,7 @@
 
 /* Ensure size swatches don't interfere with color swatches layout */
 .product-item__swatches__holder + .product-item__size-swatches {
-  margin-top: 12px;
+  /* margin-top: 12px; */
 }
 
 .product-item__size-swatches:first-child {
@@ -280,7 +280,7 @@
   
   .product-item__size-swatches {
     margin-top: 10px;
-    padding-top: 10px;
+    /* padding-top: 10px; */
   }
 }
 

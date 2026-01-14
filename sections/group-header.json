@@ -11,13 +11,25 @@
   "type": "header",
   "name": "Header",
   "sections": {
-     "announcement": {
+    "announcement": {
       "type": "announcement",
       "blocks": {
         "text": {
           "type": "text",
           "settings": {
-            "text": "<p><a href=\"/collections\" title=\"All collections\">FREE U.S. STANDARD SHIPPING ON ORDERS $75+</a></p>",
+            "text": "<p><a href=\"/collections\" title=\"All collections\">FREE SHIPPING & KEY TAG ON ORDERS $75+</a></p>",
+            "target_url_enabled": false,
+            "target_url": "",
+            "target_referrer_enabled": false,
+            "target_referrer": "",
+            "target_device_enabled": false,
+            "target_device": "mobile"
+          }
+        },
+        "text_JrG4CM": {
+          "type": "text",
+          "settings": {
+            "text": "<p><a href=\"/collections\" title=\"All collections\">FREE SHIRT ON ORDERS $99+</a></p>",
             "target_url_enabled": false,
             "target_url": "",
             "target_referrer_enabled": false,
@@ -30,7 +42,7 @@
           "type": "text",
           "disabled": true,
           "settings": {
-            "text": "<p><a href=\"/collections/all\" title=\"All products\">[FALL SALE! - 15% OFF SITEWIDE]</a></p>",
+            "text": "<p><a href=\"/pages/holiday-sale\" title=\"Holiday Sale\">SAVE 15% SITEWIDE</a></p>",
             "target_url_enabled": false,
             "target_url": "",
             "target_referrer_enabled": false,
@@ -41,8 +53,9 @@
         },
         "text-2": {
           "type": "text",
+          "disabled": true,
           "settings": {
-            "text": "<p><a href=\"/collections/new-arrivals\" title=\"New Arrivals\">[SHOP NEW ARRIVALS]</a></p>",
+            "text": "<p><a href=\"/pages/holiday-sale\" title=\"Holiday Sale\">SHOP OUR HOLIDAY SALE</a></p>",
             "target_url_enabled": false,
             "target_url": "",
             "target_referrer_enabled": false,
@@ -54,6 +67,7 @@
       },
       "block_order": [
         "text",
+        "text_JrG4CM",
         "text_HY69Dq",
         "text-2"
       ],

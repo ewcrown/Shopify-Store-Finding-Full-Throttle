@@ -101,18 +101,12 @@
           {% endif %}
         </div>
         
-        {% if bundle_product != blank %}
-          <form action="{{ routes.cart_add_url }}" method="post" enctype="multipart/form-data" class="bundle-form">
-            <input type="hidden" name="id" value="{{ bundle_product.selected_or_first_available_variant.id }}">
-            <button type="submit" class="btn {{ section.settings.button_style }} {{ section.settings.button_size }} {{ section.settings.button_type }}" name="add">
-              <span>{% if section.settings.button_text != blank %}{{ section.settings.button_text }}{% else %}Add to cart{% endif %}</span>
-            </button>
-          </form>
-        {% elsif section.settings.button_url != blank %}
-          <a href="{{ section.settings.button_url }}" class="btn {{ section.settings.button_style }} {{ section.settings.button_size }} {{ section.settings.button_type }}">
+        
+          <a href="{{ section.settings.button_url }}" class="btn {{ section.settings.button_style }} {{ section.settings.button_size }} {{ section.settings.button_type }}" style="    width: 250px;
+">
             <span>{% if section.settings.button_text != blank %}{{ section.settings.button_text }}{% else %}Shop Now{% endif %}</span>
           </a>
-        {% endif %}
+        
       </div>
     </div>
   </div>
