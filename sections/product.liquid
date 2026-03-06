@@ -1,3 +1,5 @@
+{% unless product.handle contains 'free-fft-speed-limit-shirt' %}
+
 <!-- /sections/product.liquid -->
 
 {%- liquid
@@ -672,6 +674,8 @@
     {%- render 'cart-bar' product: product -%}
   {%- endif -%}
 </div>
+
+{% endunless %}
 
 {% schema %}
   {
@@ -2266,3 +2270,4 @@
     ]
   }
 {% endschema %}
+

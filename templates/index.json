@@ -61,8 +61,8 @@
         "heading_Bmtyzd": {
           "type": "heading",
           "settings": {
-            "title": "APPAREL FOR DRIVERS",
-            "heading_font_size": "heading-medium",
+            "title": "All New 3 Pedal Society Hoodie",
+            "heading_font_size": "heading-x-large",
             "heading_tag": "automatic"
           }
         },
@@ -70,9 +70,9 @@
           "type": "button",
           "settings": {
             "link_text": "Shop Now",
-            "link": "shopify://collections/all",
+            "link": "shopify://products/3-pedal-society-premium-hoodie",
             "button_type": "btn--secondary",
-            "button_size": "btn--small",
+            "button_size": "",
             "button_style": "btn--solid",
             "show_arrow": true
           }
@@ -82,17 +82,65 @@
         "heading_Bmtyzd",
         "button_pDGiqd"
       ],
+      "disabled": true,
       "settings": {
-        "image_1": "shopify://shop_images/3_Pedal_15_of_20_f251198f-e078-4c0b-a5c1-2a78aa62b58a.jpg",
+        "image_1": "shopify://shop_images/Cobalt_3_Pedal_Hoodies_37_of_41.jpg",
         "link": "",
         "width": "wrapper--full",
-        "height": "screen-height-full",
-        "flex_align_desktop": "align--top-right-desktop",
-        "mobile_image": "shopify://shop_images/3_Pedal_15_of_20_0e0cc5e6-bf2b-45de-9c72-45409723e831.png",
+        "height": "image-height",
+        "flex_align_desktop": "align--top-left-desktop",
+        "mobile_image": "shopify://shop_images/Cobalt_3_Pedal_Hoodies_37_of_41.jpg",
         "mobile_height": "four-fifty-height-hero--mobile",
-        "flex_align_mobile": "align--top-right-mobile",
+        "flex_align_mobile": "align--bottom-left-mobile",
         "color_scheme": "scheme-2",
         "show_text_background": false,
+        "overlay_opacity": 30,
+        "show_overlay_text": true,
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "show_placeholder": true
+      }
+    },
+    "section_hero_7pe4T7": {
+      "type": "section-hero",
+      "blocks": {
+        "heading_apcbVN": {
+          "type": "heading",
+          "settings": {
+            "title": "The 3 Pedal Lineup",
+            "heading_font_size": "heading-large",
+            "heading_tag": "automatic"
+          }
+        },
+        "button_wzN7Xi": {
+          "type": "button",
+          "settings": {
+            "link_text": "Shop Now",
+            "link": "shopify://collections/sweatshirts",
+            "button_type": "btn--secondary",
+            "button_size": "",
+            "button_style": "btn--solid",
+            "show_arrow": true
+          }
+        }
+      },
+      "block_order": [
+        "heading_apcbVN",
+        "button_wzN7Xi"
+      ],
+      "settings": {
+        "image_1": "shopify://shop_images/FFT_Merch_Trio_1_of_1_-27.png",
+        "link": "",
+        "width": "wrapper--full",
+        "height": "image-height",
+        "flex_align_desktop": "align--middle-right-desktop",
+        "mobile_image": "shopify://shop_images/FFT_Merch_Trio_1_of_1_-27.jpg",
+        "mobile_height": "screen-height-two-thirds--mobile",
+        "flex_align_mobile": "align--bottom-right-mobile",
+        "color_scheme": "scheme-2",
+        "show_text_background": false,
+        "overlay_opacity": 60,
+        "show_overlay_text": true,
         "padding_top": 0,
         "padding_bottom": 0,
         "show_placeholder": true
@@ -495,7 +543,7 @@
         "layout": "inline",
         "layout_desktop": "slider",
         "layout_mobile": "slider",
-        "product_limit": 6,
+        "product_limit": 12,
         "grid": 3,
         "rows": 3,
         "color_scheme": "scheme-2",
@@ -701,6 +749,7 @@
   "order": [
     "hero",
     "section_hero_HQEqDw",
+    "section_hero_7pe4T7",
     "section_hero_gfjC7y",
     "section_text_row_h8Tmwr",
     "section_collection_rV9cEB",

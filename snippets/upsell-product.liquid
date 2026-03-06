@@ -61,6 +61,7 @@
   endif
 -%}
 
+{% unless upsell_product.handle contains 'free-fft-speed-limit-shirt' %}
 {%- if show_upsell -%}
   <quick-add-product>
     <div class="product-upsell__holder{% if upsell_error %} product-upsell__holder--onboarding{% endif %}{% if is_cart %} product-upsell__holder--cart{% elsif upsell_quick_add_hide == false %} product-upsell__holder--button{% endif %}" data-quick-add-holder="{{ upsell_product.id }}">
@@ -236,3 +237,4 @@
     </div>
   </quick-add-product>
 {%- endif -%}
+{% endunless %}

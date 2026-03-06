@@ -20,33 +20,12 @@
             "image": "shopify://shop_images/FFT_Garage_Shoot_1_of_1_-18.jpg"
           }
         },
-        "collection_qCVUWz": {
-          "type": "collection",
-          "settings": {
-            "collection": "fft-essentials",
-            "collection_name": "",
-            "image": "shopify://shop_images/FFT_Hats_51_of_60.jpg"
-          }
-        },
-        "collection_6FJTE8": {
-          "type": "collection",
-          "settings": {
-            "collection": "accessories",
-            "collection_name": ""
-          }
-        },
-        "collection_YgQhMh": {
-          "type": "collection",
-          "settings": {
-            "collection": "air-cooled-collection",
-            "collection_name": ""
-          }
-        },
         "collection_qkWHNT": {
           "type": "collection",
           "settings": {
             "collection": "3-pedal-collection",
-            "collection_name": ""
+            "collection_name": "",
+            "image": "shopify://shop_images/FFT_Merch_Trio_1_of_1_-27_ac1c4fe6-3dda-4002-99f0-ac38c8c8b73b.png"
           }
         },
         "collection_BawVqW": {
@@ -56,22 +35,47 @@
             "collection_name": ""
           }
         },
+        "collection_qCVUWz": {
+          "type": "collection",
+          "settings": {
+            "collection": "fft-essentials",
+            "collection_name": "",
+            "image": "shopify://shop_images/FFT_Hoodies_9_of_67.jpg"
+          }
+        },
         "collection_qzJ3PG": {
           "type": "collection",
           "settings": {
             "collection": "tees",
+            "collection_name": "",
+            "image": "shopify://shop_images/3_Pedal_15_of_20.png"
+          }
+        },
+        "collection_6FJTE8": {
+          "type": "collection",
+          "settings": {
+            "collection": "accessories",
+            "collection_name": "",
+            "image": "shopify://shop_images/9a35e216-378e-450b-844b-0e8ee511991b.png"
+          }
+        },
+        "collection_YgQhMh": {
+          "type": "collection",
+          "disabled": true,
+          "settings": {
+            "collection": "air-cooled-collection",
             "collection_name": ""
           }
         }
       },
       "block_order": [
         "collection_E9YmKC",
-        "collection_qCVUWz",
-        "collection_6FJTE8",
-        "collection_YgQhMh",
         "collection_qkWHNT",
         "collection_BawVqW",
-        "collection_qzJ3PG"
+        "collection_qCVUWz",
+        "collection_qzJ3PG",
+        "collection_6FJTE8",
+        "collection_YgQhMh"
       ],
       "settings": {
         "display_type": "selected",

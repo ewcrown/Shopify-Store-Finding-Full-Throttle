@@ -26,6 +26,19 @@
             "target_device": "mobile"
           }
         },
+        "text_NAKjcp": {
+          "type": "text",
+          "disabled": true,
+          "settings": {
+            "text": "<h6>❄️ WINTER STORMS MAY CAUSE SHIPPING DELAYS ❄️ </h6>",
+            "target_url_enabled": false,
+            "target_url": "",
+            "target_referrer_enabled": false,
+            "target_referrer": "",
+            "target_device_enabled": false,
+            "target_device": "mobile"
+          }
+        },
         "text_JrG4CM": {
           "type": "text",
           "settings": {
@@ -67,6 +80,7 @@
       },
       "block_order": [
         "text",
+        "text_NAKjcp",
         "text_JrG4CM",
         "text_HY69Dq",
         "text-2"
@@ -271,7 +285,7 @@
           "type": "collection",
           "settings": {
             "collection": "tees",
-            "image": "shopify://shop_images/Anti_Racing_1_of_1_-11.jpg",
+            "image": "shopify://shop_images/3_Pedal_1_of_1_-4.jpg",
             "image_width": 20,
             "text_font_size": "body-large",
             "bg_color": "",
@@ -284,7 +298,7 @@
           "type": "collection",
           "settings": {
             "collection": "sweatshirts",
-            "image": "shopify://shop_images/930_Turbo_1_of_1_-16_8341009f-a481-4ace-a8d1-e647fc345551.jpg",
+            "image": "shopify://shop_images/FFT_Merch_Trio_1_of_1_-27_ac1c4fe6-3dda-4002-99f0-ac38c8c8b73b.png",
             "image_width": 20,
             "text_font_size": "body-large",
             "bg_color": "",
@@ -297,6 +311,7 @@
           "type": "collection",
           "settings": {
             "collection": "hats",
+            "image": "shopify://shop_images/FFT_Hats_18_of_75.jpg",
             "image_width": 20,
             "text_font_size": "body-large",
             "bg_color": "",
@@ -307,6 +322,7 @@
         },
         "collection_4XQLVf": {
           "type": "collection",
+          "disabled": true,
           "settings": {
             "collection": "kits",
             "image": "shopify://shop_images/FFT_Garage_Shoot_1_of_1_-16_a382e3b6-d3d6-41a0-9225-028b6a75e420.jpg",
@@ -321,8 +337,21 @@
         "collection_d6gW4X": {
           "type": "collection",
           "settings": {
-            "collection": "key-tags",
-            "image": "shopify://shop_images/FFT_Garage_Shoot_1_of_1_-17_638d238b-9636-4db3-acc2-1af90b4c3a8f.jpg",
+            "collection": "accessories",
+            "image": "shopify://shop_images/bb578c14-1889-4abb-a1ad-4a8f6dc7b418.png",
+            "image_width": 20,
+            "text_font_size": "body-large",
+            "bg_color": "",
+            "padding": false,
+            "pin_to_bottom": false,
+            "padding_bottom": 14
+          }
+        },
+        "collection_89hih3": {
+          "type": "collection",
+          "settings": {
+            "collection": "we-made-too-much",
+            "image": "shopify://shop_images/FFTGarageShoot_1of1_-18_2.png",
             "image_width": 20,
             "text_font_size": "body-large",
             "bg_color": "",
@@ -354,6 +383,7 @@
         "collection_VdmFAJ",
         "collection_4XQLVf",
         "collection_d6gW4X",
+        "collection_89hih3",
         "button_Q7GaKF"
       ],
       "settings": {
