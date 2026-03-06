@@ -9217,8 +9217,8 @@
         if (!priceOffBadge || !this.priceOffAmount || !comparePrice || !salePrice || comparePrice <= salePrice) {
           priceOffBadge?.classList.add(classes$6.hidden);
         } else {
-          // Calculate and display discount percentage
-          const discountInt = Math.round(((comparePrice - salePrice) / comparePrice) * 100);
+          // Calculate and display discount percentage (ceil to nearest whole)
+          const discountInt = Math.ceil(((comparePrice - salePrice) / comparePrice) * 100);
           this.priceOffAmount.innerHTML = `${discountInt}%`;
           priceOffBadge.classList.remove(classes$6.hidden);
         }
@@ -9250,7 +9250,7 @@
           const adjustment = formState.plan.detail.price_adjustments[0];
           const discount = adjustment.value;
           if (adjustment && adjustment.value_type === 'percentage') {
-            this.priceOffAmount.innerHTML = `${discount}%`;
+            this.priceOffAmount.innerHTML = `${Math.ceil(discount)}%`;
           } else {
             this.priceOffAmount.innerHTML = formatMoney(discount, theme.moneyFormat);
           }
