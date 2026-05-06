@@ -104,11 +104,20 @@
     "section_hero_7pe4T7": {
       "type": "section-hero",
       "blocks": {
-        "heading_apcbVN": {
+        "heading_cP8iPx": {
           "type": "heading",
           "settings": {
-            "title": "The 3 Pedal Lineup",
+            "title": "Spring Essentials",
             "heading_font_size": "heading-large",
+            "heading_tag": "automatic"
+          }
+        },
+        "heading_apcbVN": {
+          "type": "heading",
+          "disabled": true,
+          "settings": {
+            "title": "Grab Them Before Their Gone",
+            "heading_font_size": "heading-mini",
             "heading_tag": "automatic"
           }
         },
@@ -125,21 +134,78 @@
         }
       },
       "block_order": [
+        "heading_cP8iPx",
         "heading_apcbVN",
         "button_wzN7Xi"
       ],
+      "disabled": true,
       "settings": {
         "image_1": "shopify://shop_images/FFT_Merch_Trio_1_of_1_-27.png",
         "link": "",
         "width": "wrapper--full",
         "height": "image-height",
-        "flex_align_desktop": "align--middle-right-desktop",
+        "flex_align_desktop": "align--bottom-right-desktop",
         "mobile_image": "shopify://shop_images/FFT_Merch_Trio_1_of_1_-27.jpg",
         "mobile_height": "screen-height-two-thirds--mobile",
         "flex_align_mobile": "align--bottom-right-mobile",
         "color_scheme": "scheme-2",
         "show_text_background": false,
         "overlay_opacity": 60,
+        "show_overlay_text": true,
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "show_placeholder": true
+      }
+    },
+    "section_hero_jQNqEt": {
+      "type": "section-hero",
+      "blocks": {
+        "heading_4RKMaQ": {
+          "type": "heading",
+          "settings": {
+            "title": "Spring Essentials",
+            "heading_font_size": "heading-large",
+            "heading_tag": "automatic"
+          }
+        },
+        "heading_6NiXpt": {
+          "type": "heading",
+          "disabled": true,
+          "settings": {
+            "title": "Grab Them Before Their Gone",
+            "heading_font_size": "heading-mini",
+            "heading_tag": "automatic"
+          }
+        },
+        "button_exNXPk": {
+          "type": "button",
+          "settings": {
+            "link_text": "Shop Now",
+            "link": "shopify://collections/sweatshirts",
+            "button_type": "btn--secondary",
+            "button_size": "",
+            "button_style": "btn--solid",
+            "show_arrow": true
+          }
+        }
+      },
+      "block_order": [
+        "heading_4RKMaQ",
+        "heading_6NiXpt",
+        "button_exNXPk"
+      ],
+      "settings": {
+        "image_1": "shopify://shop_images/Gray_Blue_3_Pedal_1_of_25_f851ae6e-f461-419e-aa5b-ff5c6e336473.jpg",
+        "link": "",
+        "width": "wrapper--full",
+        "height": "screen-height-full",
+        "flex_align_desktop": "align--top-right-desktop",
+        "mobile_image": "shopify://shop_images/Gray_Blue_3_Pedal_1_of_25_f851ae6e-f461-419e-aa5b-ff5c6e336473.jpg",
+        "mobile_height": "screen-height-full--mobile",
+        "flex_align_mobile": "align--bottom-right-mobile",
+        "color_scheme": "scheme-2",
+        "show_text_background": false,
+        "overlay_opacity": 25,
         "show_overlay_text": true,
         "padding_top": 0,
         "padding_bottom": 0,
@@ -750,6 +816,7 @@
     "hero",
     "section_hero_HQEqDw",
     "section_hero_7pe4T7",
+    "section_hero_jQNqEt",
     "section_hero_gfjC7y",
     "section_text_row_h8Tmwr",
     "section_collection_rV9cEB",

@@ -9,6 +9,84 @@
  */
 {
   "sections": {
+    "section_countdown_timer_MGWCkb": {
+      "type": "section-countdown-timer",
+      "blocks": {
+        "subheading_YJVbdT": {
+          "type": "subheading",
+          "settings": {
+            "subheading": "15% Off Site Wide!"
+          }
+        },
+        "heading_qAGKPK": {
+          "type": "heading",
+          "settings": {
+            "title": "March madness",
+            "heading_font_size": "heading-large",
+            "heading_tag": "automatic"
+          }
+        },
+        "text_jmDW76": {
+          "type": "text",
+          "settings": {
+            "text": "<p>*Discount will be applied automatically at checkout</p>",
+            "text_font_size": "body-medium"
+          }
+        },
+        "buttons_pLarDq": {
+          "type": "buttons",
+          "disabled": true,
+          "settings": {
+            "button_text": "Shop 15% Off",
+            "button_url": "shopify://collections/all",
+            "button_type": "btn--secondary",
+            "button_size": "",
+            "button_style": "btn--solid",
+            "show_arrow": true
+          }
+        }
+      },
+      "block_order": [
+        "subheading_YJVbdT",
+        "heading_qAGKPK",
+        "text_jmDW76",
+        "buttons_pLarDq"
+      ],
+      "disabled": true,
+      "custom_css": [],
+      "name": "Countdown timer",
+      "settings": {
+        "end_date": "2026-03-31",
+        "end_time": "11:59",
+        "period": "pm",
+        "end_message": "<p>Offer has expired</p>",
+        "hide_on_complete": true,
+        "digits_font_size": "heading-medium",
+        "text_font_size": "body-small",
+        "width": "wrapper--narrow",
+        "text_align": "text-left",
+        "height": "one-fifty-height-hero",
+        "mobile_height": "one-fifty-height-hero--mobile",
+        "text_align_mobile": "text-center--mobile",
+        "color_scheme": "scheme-2",
+        "digits_gradient": "",
+        "overlay_opacity": 0,
+        "show_overlay_text": false,
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "section_divider_x7AxHU": {
+      "type": "section-divider",
+      "name": "Divider",
+      "settings": {
+        "show_line": true,
+        "width": "wrapper--full-padded",
+        "color_scheme": "scheme-2",
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
     "hero": {
       "type": "collection-image-with-title",
       "settings": {
@@ -59,6 +137,8 @@
     }
   },
   "order": [
+    "section_countdown_timer_MGWCkb",
+    "section_divider_x7AxHU",
     "hero",
     "subcollections",
     "main"
