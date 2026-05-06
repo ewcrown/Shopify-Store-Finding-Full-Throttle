@@ -1162,6 +1162,20 @@
           "info": "Show free gift offer when customers reach the threshold"
         },
         {
+          "type": "checkbox",
+          "id": "enable_key_tag_offer",
+          "label": "Enable key tag offer",
+          "default": true,
+          "info": "Automatically add the key tag reward when customer reaches the shipping threshold"
+        },
+        {
+          "type": "checkbox",
+          "id": "enable_shirt_offer",
+          "label": "Enable shirt offer",
+          "default": true,
+          "info": "Offer the shirt reward when customer reaches the shirt threshold"
+        },
+        {
           "type": "text",
           "id": "free_gift_threshold",
           "label": "Minimum spend for free gift",

@@ -62,7 +62,9 @@
         parseFloat(container?.getAttribute('data-free-gift-threshold')) ||
         DEFAULT_FREE_SHIRT_THRESHOLD;
       const shippingLimit = parseFloat(container?.getAttribute('data-free-shipping-limit')) || 75;
-      return { freeGiftVariantId, freeShirtHandle, giftThreshold, shippingLimit };
+      const enableKeyTagOffer = (container?.getAttribute('data-enable-key-tag-offer') || 'true') === 'true';
+      const enableShirtOffer = (container?.getAttribute('data-enable-shirt-offer') || 'true') === 'true';
+      return { freeGiftVariantId, freeShirtHandle, giftThreshold, shippingLimit, enableKeyTagOffer, enableShirtOffer };
     }
 
     // Enhanced loader UI with visible spinner
@@ -503,7 +505,7 @@
 
       const cart = await getCartState();
       if (!cart) return;
-      const { freeGiftVariantId, giftThreshold, shippingLimit } = getPromoConfig();
+      const { freeGiftVariantId, giftThreshold, shippingLimit, enableKeyTagOffer, enableShirtOffer } = getPromoConfig();
 
       const apiTotal = (cart.total_price || 0) / 100;
 
@@ -528,19 +530,24 @@
 
       // $99+ tier: show shirt popup, add key tag
       if (totalWithoutGift >= giftThreshold) {
-        if (!hasKeyTag) await addKeyGift();
-        if (!hasFreeShirt) {
+        if (enableKeyTagOffer && !hasKeyTag) await addKeyGift();
+        if (!enableKeyTagOffer && hasKeyTag) await removeKeyGift();
+        if (enableShirtOffer && !hasFreeShirt) {
           const product = await getFreeShirtProduct();
           if (product) openFreeShirtModal(product);
         }
+        if (!enableShirtOffer && hasFreeShirt) await removeFreeShirt();
         return;
       }
 
       // $75+ tier: add/remove key tag
       if (totalWithoutGift >= shippingLimit) {
         freeShirtModalDismissed = false;
-        if (!hasKeyTag) {
+        if (enableKeyTagOffer && !hasKeyTag) {
           await addKeyGift();
+        }
+        if (!enableKeyTagOffer && hasKeyTag) {
+          await removeKeyGift();
         }
         if (hasFreeShirt) {
           await removeFreeShirt();
@@ -562,7 +569,7 @@
       const containers = getContainers();
       if (!containers || !containers.length) return;
       const container = containers[0];
-      const { giftThreshold, shippingLimit } = getPromoConfig();
+      const { giftThreshold, shippingLimit, enableKeyTagOffer, enableShirtOffer } = getPromoConfig();
 
       // Try to read a single authoritative source for cart total first
       let cartTotal = 0;
@@ -595,7 +602,7 @@
       const shippingMilestone = container.querySelector('.free-shipping__milestone--shipping');
       const giftMilestone = container.querySelector('.free-shipping__milestone--gift');
       const showShipping = cartTotal >= shippingLimit;
-      const showGift = cartTotal >= giftThreshold;
+      const showGift = enableShirtOffer && cartTotal >= giftThreshold;
 
       if (shippingMilestone){
         shippingMilestone.classList.toggle('is-reached', showShipping);
@@ -618,12 +625,16 @@
       const msgEl = container.querySelector('.free-shipping__success-message, .free-shipping__default-message');
       if (msgEl){
         let newMsg = '';
-        if (cartTotal >= giftThreshold) {
+        if (enableShirtOffer && cartTotal >= giftThreshold && enableKeyTagOffer) {
           newMsg = 'Congratulations! Your order qualifies for free shipping with KEY TAG & Free SHIRT!';
-        } else if (cartTotal >= shippingLimit) {
+        } else if (enableShirtOffer && cartTotal >= giftThreshold) {
+          newMsg = 'Congratulations! Your order qualifies for free shipping with Free SHIRT!';
+        } else if (enableKeyTagOffer && cartTotal >= shippingLimit) {
+          newMsg = 'Congratulations! Your order qualifies for free shipping with FREE KEY TAG!';
+        } else if (enableShirtOffer && cartTotal >= shippingLimit) {
           newMsg = `You are $${(giftThreshold - cartTotal).toFixed(2)} away from FREE SHIPPING with Free Shirt!`;
         } else {
-          newMsg = `You are $${(shippingLimit - cartTotal).toFixed(2)} away from FREE SHIPPING with KEY TAG!`;
+          newMsg = `You are $${(shippingLimit - cartTotal).toFixed(2)} away from FREE SHIPPING!`;
         }
         if (msgEl.textContent.trim() !== newMsg) msgEl.textContent = newMsg;
       }
