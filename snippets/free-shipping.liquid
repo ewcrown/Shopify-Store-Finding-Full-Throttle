@@ -28,16 +28,21 @@
   {%- liquid
     assign free_shipping_limit = settings.free_shipping_limit | plus: 0
     assign free_gift_threshold_raw = settings.free_gift_threshold | default: '99'
-    assign free_gift_threshold = free_gift_threshold_raw | plus: 0
     assign free_gift_product_handle = settings.free_gift_product | default: ''
+    assign free_shirt_threshold_raw = settings.free_shirt_threshold | default: free_gift_threshold_raw
+    assign free_shirt_threshold = free_shirt_threshold_raw | plus: 0
+    assign free_shirt_product_handle = settings.free_shirt_product | default: ''
+    if free_shirt_product_handle == blank
+      assign free_shirt_product_handle = free_gift_product_handle
+    endif
     
-    assign max_limit = free_gift_threshold
-    if free_gift_threshold < free_shipping_limit
+    assign max_limit = free_shirt_threshold
+    if free_shirt_threshold < free_shipping_limit
       assign max_limit = free_shipping_limit
     endif
     
-    if settings.enable_free_gift and free_gift_product_handle != blank
-      assign progress_max = free_gift_threshold
+    if settings.enable_free_gift and free_shirt_product_handle != blank
+      assign progress_max = free_shirt_threshold
     else
       assign progress_max = free_shipping_limit
     endif
@@ -79,10 +84,10 @@
         assign free_gift_product_title = free_gift_product.title 
     endif
     
-    if subtotal_without_currency >= free_shipping_limit and settings.enable_free_gift and free_gift_product_handle != blank and subtotal_without_currency >= free_gift_threshold
+    if subtotal_without_currency >= free_shipping_limit and settings.enable_free_gift and free_shirt_product_handle != blank and subtotal_without_currency >= free_shirt_threshold
       assign qualified_shipping_message = 'Congratulations! Your order qualifies for free shipping with a free gift'
-    elsif subtotal_without_currency >= free_shipping_limit and settings.enable_free_gift and free_gift_product_handle != blank and subtotal_without_currency < free_gift_threshold
-      assign free_gift_threshold_cents = free_gift_threshold | times: 100
+    elsif subtotal_without_currency >= free_shipping_limit and settings.enable_free_gift and free_shirt_product_handle != blank and subtotal_without_currency < free_shirt_threshold
+      assign free_gift_threshold_cents = free_shirt_threshold | times: 100
       assign amount_needed_cents = free_gift_threshold_cents | minus: cart.total_price
       if amount_needed_cents < 0
         assign amount_needed_cents = 0
@@ -138,7 +143,7 @@
         echo ' has-free-shipping'
       endif
       
-      if subtotal_without_currency >= free_gift_threshold
+      if subtotal_without_currency >= free_shirt_threshold
         echo ' has-free-gift'
       endif
     endcapture
@@ -358,7 +363,7 @@
       
       .free-shipping__milestone--gift .free-shipping__milestone-label {
         max-width: 90px;
-        font-size: 11px;
+        font-size: 11px; 
         margin-top: 8px;
         line-height: 1.5;
       }
@@ -374,7 +379,11 @@
   <div class="{{ free_shipping_classes }}"
     data-free-shipping="{% if qualified_shipping_message != blank %}true{% else %}false{% endif %}"
     data-free-shipping-limit="{{ free_shipping_limit }}"
-    data-free-gift-threshold="{{ free_gift_threshold }}"
+    data-free-gift-threshold="{{ free_shirt_threshold }}"
+    data-free-gift-product-handle="{{ free_shirt_product_handle }}"
+    data-free-shirt-threshold="{{ free_shirt_threshold }}"
+    data-free-shirt-product-handle="{{ free_shirt_product_handle }}"
+    data-free-gift-variant-id="{% if free_gift_product and free_gift_product.selected_or_first_available_variant %}{{ free_gift_product.selected_or_first_available_variant.id }}{% endif %}"
     data-milestone-75-percent="{{ milestone_75_percent }}"
     {% if style != blank %}
       style="{{ style }}"
@@ -425,8 +434,7 @@
             </div>
             
             {%- comment -%} Free Gift Milestone at $99 {%- endcomment -%}
-            {%- if settings.enable_free_gift and free_gift_product_handle != blank -%}
-              {%- assign free_gift_product = all_products[free_gift_product_handle] -%}
+            {%- if settings.enable_free_gift and free_shirt_product_handle != blank -%}
               <div class="free-shipping__milestone free-shipping__milestone--gift" 
                    style="left: {{ milestone_99_percent }}%"
                    data-milestone-type="gift"

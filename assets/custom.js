@@ -10,8 +10,8 @@
   }
 
   function init(){
-    const FREE_KEY_TAG_VARIANT_ID = 47468490064089;
-    const FREE_SHIRT_HANDLE = 'free-fft-speed-limit-shirt';
+    const DEFAULT_FREE_KEY_TAG_VARIANT_ID = 47468490064089;
+    const DEFAULT_FREE_SHIRT_HANDLE = 'free-fft-speed-limit-shirt';
     const DEFAULT_FREE_SHIRT_THRESHOLD = 99;
     // Cached elements / config
     let containers = null; // NodeList (cached) - refreshed when DOM changes significantly
@@ -47,6 +47,22 @@
     function getContainers(refresh = false){
       if (!containers || refresh) containers = document.querySelectorAll('[data-free-shipping-limit]');
       return containers;
+    }
+
+    function getPromoConfig(refresh = false){
+      const els = getContainers(refresh);
+      const container = els && els.length ? els[0] : null;
+      const freeGiftVariantId = Number(container?.getAttribute('data-free-gift-variant-id')) || DEFAULT_FREE_KEY_TAG_VARIANT_ID;
+      const freeShirtHandle =
+        (container?.getAttribute('data-free-shirt-product-handle') || '').trim() ||
+        (container?.getAttribute('data-free-gift-product-handle') || '').trim() ||
+        DEFAULT_FREE_SHIRT_HANDLE;
+      const giftThreshold =
+        parseFloat(container?.getAttribute('data-free-shirt-threshold')) ||
+        parseFloat(container?.getAttribute('data-free-gift-threshold')) ||
+        DEFAULT_FREE_SHIRT_THRESHOLD;
+      const shippingLimit = parseFloat(container?.getAttribute('data-free-shipping-limit')) || 75;
+      return { freeGiftVariantId, freeShirtHandle, giftThreshold, shippingLimit };
     }
 
     // Enhanced loader UI with visible spinner
@@ -115,7 +131,9 @@
       if (isFreeShirtFetching) return null;
       isFreeShirtFetching = true;
       try {
-        const res = await fetch(`/products/${FREE_SHIRT_HANDLE}.js`, { cache: 'no-store' });
+        const { freeShirtHandle } = getPromoConfig();
+        if (!freeShirtHandle) return null;
+        const res = await fetch(`/products/${freeShirtHandle}.js`, { cache: 'no-store' });
         if (!res.ok) throw new Error('product fetch failed');
         freeShirtProduct = await res.json();
         freeShirtVariantIds = (freeShirtProduct.variants || []).map(v => v.id);
@@ -396,6 +414,7 @@
       if (isManagingGift) return;
       isManagingGift = true;
       toggleLoader(true, 'removing');
+      const { freeGiftVariantId } = getPromoConfig();
       
       // Show loader immediately using requestAnimationFrame for instant feedback
       requestAnimationFrame(() => {
@@ -406,7 +425,7 @@
             isManagingGift = false;
             return;
           }
-          const idx = cart.items.findIndex(i => i.variant_id === FREE_KEY_TAG_VARIANT_ID);
+          const idx = cart.items.findIndex(i => i.variant_id === freeGiftVariantId);
           if (idx === -1) {
             toggleLoader(false);
             isManagingGift = false;
@@ -442,18 +461,19 @@
       if (isManagingGift) return;
       isManagingGift = true;
       toggleLoader(true, 'adding');
+      const { freeGiftVariantId } = getPromoConfig();
       
       requestAnimationFrame(async () => {
         try {
           const cart = await getCartState();
           // Check if KEY TAG is already in cart
-          if (cart && isVariantInCart(cart, FREE_KEY_TAG_VARIANT_ID)) {
+          if (cart && isVariantInCart(cart, freeGiftVariantId)) {
             toggleLoader(false);
             isManagingGift = false;
             return;
           }
           const fd = new FormData();
-          fd.append('id', String(FREE_KEY_TAG_VARIANT_ID));
+          fd.append('id', String(freeGiftVariantId));
           fd.append('quantity','1');
           fd.append('properties[_free_gift]','true');
           const res = await fetch(window.theme?.routes?.cart_add_url || '/cart/add.js', {
@@ -483,12 +503,13 @@
 
       const cart = await getCartState();
       if (!cart) return;
+      const { freeGiftVariantId, giftThreshold, shippingLimit } = getPromoConfig();
 
       const apiTotal = (cart.total_price || 0) / 100;
 
       // subtract gifts from total
       let totalWithoutGift = apiTotal;
-      const g = getGiftLineItem(cart, FREE_KEY_TAG_VARIANT_ID);
+      const g = getGiftLineItem(cart, freeGiftVariantId);
       if (g) {
         const price = (g.final_price || g.price || 0) / 100;
         totalWithoutGift -= price;
@@ -502,10 +523,8 @@
         }
       }
 
-      const hasKeyTag = isVariantInCart(cart, FREE_KEY_TAG_VARIANT_ID);
+      const hasKeyTag = isVariantInCart(cart, freeGiftVariantId);
       const hasFreeShirt = cartHasFreeShirt(cart);
-      const shippingLimit = 75;
-      const giftThreshold = parseFloat(containers[0].getAttribute('data-free-gift-threshold')) || DEFAULT_FREE_SHIRT_THRESHOLD;
 
       // $99+ tier: show shirt popup, add key tag
       if (totalWithoutGift >= giftThreshold) {
@@ -543,7 +562,7 @@
       const containers = getContainers();
       if (!containers || !containers.length) return;
       const container = containers[0];
-      const shippingLimit = parseFloat(container.getAttribute('data-free-shipping-limit')) || 75;
+      const { giftThreshold, shippingLimit } = getPromoConfig();
 
       // Try to read a single authoritative source for cart total first
       let cartTotal = 0;
@@ -575,7 +594,6 @@
       // Update progress bar & messages with minimal writes
       const shippingMilestone = container.querySelector('.free-shipping__milestone--shipping');
       const giftMilestone = container.querySelector('.free-shipping__milestone--gift');
-      const giftThreshold = parseFloat(container.getAttribute('data-free-gift-threshold')) || DEFAULT_FREE_SHIRT_THRESHOLD;
       const showShipping = cartTotal >= shippingLimit;
       const showGift = cartTotal >= giftThreshold;
 

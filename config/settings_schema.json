@@ -1175,6 +1175,23 @@
           "info": "Select the product to offer as a free gift"
         },
         {
+          "type": "header",
+          "content": "Free Shirt Offer (99+)"
+        },
+        {
+          "type": "text",
+          "id": "free_shirt_threshold",
+          "label": "Minimum spend for free shirt",
+          "default": "99",
+          "info": "Use round numbers. Exclude currency, symbols, and letters."
+        },
+        {
+          "type": "product",
+          "id": "free_shirt_product",
+          "label": "Free shirt product",
+          "info": "Select the shirt product to offer when customers reach the threshold"
+        },
+        {
           "type": "text",
           "id": "free_gift_message",
           "label": "Free gift message",
