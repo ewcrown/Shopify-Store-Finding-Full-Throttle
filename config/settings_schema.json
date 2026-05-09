@@ -1162,20 +1162,6 @@
           "info": "Show free gift offer when customers reach the threshold"
         },
         {
-          "type": "checkbox",
-          "id": "enable_key_tag_offer",
-          "label": "Enable key tag offer",
-          "default": true,
-          "info": "Automatically add the key tag reward when customer reaches the shipping threshold"
-        },
-        {
-          "type": "checkbox",
-          "id": "enable_shirt_offer",
-          "label": "Enable shirt offer",
-          "default": true,
-          "info": "Offer the shirt reward when customer reaches the shirt threshold"
-        },
-        {
           "type": "text",
           "id": "free_gift_threshold",
           "label": "Minimum spend for free gift",
@@ -1186,24 +1172,40 @@
           "type": "product",
           "id": "free_gift_product",
           "label": "Free gift product",
-          "info": "Select the product to offer as a free gift"
-        },
-        {
-          "type": "header",
-          "content": "Free Shirt Offer (99+)"
+          "info": "Select the product customers receive at the free gift threshold (for example Launch Key Tag). Use a dedicated product or SKU for this promotion."
         },
         {
           "type": "text",
-          "id": "free_shirt_threshold",
-          "label": "Minimum spend for free shirt",
-          "default": "99",
-          "info": "Use round numbers. Exclude currency, symbols, and letters."
+          "id": "free_shipping_milestone_label",
+          "label": "Cart progress bar: free shipping label",
+          "default": "Free shipping",
+          "info": "Shown under the first milestone (minimum spend for free shipping)."
         },
         {
-          "type": "product",
-          "id": "free_shirt_product",
-          "label": "Free shirt product",
-          "info": "Select the shirt product to offer when customers reach the threshold"
+          "type": "text",
+          "id": "free_gift_milestone_label",
+          "label": "Cart progress bar: free gift label",
+          "default": "Free gift",
+          "info": "Shown under the second milestone. Uses this text by default; you can match your gift product name (e.g. Launch Key Tag)."
+        },
+        {
+          "type": "text",
+          "id": "free_gift_modal_title",
+          "label": "Free gift popup title",
+          "default": "Claim your free gift"
+        },
+        {
+          "type": "textarea",
+          "id": "free_gift_modal_subtitle",
+          "label": "Free gift popup subtitle",
+          "default": "Choose your options — complimentary when your cart reaches the gift threshold.",
+          "info": "Use ||threshold|| for the minimum spend amount (number only, shop currency applies at checkout)."
+        },
+        {
+          "type": "text",
+          "id": "free_gift_modal_button_label",
+          "label": "Free gift popup button",
+          "default": "Add free gift"
         },
         {
           "type": "text",
@@ -1223,8 +1225,8 @@
           "type": "text",
           "id": "free_gift_progress_message",
           "label": "Free gift progress message",
-          "default": "Add ||amount|| more to unlock free shipping AND get a FREE Launch Key Tag!",
-          "info": "Message shown when customer has free shipping but not free gift yet"
+          "default": "Add ||amount|| more for your free gift!",
+          "info": "Shown once the cart qualifies for free shipping but is still below the free gift threshold. Use ||amount|| for the remaining amount."
         },
         {
           "type": "checkbox",
